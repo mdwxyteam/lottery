@@ -1,26 +1,46 @@
 spring:
+  datasource:
+    url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: m**
+    password: c**
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 2
+      minIdle: 2
+      maxActive: 30
+      #StatViewServlet:
+      #loginUsername: admin
+      #loginPassword: admin
   quartz:
-    #œ‡πÿ Ù–‘≈‰÷√
+    #Áõ∏ÂÖ≥Â±ûÊÄßÈÖçÁΩÆ
     properties:
       org:
         quartz:
           scheduler:
-            instanceName: clusteredScheduler
+            instanceName: DefaultQuartzScheduler
             instanceId: AUTO
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: QRTZ_
-            isClustered: true
+            isClustered: false
             clusterCheckinInterval: 10000
-            useProperties: false
+            useProperties: true
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 10
             threadPriority: 5
             threadsInheritContextClassLoaderOfInitializingThread: true
-    # ˝æ›ø‚∑Ω Ω
+          dataSource:
+            default:
+              URL: jdbc:mysql://182.61.39.148:3306/lottery?characterEncoding=utf-8
+              user: m**
+              password: c**
+              driver: com.mysql.jdbc.Driver
+
+    #Êï∞ÊçÆÂ∫ìÊñπÂºè
     job-store-type: jdbc
-      #≥ı ºªØ±ÌΩ·ππ
-      #jdbc:
+    #ÂàùÂßãÂåñË°®ÁªìÊûÑ
+    #jdbc:
     #initialize-schema: never
