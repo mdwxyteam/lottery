@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: m**
-    password: c**
+    password: c***
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
