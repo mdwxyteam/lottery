@@ -3,8 +3,8 @@ spring:
       name: quzrtz-cluster-node-second
   datasource:
     url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: madong
-    password: chou@123456
+    username: m
+    password: ch
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
