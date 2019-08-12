@@ -1,6 +1,4 @@
 spring:
-  application:
-      name: quzrtz-cluster-node-second
   datasource:
     url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: madong
@@ -20,13 +18,12 @@ spring:
       org:
         quartz:
           scheduler:
-            instanceName: DefaultQuartzScheduler2
+            instanceName: DefaultQuartzScheduler
             instanceId: AUTO
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: QRTZ_
-#            是否加入集群
             isClustered: false
             clusterCheckinInterval: 10000
             useProperties: true
@@ -47,5 +44,3 @@ spring:
     #初始化表结构
     #jdbc:
     #initialize-schema: never
-  server:
-    port: 8082

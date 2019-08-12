@@ -1,8 +1,6 @@
 spring:
-  application:
-      name: quzrtz-cluster-node-second
   datasource:
-    url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/lottery1?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: madong
     password: chou@123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,13 +18,12 @@ spring:
       org:
         quartz:
           scheduler:
-            instanceName: DefaultQuartzScheduler2
+            instanceName: DefaultQuartzScheduler
             instanceId: AUTO
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: QRTZ_
-#            是否加入集群
             isClustered: false
             clusterCheckinInterval: 10000
             useProperties: true
@@ -37,7 +34,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://182.61.39.148:3306/lottery?characterEncoding=utf-8
+              URL: jdbc:mysql://127.0.0.1:3306/lottery?characterEncoding=utf-8
               user: madong
               password: chou@123456
               driver: com.mysql.jdbc.Driver
@@ -47,5 +44,3 @@ spring:
     #初始化表结构
     #jdbc:
     #initialize-schema: never
-  server:
-    port: 8082

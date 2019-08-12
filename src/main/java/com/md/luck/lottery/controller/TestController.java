@@ -27,10 +27,16 @@ public class TestController {
     @PostMapping("/add")
     public void startJob() {
         String taskStr = "com.md.luck.lottery.quartz.task.TestTask";
-        schedulService.addSchedul("jobName1", "jobGroupName1", "triggerName1",  "triggerGroupName1", taskStr, "0/5 * * * * ?", new JSONObject());
+        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, "0/1 * * * * ?", new JSONObject());
     }
     @PostMapping("/del")
     public void deleteJob() {
         schedulService.deleteJob("jobName1", "jobGroupName1");
+    }
+
+
+    public static void main(String[] args) {
+        Long lon = 1134468L;
+        System.out.println(lon / 100);
     }
 }

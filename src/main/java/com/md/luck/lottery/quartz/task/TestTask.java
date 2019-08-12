@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class TestTask extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("--------");
+        System.out.println("----DefaultQuartzScheduler2----");
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         String param = dataMap.getString("params");
     }
