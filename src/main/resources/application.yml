@@ -37,9 +37,9 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://182.61.39.148:3306/lottery?characterEncoding=utf-8
-              user: madong
-              password: chou@123456
+              URL: jdbc:mysql://182.61.39.178:3306/lottery?characterEncoding=utf-8
+              user: ma
+              password: ch
               driver: com.mysql.jdbc.Driver
 
     #数据库方式
