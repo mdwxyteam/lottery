@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/lottery1?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: madong
-    password: chou@123456
+    username: demo
+    password: demo
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -35,8 +35,8 @@ spring:
           dataSource:
             default:
               URL: jdbc:mysql://127.0.0.1:3306/lottery?characterEncoding=utf-8
-              user: madong
-              password: chou@123456
+              user: demo
+              password: demo
               driver: com.mysql.jdbc.Driver
 
     #数据库方式
