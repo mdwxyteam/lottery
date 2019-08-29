@@ -2,9 +2,9 @@ spring:
   application:
       name: quzrtz-cluster-node-second
   datasource:
-    url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: madong
-    password: chou@123456
+    url: jdbc:mysql://182.61.39.149:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: m
+    password: c
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -37,9 +37,9 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://182.61.39.178:3306/lottery?characterEncoding=utf-8
-              user: madong
-              password: chou@123456
+              URL: jdbc:mysql://182.61.39.179:3306/lottery?characterEncoding=utf-8
+              user: m
+              password: ch
               driver: com.mysql.jdbc.Driver
 
     #数据库方式
