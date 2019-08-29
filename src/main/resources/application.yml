@@ -3,8 +3,8 @@ spring:
       name: quzrtz-cluster-node-second
   datasource:
     url: jdbc:mysql://182.61.39.148:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: m
-    password: ch
+    username: madong
+    password: chou@123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -38,8 +38,8 @@ spring:
           dataSource:
             default:
               URL: jdbc:mysql://182.61.39.178:3306/lottery?characterEncoding=utf-8
-              user: ma
-              password: ch
+              user: madong
+              password: chou@123456
               driver: com.mysql.jdbc.Driver
 
     #数据库方式
@@ -48,4 +48,8 @@ spring:
     #jdbc:
     #initialize-schema: never
   server:
-    port: 8082
+    port: 8085
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
