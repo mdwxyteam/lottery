@@ -1,5 +1,7 @@
 package com.md.luck.lottery.common;
 
+import lombok.Data;
+
 /**
  * @author madong
  * @version V2.1 * Update Logs: * Name: * Date: * Description: 初始化
@@ -7,6 +9,7 @@ package com.md.luck.lottery.common;
  * @Description: (这里用一句话描述这个类的作用)
  * @date 2019/8/29 10:32
  */
+@Data
 public class ResponMsg<T> {
     public static int SUCCESS_CODE = 0;
     public static int FAIL_CODE = -1;
