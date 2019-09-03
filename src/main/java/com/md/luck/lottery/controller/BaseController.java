@@ -1,5 +1,7 @@
 package com.md.luck.lottery.controller;
 
+import com.md.luck.lottery.service.PrizeService;
+import com.md.luck.lottery.service.SponsorService;
 import com.md.luck.lottery.service.SponsorTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,4 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseController {
     @Autowired
     protected SponsorTypeService sponsorTypeService;
+    @Autowired
+    protected SponsorService sponsorService;
+    @Autowired
+    protected PrizeService prizeService;
+
 }
