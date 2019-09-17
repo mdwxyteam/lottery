@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface SponsorMapper {
 
-    @Insert("INSERT INTO lottery_sponsor (sponsor, type, detalis, position) VALUES (#{sponsor.sponsor},#{sponsor.type} ,#{sponsor.detalis} ,#{sponsor.position})")
+    @Insert("INSERT INTO lottery_sponsor (sponsor, type, detalis, position, type_id) VALUES (#{sponsor.sponsor},#{sponsor.type} ,#{sponsor.detalis} ,#{sponsor.position} ,#{sponsor.typeId})")
     int add(@Param("sponsor") Sponsor sponsor);
 }
