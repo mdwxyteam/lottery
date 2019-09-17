@@ -15,7 +15,7 @@ public class Sponsor {
     /**
      * 赞助商类型
      */
-    private long type;
+    private String type;
     /**
      * 详细信息
      */
@@ -27,5 +27,5 @@ public class Sponsor {
     /**
      * 类型id
      */
-    private int typeId;
+    private Long typeId;
 }

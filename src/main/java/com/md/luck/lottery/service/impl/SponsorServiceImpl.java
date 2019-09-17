@@ -16,12 +16,13 @@ public class SponsorServiceImpl implements SponsorService {
     private SponsorMapper sponsorMapper;
 
     @Override
-    public ResponMsg<Sponsor> add(String sponsor, String position, String detalis, long type) {
+    public ResponMsg<Sponsor> add(String sponsor, String position, String detalis, long typeId, String type) {
         if (StrUtil.hasEmpty(sponsor, position, detalis)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
         Sponsor sponsorObj = new Sponsor();
         sponsorObj.setType(type);
+        sponsorObj.setTypeId(typeId);
         sponsorObj.setDetalis(detalis);
         sponsorObj.setPosition(position);
         sponsorObj.setSponsor(sponsor);

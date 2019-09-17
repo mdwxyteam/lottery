@@ -12,5 +12,5 @@ public interface SponsorService {
      * @param type 商户类型
      * @return ResponMsg<Sponsor>
      */
-    ResponMsg<Sponsor> add(String sponsor, String position, String detalis, long type);
+    ResponMsg<Sponsor> add(String sponsor, String position, String detalis, long typeId, String type);
 }

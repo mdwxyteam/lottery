@@ -2,6 +2,7 @@ package com.md.luck.lottery.controller.web;
 
 import com.github.pagehelper.Page;
 import com.md.luck.lottery.common.ResponMsg;
+import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.SponsorType;
 import com.md.luck.lottery.controller.BaseController;
 import com.sun.org.apache.regexp.internal.RE;
@@ -43,15 +44,15 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户
-     * @param type 商户类型id
+     * @param typeId 商户类型id
      * @param sponsor 商户名称
      * @param position 商户位置
      * @param detalis 商户详细信息
      * @return ResponMsg
      */
     @PostMapping("/add/sponsor")
-    public ResponMsg addSponsor(@RequestParam("type") long type, @RequestParam("sponsor") String sponsor, @RequestParam("position") String position, @RequestParam("detalis") String detalis) {
-        return sponsorService.add(sponsor, position, detalis, type);
+    public ResponMsg addSponsor(@RequestParam("type") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("position") String position, @RequestParam("detalis") String detalis) {
+        return sponsorService.add(sponsor, position, detalis, typeId, type);
     }
 
     /**
@@ -64,5 +65,45 @@ public class WebApiController extends BaseController {
     @PostMapping("/add/prize")
     public ResponMsg addPrize(@RequestParam("prizeDescription") String prizeDescription, @RequestParam("iconUrl") String iconUrl, @RequestParam("prizeCount") int prizeCount) {
         return prizeService.add(prizeDescription, iconUrl, prizeCount);
+    }
+
+    /**
+     * 新增赞助商与奖品关联
+     * @param sponsorId 赞助商id
+     * @param prizeid 奖品id
+     * @param prizeCount 奖品数量
+     * @return ResponMsg
+     */
+    @PostMapping("/add/sponsor/prize")
+    public ResponMsg addSponsorPrize(@RequestParam("sponsorId") Long sponsorId, @RequestParam("prizeid") Long prizeid, @RequestParam("prizeCount") int prizeCount) {
+        return sponsorPrizeService.add(sponsorId, prizeid, prizeCount);
+    }
+
+    /**
+     * 新增活动与奖品关联
+     * @param ativId 活动id
+     * @param prizeId 奖品id
+     * @param prizeCount 奖品数量
+     * @return ResponMsg
+     */
+    @PostMapping("/add/activ/prize")
+    public ResponMsg addAtivPrize(@RequestParam("ativId") Long ativId, @RequestParam("prizeId") Long prizeId, @RequestParam("prizeCount") int prizeCount) {
+        return activPrizeService.add(ativId, prizeId, prizeCount);
+    }
+
+    public ResponMsg addActiv(@RequestParam("sponsorid") Long sponsorid, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location,
+                              @RequestParam("address") String address, @RequestParam("conditionid") Long conditionid, @RequestParam("sponsorClaim") String sponsorClaim,
+                              @RequestParam("state") int state, @RequestParam("adv") String adv) {
+        return null;
+    }
+
+    /**
+     * 新增活动信息
+     * @param activ 活动信息
+     * @return ResponMsg
+     */
+    @PostMapping("/add/activ")
+    public ResponMsg addActiv(@RequestBody Activ activ) {
+        return activService.add(activ);
     }
 }

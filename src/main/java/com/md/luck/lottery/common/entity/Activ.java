@@ -1,5 +1,6 @@
 package com.md.luck.lottery.common.entity;
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 
 /**
@@ -8,7 +9,7 @@ import lombok.Data;
 @Data
 public class Activ {
     private Long id;
-    /**]
+    /**
      * 赞助商id
      */
     private Long sponsorid;
@@ -40,4 +41,11 @@ public class Activ {
      * 广告富文本框
      */
     private String adv;
+
+    public boolean isEmpty() {
+        if (ObjectUtil.hasEmpty(sponsorid, sponsor, location, address, conditionid, sponsorClaim, state, adv)) {
+            return true;
+        }
+        return false;
+    }
 }
