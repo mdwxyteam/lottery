@@ -46,13 +46,14 @@ public class WebApiController extends BaseController {
      * 新增商户
      * @param typeId 商户类型id
      * @param sponsor 商户名称
-     * @param position 商户位置
+     * @param location 商户坐标
+     * @param address 商户位置
      * @param detalis 商户详细信息
      * @return ResponMsg
      */
     @PostMapping("/add/sponsor")
-    public ResponMsg addSponsor(@RequestParam("type") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("position") String position, @RequestParam("detalis") String detalis) {
-        return sponsorService.add(sponsor, position, detalis, typeId, type);
+    public ResponMsg addSponsor(@RequestParam("type") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location, @RequestParam("address") String address, @RequestParam("detalis") String detalis) {
+        return sponsorService.add(sponsor, location, address, detalis, typeId, type);
     }
 
     /**

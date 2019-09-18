@@ -19,13 +19,18 @@ public class Sponsor {
     /**
      * 详细信息
      */
-    private String position;
-    /**
-     * 地点
-     */
     private String detalis;
     /**
      * 类型id
      */
     private Long typeId;
+
+    /**
+     * 地点坐标
+     */
+    private String location;
+    /**
+     * 地点
+     */
+    private String address;
 }
