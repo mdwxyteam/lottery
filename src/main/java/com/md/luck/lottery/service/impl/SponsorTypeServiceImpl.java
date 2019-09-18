@@ -4,6 +4,7 @@ import cn.hutool.Hutool;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.SponsorType;
 import com.md.luck.lottery.mapper.SponsorTypeMapper;
@@ -38,9 +39,10 @@ public class SponsorTypeServiceImpl implements SponsorTypeService {
     }
 
     @Override
-    public ResponMsg<List<Page<SponsorType>>> page(int pageNum, int pageSize) {
-        Page<SponsorType> page = PageHelper.startPage(pageNum, pageSize);
-        sponsorTypeMapper.all();
-        return ResponMsg.newSuccess(page);
+    public ResponMsg<PageInfo<SponsorType>> page(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<SponsorType> sponsorTypeList = sponsorTypeMapper.all();
+        PageInfo<SponsorType> pageInfo = new PageInfo<SponsorType>(sponsorTypeList);
+        return ResponMsg.newSuccess(pageInfo);
     }
 }

@@ -1,6 +1,7 @@
 package com.md.luck.lottery.service;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.SponsorType;
 
@@ -27,5 +28,5 @@ public interface SponsorTypeService {
      * @param pageSize 每页数据长度
      * @return ResponMsg<List<Page<SponsorType>>>
      */
-    ResponMsg<List<Page<SponsorType>>> page(int pageNum, int pageSize);
+    ResponMsg<PageInfo<SponsorType>> page(int pageNum, int pageSize);
 }

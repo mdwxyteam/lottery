@@ -1,6 +1,7 @@
 package com.md.luck.lottery.controller.web;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.SponsorType;
@@ -38,7 +39,7 @@ public class WebApiController extends BaseController {
      * @return ResponMsg<List<Page<SponsorType>>>
      */
     @GetMapping("/page/type")
-    public ResponMsg<List<Page<SponsorType>>> pageType(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
+    public ResponMsg<PageInfo<SponsorType>> pageType(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
         return sponsorTypeService.page(pageNum, pageSize);
     }
 
