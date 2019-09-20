@@ -67,5 +67,7 @@ public class LotteryApplicationTests {
         System.out.println(result.getResponse().getContentAsString());
     }
 
-    public void test(){}
+    public void test(){
+        System.out.println();
+    }
 }
