@@ -66,4 +66,8 @@ public class LotteryApplicationTests {
         result.getResponse().setCharacterEncoding("UTF-8");
         System.out.println(result.getResponse().getContentAsString());
     }
+
+    public void test(){
+        System.out.println();
+    }
 }
