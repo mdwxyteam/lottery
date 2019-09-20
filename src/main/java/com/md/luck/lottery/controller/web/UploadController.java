@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * 上传文件处理
+ * 上传文件处
  */
 @Controller
 @RequestMapping("/lottery")
