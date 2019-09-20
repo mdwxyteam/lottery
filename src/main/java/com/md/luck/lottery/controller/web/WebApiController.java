@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
+import com.md.luck.lottery.common.entity.Prize;
 import com.md.luck.lottery.common.entity.SponsorType;
 import com.md.luck.lottery.controller.BaseController;
 import com.sun.org.apache.regexp.internal.RE;
@@ -30,6 +31,17 @@ public class WebApiController extends BaseController {
     @PostMapping("/add/type")
     public ResponMsg addType(@RequestParam("type") String type) {
         return sponsorTypeService.add(type);
+    }
+
+    /**
+     * 分页查询奖品
+     * @param pageNum 页码
+     * @param pageSize 页大小
+     * @return ResponMsg<List<Page<SponsorType>>>
+     */
+    @GetMapping("/page/prize")
+    public ResponMsg<PageInfo<Prize>> pagePrize(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
+        return prizeService.page(pageNum, pageSize);
     }
 
     /**

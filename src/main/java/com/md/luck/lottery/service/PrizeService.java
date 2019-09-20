@@ -1,5 +1,6 @@
 package com.md.luck.lottery.service;
 
+import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Prize;
 
@@ -12,4 +13,12 @@ public interface PrizeService {
      * @return ResponMsg<Prize>
      */
     ResponMsg<Prize> add(String prizeDescription, String iconUrl, int prizeCount);
+
+    /**
+     * 分页查询所有商户类型信息
+     * @param pageNum 页码
+     * @param pageSize 每页数据长度
+     * @return ResponMsg<List<Page<SponsorType>>>
+     */
+    ResponMsg<PageInfo<Prize>> page(int pageNum, int pageSize);
 }
