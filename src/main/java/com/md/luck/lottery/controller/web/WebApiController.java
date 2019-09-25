@@ -1,16 +1,12 @@
 package com.md.luck.lottery.controller.web;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.Prize;
 import com.md.luck.lottery.common.entity.SponsorType;
 import com.md.luck.lottery.controller.BaseController;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author madong
@@ -39,7 +35,7 @@ public class WebApiController extends BaseController {
      *
      * @param pageNum  页码
      * @param pageSize 页大小
-     * @return ResponMsg<List   <   Page   <   SponsorType>>>
+     * @return ResponMsg<List < Page < SponsorType>>>
      */
     @GetMapping("/page/prize")
     public ResponMsg<PageInfo<Prize>> pagePrize(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
@@ -51,7 +47,7 @@ public class WebApiController extends BaseController {
      *
      * @param pageNum  页码
      * @param pageSize 页大小
-     * @return ResponMsg<List   <   Page   <   SponsorType>>>
+     * @return ResponMsg<List < Page < SponsorType>>>
      */
     @GetMapping("/page/type")
     public ResponMsg<PageInfo<SponsorType>> pageType(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
@@ -88,24 +84,26 @@ public class WebApiController extends BaseController {
 
     /**
      * 更新奖品
-     * @param prizeId 奖品Id
+     *
+     * @param prizeId          奖品Id
      * @param prizeDescription 奖品，描述
      * @param iconUrl          奖品图片
      * @param prizeCount       奖品数量
      * @return ResponMsg
      */
     @PostMapping("/edit/prize")
-    public ResponMsg editPrize(@RequestParam("prizeId") Long prizeId,@RequestParam("prizeDescription") String prizeDescription, @RequestParam("iconUrl") String iconUrl, @RequestParam("prizeCount") int prizeCount) {
-        return prizeService.edit(prizeId,prizeDescription, iconUrl, prizeCount);
+    public ResponMsg editPrize(@RequestParam("prizeId") Long prizeId, @RequestParam("prizeDescription") String prizeDescription, @RequestParam("iconUrl") String iconUrl, @RequestParam("prizeCount") int prizeCount) {
+        return prizeService.edit(prizeId, prizeDescription, iconUrl, prizeCount);
     }
 
     /**
      * 状态删除奖品
+     *
      * @param prizeId 奖品Id
      * @return
      */
     @PostMapping("/del/prize")
-    public ResponMsg delPrize(@RequestParam("prizeId") Long prizeId){
+    public ResponMsg delPrize(@RequestParam("prizeId") Long prizeId) {
         return prizeService.del(prizeId);
     }
 
