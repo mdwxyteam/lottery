@@ -73,7 +73,7 @@ public class UploadController {
 
 
 //            IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
-            url.append("/").append(imgName);
+            url.append(imgName);
             return ResponMsg.newSuccess(url.toString()).setMsg("success");
         } catch (IOException e) {
             e.printStackTrace();
