@@ -25,6 +25,7 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户种类
+     *
      * @param type
      * @return
      */
@@ -35,9 +36,10 @@ public class WebApiController extends BaseController {
 
     /**
      * 分页查询奖品
-     * @param pageNum 页码
+     *
+     * @param pageNum  页码
      * @param pageSize 页大小
-     * @return ResponMsg<List<Page<SponsorType>>>
+     * @return ResponMsg<List   <   Page   <   SponsorType>>>
      */
     @GetMapping("/page/prize")
     public ResponMsg<PageInfo<Prize>> pagePrize(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
@@ -46,9 +48,10 @@ public class WebApiController extends BaseController {
 
     /**
      * 分页查询商户
-     * @param pageNum 页码
+     *
+     * @param pageNum  页码
      * @param pageSize 页大小
-     * @return ResponMsg<List<Page<SponsorType>>>
+     * @return ResponMsg<List   <   Page   <   SponsorType>>>
      */
     @GetMapping("/page/type")
     public ResponMsg<PageInfo<SponsorType>> pageType(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
@@ -57,11 +60,12 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户
-     * @param typeId 商户类型id
-     * @param sponsor 商户名称
+     *
+     * @param typeId   商户类型id
+     * @param sponsor  商户名称
      * @param location 商户坐标
-     * @param address 商户位置
-     * @param detalis 商户详细信息
+     * @param address  商户位置
+     * @param detalis  商户详细信息
      * @return ResponMsg
      */
     @PostMapping("/add/sponsor")
@@ -71,9 +75,10 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增奖品
+     *
      * @param prizeDescription 奖品，描述
-     * @param iconUrl 奖品图片
-     * @param prizeCount 奖品数量
+     * @param iconUrl          奖品图片
+     * @param prizeCount       奖品数量
      * @return ResponMsg
      */
     @PostMapping("/add/prize")
@@ -82,9 +87,33 @@ public class WebApiController extends BaseController {
     }
 
     /**
+     * 更新奖品
+     * @param prizeId 奖品Id
+     * @param prizeDescription 奖品，描述
+     * @param iconUrl          奖品图片
+     * @param prizeCount       奖品数量
+     * @return ResponMsg
+     */
+    @PostMapping("/edit/prize")
+    public ResponMsg editPrize(@RequestParam("prizeId") Long prizeId,@RequestParam("prizeDescription") String prizeDescription, @RequestParam("iconUrl") String iconUrl, @RequestParam("prizeCount") int prizeCount) {
+        return prizeService.edit(prizeId,prizeDescription, iconUrl, prizeCount);
+    }
+
+    /**
+     * 状态删除奖品
+     * @param prizeId 奖品Id
+     * @return
+     */
+    @PostMapping("/del/prize")
+    public ResponMsg delPrize(@RequestParam("prizeId") Long prizeId){
+        return prizeService.del(prizeId);
+    }
+
+    /**
      * 新增赞助商与奖品关联
-     * @param sponsorId 赞助商id
-     * @param prizeid 奖品id
+     *
+     * @param sponsorId  赞助商id
+     * @param prizeid    奖品id
      * @param prizeCount 奖品数量
      * @return ResponMsg
      */
@@ -95,8 +124,9 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增活动与奖品关联
-     * @param ativId 活动id
-     * @param prizeId 奖品id
+     *
+     * @param ativId     活动id
+     * @param prizeId    奖品id
      * @param prizeCount 奖品数量
      * @return ResponMsg
      */
@@ -113,6 +143,7 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增活动信息
+     *
      * @param activ 活动信息
      * @return ResponMsg
      */

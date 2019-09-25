@@ -8,6 +8,9 @@ import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Prize;
 import com.md.luck.lottery.mapper.PrizeMapper;
 import com.md.luck.lottery.service.PrizeService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Service
 public class PrizeServiceImpl implements PrizeService {
+    private Log log = LogFactory.getLog(this.getClass());
     @Autowired
     private PrizeMapper prizeMapper;
 
@@ -24,14 +28,43 @@ public class PrizeServiceImpl implements PrizeService {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
         Prize prize = new Prize();
-        prize.setIconUrl(iconUrl);
         prize.setPrizeDescription(prizeDescription);
+        prize.setIconUrl(iconUrl);
         prize.setPrizeCount(prizeCount);
-        int i = prizeMapper.add(prize);
-        if (i == Cont.ZERO) {
-            return ResponMsg.newFail(null).setMsg("新增失败！");
+        boolean isPrize = false;
+        try {
+            prizeMapper.add(prize);
+        } catch (SqlSessionException e) {
+            isPrize = true;
+            log.error(e.getMessage());
         }
-        return ResponMsg.newSuccess(null);
+        if(isPrize){
+            return ResponMsg.newFail(null).setMsg("数据库操作正常！");
+        }
+           return ResponMsg.newSuccess(isPrize);
+    }
+
+    @Override
+    public ResponMsg<Prize> edit(Long prizeId, String prizeDescription, String iconUrl, int prizeCount) {
+        if (StrUtil.hasEmpty(prizeDescription, iconUrl)) {
+            return ResponMsg.newFail(null).setMsg("参数异常!");
+        }
+        Prize prize = new Prize();
+        prize.setId(prizeId);
+        prize.setPrizeDescription(prizeDescription);
+        prize.setIconUrl(iconUrl);
+        prize.setPrizeCount(prizeCount);
+        boolean isPrize = false;
+        try {
+            prizeMapper.update(prize);
+        } catch (SqlSessionException e) {
+            isPrize = true;
+            log.error(e.getMessage());
+        }
+        if(isPrize){
+            return ResponMsg.newFail(null).setMsg("数据库操作正常！");
+        }
+        return ResponMsg.newSuccess(isPrize);
     }
 
     @Override
@@ -40,5 +73,26 @@ public class PrizeServiceImpl implements PrizeService {
         List<Prize> sponsorTypeList = prizeMapper.all();
         PageInfo<Prize> pageInfo = new PageInfo<Prize>(sponsorTypeList);
         return ResponMsg.newSuccess(pageInfo);
+    }
+
+    @Override
+    public ResponMsg<Prize> del(Long prizeId) {
+       if(StrUtil.hasEmpty(String.valueOf(prizeId))) {
+           return ResponMsg.newFail(null).setMsg("参数异常!");
+       }
+        Prize prize = new Prize();
+        prize.setId(prizeId);
+        prize.setIsDelete(1);
+        boolean isPrize = false;
+        try {
+            prizeMapper.updateDel(prize);
+        } catch (SqlSessionException e) {
+            isPrize = true;
+            log.error(e.getMessage());
+        }
+         if(isPrize){
+            return ResponMsg.newFail(null).setMsg("数据库操作正常！");
+         }
+        return ResponMsg.newSuccess(isPrize);
     }
 }

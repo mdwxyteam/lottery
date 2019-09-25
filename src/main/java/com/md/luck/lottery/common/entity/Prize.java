@@ -20,4 +20,9 @@ public class Prize {
      * 奖品数量
      */
     private int prizeCount;
+    /**
+     *  删除状态
+     *  0:未删除 1:已删除
+     */
+    private int isDelete = 0;
 }
