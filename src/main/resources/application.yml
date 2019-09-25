@@ -1,9 +1,9 @@
 spring:
   application:
-      name: quzrtz-cluster-node-second
+    name: quzrtz-cluster-node-second
   datasource:
-    url: jdbc:mysql://182.61.39.149:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: m
+    url: jdbc:mysql://182.61.39.185:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username:
     password: c
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -26,7 +26,7 @@ spring:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: QRTZ_
-#            是否加入集群
+            #            是否加入集群
             isClustered: false
             clusterCheckinInterval: 10000
             useProperties: true
@@ -37,9 +37,9 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://182.61.39.179:3306/lottery?characterEncoding=utf-8
+              URL: jdbc:mysql://182.61.39.189:3306/lottery?characterEncoding=utf-8
               user: m
-              password: ch
+              password: c
               driver: com.mysql.jdbc.Driver
 
     #数据库方式
@@ -47,9 +47,16 @@ spring:
     #初始化表结构
     #jdbc:
     #initialize-schema: never
-  server:
-    port: 8085
+server:
+  port: 8080
 
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+
+#静态资源对外暴露的访问路径
+file:
+  staticAccessPath: /upload/**
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  #  uploadFolder=/home/upload/
+  uploadFolder: d://upload

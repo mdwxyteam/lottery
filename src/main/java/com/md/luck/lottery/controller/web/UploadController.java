@@ -2,8 +2,11 @@ package com.md.luck.lottery.controller.web;
 
 import com.md.luck.lottery.common.util.BasePath;
 import com.md.luck.lottery.common.ResponMsg;
+import com.md.luck.lottery.common.util.FilePathUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +31,10 @@ public class UploadController {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
+    @Value("${file.uploadFolder}")
+    private String uploadFolder;
+
+
     /**
      * 上传图片
      * @param req req
@@ -37,8 +44,13 @@ public class UploadController {
     @RequestMapping(value = "/upload/image", method = RequestMethod.POST)
     public ResponMsg upLoadFile(HttpServletRequest req, @RequestParam("file") MultipartFile image) {
         StringBuffer url = new StringBuffer();
-        String filePath = "/lottery/" + sdf.format(new Date());
-        String imgFolderPath = req.getServletContext().getRealPath(filePath);
+        String filePath = uploadFolder;
+        if (uploadFolder.contains(":")) {
+            filePath = FilePathUtil.getLinePath(uploadFolder.split(":")[1]);
+        }
+//        String filePath = "/lottery/" + sdf.format(new Date());
+//        String imgFolderPath = req.getServletContext().getRealPath(filePath);
+        String imgFolderPath = uploadFolder;
         File imgFolder = new File(imgFolderPath);
         if (!imgFolder.exists()) {
             imgFolder.mkdirs();

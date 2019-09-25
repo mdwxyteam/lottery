@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/lottery1?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: mdong
-    password: chou@123456
+    username: m
+    password: ch
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -49,3 +49,10 @@ spring:
   mybatis:
     configuration:
       map-underscore-to-camel-case: true
+
+#静态资源对外暴露的访问路径
+file:
+  staticAccessPath: /upload/**
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  #  uploadFolder=/home/upload/
+  uploadFolder: d://upload/
