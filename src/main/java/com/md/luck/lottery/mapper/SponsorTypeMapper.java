@@ -1,10 +1,7 @@
 package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.SponsorType;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,5 +29,15 @@ public interface SponsorTypeMapper {
     @Select("SELECT * FROM lottery_sponsor_type")
     List<SponsorType> all();
 
+    /**
+     *  更新奖品状态
+     * @param sponsorType
+     * @return
+     */
+    @Update("UPDATE lottery_sponsor_type SET is_status = #{sponsorType.isStatus} WHERE id = #{sponsorType.id}")
+    int updateStatus(@Param("sponsorType") SponsorType sponsorType);
 
 }
+
+
+

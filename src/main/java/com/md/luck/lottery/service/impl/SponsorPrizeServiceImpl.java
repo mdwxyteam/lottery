@@ -18,6 +18,7 @@ public class SponsorPrizeServiceImpl implements SponsorPrizeService {
 
     @Autowired
     private SponsorPrizeMapper sponsorPrizeMapper;
+
     @Override
     public ResponMsg add(Long sponsorId, Long prizeid, int prizeCount) {
         if (ObjectUtil.hasEmpty(sponsorId, prizeid, prizeCount)) {

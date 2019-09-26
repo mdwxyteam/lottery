@@ -11,9 +11,15 @@ import lombok.Data;
  */
 @Data
 public class SponsorType {
-    private int id;
+    private Long id;
     /**
      * 赞助商类型
      */
     private String typeName;
+
+    /**
+     *  状态
+     *  0:false 1:true
+     */
+    private int isStatus = 1;
 }

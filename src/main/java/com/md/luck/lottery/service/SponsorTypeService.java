@@ -29,4 +29,12 @@ public interface SponsorTypeService {
      * @return ResponMsg<List<Page<SponsorType>>>
      */
     ResponMsg<PageInfo<SponsorType>> page(int pageNum, int pageSize);
+
+    /**
+     *  商户类型状态改变
+     * @param typeId
+     * @param  isStatus
+     * @return
+     */
+    ResponMsg status(Long typeId, int isStatus);
 }

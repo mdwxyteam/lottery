@@ -21,7 +21,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户种类
-     *
      * @param type
      * @return
      */
@@ -31,8 +30,19 @@ public class WebApiController extends BaseController {
     }
 
     /**
+     * 商户状态改变
+     * @param typeId
+     * @param isStatus
+     * @return
+     */
+    @PostMapping("/status/type")
+    public ResponMsg statusType(@RequestParam("typeId") Long typeId,@RequestParam("isStatus") int isStatus ) {
+        return sponsorTypeService.status(typeId,isStatus);
+    }
+
+
+    /**
      * 分页查询奖品
-     *
      * @param pageNum  页码
      * @param pageSize 页大小
      * @return ResponMsg<List < Page < SponsorType>>>
@@ -56,7 +66,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户
-     *
      * @param typeId   商户类型id
      * @param sponsor  商户名称
      * @param location 商户坐标
@@ -71,7 +80,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增奖品
-     *
      * @param prizeDescription 奖品，描述
      * @param iconUrl          奖品图片
      * @param prizeCount       奖品数量
@@ -84,7 +92,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 更新奖品
-     *
      * @param prizeId          奖品Id
      * @param prizeDescription 奖品，描述
      * @param iconUrl          奖品图片
@@ -98,7 +105,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 状态删除奖品
-     *
      * @param prizeId 奖品Id
      * @return
      */
@@ -109,7 +115,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增赞助商与奖品关联
-     *
      * @param sponsorId  赞助商id
      * @param prizeid    奖品id
      * @param prizeCount 奖品数量
@@ -122,7 +127,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增活动与奖品关联
-     *
      * @param ativId     活动id
      * @param prizeId    奖品id
      * @param prizeCount 奖品数量
@@ -141,7 +145,6 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增活动信息
-     *
      * @param activ 活动信息
      * @return ResponMsg
      */
