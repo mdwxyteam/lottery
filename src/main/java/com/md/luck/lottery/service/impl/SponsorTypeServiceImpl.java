@@ -49,6 +49,27 @@ public class SponsorTypeServiceImpl implements SponsorTypeService {
     }
 
     @Override
+    public ResponMsg edit(Long typeId, String typeName) {
+        if (StrUtil.hasEmpty(String.valueOf(typeId))) {
+            return ResponMsg.newFail(null).setMsg("参数异常!");
+        }
+        SponsorType sponsorType = new SponsorType();
+        sponsorType.setId(typeId);
+        sponsorType.setTypeName(typeName);
+        boolean isSponsorType = false;
+        try {
+            sponsorTypeMapper.update(sponsorType);
+        } catch (SqlSessionException e) {
+            isSponsorType = true;
+            log.error(e.getMessage());
+        }
+        if (isSponsorType) {
+            return ResponMsg.newFail(null).setMsg("数据库操作正常！");
+        }
+        return ResponMsg.newSuccess(isSponsorType);
+    }
+
+    @Override
     public ResponMsg status(Long typeId, int isStatus) {
         if(StrUtil.hasEmpty(String.valueOf(typeId))) {
             return ResponMsg.newFail(null).setMsg("参数异常!");

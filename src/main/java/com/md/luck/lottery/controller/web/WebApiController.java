@@ -30,6 +30,16 @@ public class WebApiController extends BaseController {
     }
 
     /**
+     * 修改商户种类
+     * @param typeId
+     * @return
+     */
+    @PostMapping("/edit/type")
+    public ResponMsg statusType(@RequestParam("typeId") Long typeId,@RequestParam("typeName") String typeName ) {
+        return sponsorTypeService.edit(typeId,typeName);
+    }
+
+    /**
      * 商户状态改变
      * @param typeId
      * @param isStatus

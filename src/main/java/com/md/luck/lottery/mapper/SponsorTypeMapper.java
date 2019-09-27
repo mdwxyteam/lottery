@@ -19,7 +19,7 @@ public interface SponsorTypeMapper {
      * 保存商户类型接口
      * @param sponsorType
      */
-    @Insert("INSERT INTO lottery_sponsor_type (type_name) VALUES (#{sponsorType.typeName})")
+    @Insert("INSERT INTO lottery_sponsor_type (type_name,is_status) VALUES (#{sponsorType.typeName},1)")
     void add(@Param("sponsorType") SponsorType sponsorType);
 
     /**
@@ -28,6 +28,14 @@ public interface SponsorTypeMapper {
      */
     @Select("SELECT * FROM lottery_sponsor_type")
     List<SponsorType> all();
+
+    /**
+     *  更新奖品
+     * @param sponsorType
+     * @return
+     */
+    @Update("UPDATE lottery_sponsor_type SET type_name = #{sponsorType.typeName} WHERE id = #{sponsorType.id}")
+    int update(@Param("sponsorType") SponsorType sponsorType);
 
     /**
      *  更新奖品状态
