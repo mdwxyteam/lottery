@@ -84,7 +84,7 @@ public class WebApiController extends BaseController {
      * @return ResponMsg
      */
     @PostMapping("/add/sponsor")
-    public ResponMsg addSponsor(@RequestParam("type") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location, @RequestParam("address") String address, @RequestParam("detalis") String detalis) {
+    public ResponMsg addSponsor(@RequestParam("typeId") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location, @RequestParam("address") String address, @RequestParam("detalis") String detalis) {
         return sponsorService.add(sponsor, location, address, detalis, typeId, type);
     }
 

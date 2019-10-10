@@ -13,8 +13,8 @@ public interface ActivMapper {
      * @param activ activ
      * @return int
      */
-    @Insert("INSERT INTO lottery_activ (sponsorid, sponsor, location, address, conditionid, sponsor_claim, state, adv)" +
-            " VALUES (#{activ.sponsorid}, #{activ.sponsor}, #{activ.location}, #{activ.address}, #{activ.conditionid}" +
-            ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv})")
+    @Insert("INSERT INTO lottery_activ (sponsorid, sponsor, location, address, condition_type, sponsor_claim, state, adv, condition)" +
+            " VALUES (#{activ.sponsorid}, #{activ.sponsor}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
+            ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition})")
     int add(@Param("activ") Activ activ);
 }

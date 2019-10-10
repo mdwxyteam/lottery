@@ -26,9 +26,13 @@ public class Activ {
      */
     private String address;
     /**
-     * 开奖条件id
+     * 开奖条件类型：1： 时间限制；2：人数限制
      */
-    private Long conditionid;
+    private int conditionType;
+    /**
+     * 开奖条件例子（2019.12.09日开奖）
+     */
+    private int condition;
     /**
      * 赞助商要求
      */
@@ -43,7 +47,7 @@ public class Activ {
     private String adv;
 
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(sponsorid, sponsor, location, address, conditionid, sponsorClaim, state, adv)) {
+        if (ObjectUtil.hasEmpty(sponsorid, sponsor, location, address, condition, sponsorClaim, state, adv, conditionType)) {
             return true;
         }
         return false;
