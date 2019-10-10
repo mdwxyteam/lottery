@@ -31,6 +31,11 @@ public interface SponsorTypeService {
     ResponMsg<PageInfo<SponsorType>> page(int pageNum, int pageSize);
 
     /**
+     * 查询所有商户类型
+     * @return ResponMsg<List<SponsorType>>
+     */
+    ResponMsg<List<SponsorType>> allType();
+    /**
      *  更新商品类型信息
      * @param typeId
      * @param  typeName

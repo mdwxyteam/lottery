@@ -49,6 +49,12 @@ public class SponsorTypeServiceImpl implements SponsorTypeService {
     }
 
     @Override
+    public ResponMsg<List<SponsorType>> allType() {
+        List<SponsorType> sponsorTypeList = sponsorTypeMapper.all();
+        return ResponMsg.newSuccess(sponsorTypeList);
+    }
+
+    @Override
     public ResponMsg edit(Long typeId, String typeName) {
         if (StrUtil.hasEmpty(String.valueOf(typeId))) {
             return ResponMsg.newFail(null).setMsg("参数异常!");

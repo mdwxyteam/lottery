@@ -30,6 +30,14 @@ public class WebApiController extends BaseController {
     }
 
     /**
+     * 查询所有商户类型
+     * @return ResponMsg
+     */
+    @GetMapping("/allType")
+    public ResponMsg allType() {
+        return sponsorTypeService.allType();
+    }
+    /**
      * 修改商户种类
      * @param typeId
      * @return
@@ -63,7 +71,7 @@ public class WebApiController extends BaseController {
     }
 
     /**
-     * 分页查询商户
+     * 分页查询商户类型
      *
      * @param pageNum  页码
      * @param pageSize 页大小
