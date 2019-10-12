@@ -42,7 +42,7 @@ public class SponsorServiceImpl implements SponsorService {
         sponsorObj.setTypeId(typeId);
         sponsorObj.setDetalis(detalis);
         sponsorObj.setLocation(location);
-        sponsorObj.setSponsor(sponsor);
+        sponsorObj.setSponsorName(sponsor);
         sponsorObj.setAddress(address);
         int i = sponsorMapper.add(sponsorObj);
         if (i == Cont.ZERO) {

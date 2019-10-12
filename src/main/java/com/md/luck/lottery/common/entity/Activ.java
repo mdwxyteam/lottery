@@ -3,6 +3,8 @@ package com.md.luck.lottery.common.entity;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 活动表
  */
@@ -32,7 +34,7 @@ public class Activ {
     /**
      * 开奖条件例子（2019.12.09日开奖）
      */
-    private int condition;
+    private String condition;
     /**
      * 赞助商要求
      */
@@ -41,6 +43,10 @@ public class Activ {
      * 0:未结束；1结束；-1测试
      */
     private int state;
+    /**
+     * 活动发布时间 时间戳
+     */
+    private Date releaseTime;
     /**
      * 广告富文本框
      */

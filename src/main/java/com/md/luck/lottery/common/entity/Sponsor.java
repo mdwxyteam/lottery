@@ -2,6 +2,8 @@ package com.md.luck.lottery.common.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 赞助商
  */
@@ -11,7 +13,7 @@ public class Sponsor {
     /**
      * 赞助商名称
      */
-    private String sponsor;
+    private String sponsorName;
     /**
      * 赞助商类型
      */
@@ -33,4 +35,9 @@ public class Sponsor {
      * 地点
      */
     private String address;
+
+    /**
+     * 创建时间
+     */
+    private Date creatTime;
 }
