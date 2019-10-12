@@ -2,13 +2,16 @@ package com.md.luck.lottery.common.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
+
 
 /**
  * 赞助商
  */
 @Data
-public class Sponsor {
+public class Sponsor implements Serializable {
+    private static final long serialVersionUID = -4420406262862239951L;
     private long id;
     /**
      * 赞助商名称
@@ -39,5 +42,5 @@ public class Sponsor {
     /**
      * 创建时间
      */
-    private Date creatTime;
+    private Date creatTime = new Date();
 }

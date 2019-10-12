@@ -1,5 +1,6 @@
 package com.md.luck.lottery.common.entity;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 
@@ -46,7 +47,7 @@ public class Activ {
     /**
      * 活动发布时间 时间戳
      */
-    private Date releaseTime;
+    private Date releaseTime = new Date();
     /**
      * 广告富文本框
      */
