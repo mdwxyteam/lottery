@@ -4,9 +4,13 @@ import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.Prize;
+import com.md.luck.lottery.common.entity.Sponsor;
 import com.md.luck.lottery.common.entity.SponsorType;
 import com.md.luck.lottery.controller.BaseController;
+import org.apache.coyote.Response;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author madong
@@ -96,6 +100,27 @@ public class WebApiController extends BaseController {
         return sponsorService.add(sponsor, location, address, detalis, typeId, type);
     }
 
+    /**
+     * 分页查询赞助商
+     * @param pageNum 页面
+     * @param pageSize 页大小
+     * @return Response
+     */
+    @GetMapping("/sponsor/page")
+    public ResponMsg<List<Sponsor>> pageSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
+        return sponsorService.page(pageNum, pageSize);
+    }
+
+    /**
+     * 通过类型查询赞助商
+     *
+     * @param typeId 类型id
+     * @return List<Sponsor>
+     */
+    @GetMapping("/sponsor/byType")
+    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("typeId") Long typeId) {
+        return sponsorService.byType(typeId);
+    }
     /**
      * 新增奖品
      * @param prizeDescription 奖品，描述
