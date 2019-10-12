@@ -7,6 +7,12 @@ import java.util.List;
 
 public interface SponsorService {
     /**
+     * 通过id获取赞助商详情
+     * @param id id
+     * @return ResponMsg<Sponsor>
+     */
+    ResponMsg<Sponsor> detailById(Long id);
+    /**
      * 通过类型查询赞助商
      *
      * @param typeId 类型id

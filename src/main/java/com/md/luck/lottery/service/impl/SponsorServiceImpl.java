@@ -20,6 +20,11 @@ public class SponsorServiceImpl implements SponsorService {
     private SponsorMapper sponsorMapper;
 
     @Override
+    public ResponMsg<Sponsor> detailById(Long id) {
+        return ResponMsg.newSuccess(sponsorMapper.bySponsorId(id));
+    }
+
+    @Override
     public ResponMsg<List<Sponsor>> byType(Long typeId) {
         return ResponMsg.newSuccess(sponsorMapper.byType(typeId));
     }

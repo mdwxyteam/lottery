@@ -17,6 +17,9 @@ public interface SponsorMapper {
     @Select("SELECT * FROM lottery_sponsor")
     List<Sponsor> all();
 
+    @Select("SELECT * FROM lottery_sponsor WHERE id = #{sponsorId}")
+    Sponsor bySponsorId(@Param("sponsorId") Long sponsorId);
+
     @Select("SELECT * FROM lottery_sponsor WHERE type_id = #{typeId}")
     List<Sponsor> byType(@Param("typeId") Long typeId);
 }

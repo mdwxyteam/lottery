@@ -2,10 +2,7 @@ package com.md.luck.lottery.controller.web;
 
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
-import com.md.luck.lottery.common.entity.Activ;
-import com.md.luck.lottery.common.entity.Prize;
-import com.md.luck.lottery.common.entity.Sponsor;
-import com.md.luck.lottery.common.entity.SponsorType;
+import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.controller.BaseController;
 import org.apache.coyote.Response;
 import org.springframework.web.bind.annotation.*;
@@ -88,16 +85,26 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增商户
-     * @param typeId   商户类型id
-     * @param sponsor  商户名称
-     * @param location 商户坐标
-     * @param address  商户位置
-     * @param detalis  商户详细信息
+     * @param requestBodyObJ {* @param typeId   商户类型id
+     *      * @param sponsor  商户名称
+     *      * @param location 商户坐标
+     *      * @param address  商户位置
+     *      * @param detalis  商户详细信息}
      * @return ResponMsg
      */
     @PostMapping("/add/sponsor")
-    public ResponMsg addSponsor(@RequestParam("typeId") long typeId, @RequestParam("type") String type, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location, @RequestParam("address") String address, @RequestParam("detalis") String detalis) {
-        return sponsorService.add(sponsor, location, address, detalis, typeId, type);
+    public ResponMsg addSponsor(@RequestBody RequestBodyObJ requestBodyObJ) {
+        return sponsorService.add(requestBodyObJ.getSponsor(), requestBodyObJ.getLocation(), requestBodyObJ.getAddress(), requestBodyObJ.getDetalis(), requestBodyObJ.getTypeId(), requestBodyObJ.getType());
+    }
+
+    /**
+     * 通过赞助商id查询
+     * @param sponsorId sponsorId
+     * @return ResponMsg
+     */
+    @GetMapping("/detail/sponsor")
+    public ResponMsg detailSponsor(@RequestParam("sponsorId") long sponsorId) {
+        return sponsorService.detailById(sponsorId);
     }
 
     /**
