@@ -52,6 +52,10 @@ public class Activ {
      * 广告富文本框
      */
     private String adv;
+    /**
+     * 活动当前参与人数
+     */
+    private int countNum;
 
     public boolean isEmpty() {
         if (ObjectUtil.hasEmpty(sponsorid, sponsor, location, address, condition, sponsorClaim, state, adv, conditionType)) {
