@@ -1,10 +1,7 @@
 package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.Activ;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -16,12 +13,17 @@ public interface ActivMapper {
      * @param activ activ
      * @return int
      */
-    @Insert("INSERT INTO lottery_activ (sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, condition, release_time)" +
-            " VALUES (#{activ.sponsorid}, #{activ.sponsorName}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
+    @Insert("INSERT INTO lottery_activ (del_state, sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, condition, release_time)" +
+            " VALUES (#{activ.delState}, #{activ.sponsorid}, #{activ.sponsorName}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
             ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition}, now())")
     int add(@Param("activ") Activ activ);
 
-    @Select("<script> SELECT " +
+    @Select("<script> SELECT lottery_activ WHERE " +
+            "condition_type = #{conditionType}" +
+            "<if test='sponsorName !=null'> AND LOCATE(#{sponsorName}, `sponsor_name`)>0 </if>" +
             "</script>")
     List<Activ> conditionPage(@Param("conditionType") int conditionType, @Param("sponsorName") String sponsorName);
+
+    @Update("UPDATE lottery_activ SET del_state = #{delState} WHERE id = #{id}")
+    int updateDelState(@Param("id") long id,@Param("delState") int delState);
 }

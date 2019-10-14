@@ -79,10 +79,10 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg delByStatus(int status) {
+    public ResponMsg delByStatus(long id, int status) {
         boolean bl = false;
         try {
-            int i = sponsorMapper.delByStatus(status);
+            int i = sponsorMapper.delByStatus(id, status);
             if (i == Cont.ZERO) {
                 return ResponMsg.newFail(null).setMsg("修改是失败！");
             }

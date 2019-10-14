@@ -35,6 +35,6 @@ public interface SponsorMapper {
             "</script>")
     int update(Sponsor sponsor);
 
-    @Update("UPDATE lottery_sponsor SET status = #{status}")
-    int delByStatus(@Param("status") int status);
+    @Update("UPDATE lottery_sponsor SET status = #{status} WHERE id = #{id}")
+    int delByStatus(@Param("id") long id, @Param("status") int status);
 }

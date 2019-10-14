@@ -131,12 +131,13 @@ public class WebApiController extends BaseController {
 
     /**
      * 状态删除赞助商
+     * @param id id
      * @param status 赞助商状态 {0：禁用；1：启用}
      * @return ResponMsg
      */
     @PostMapping("/del/sponsor")
-    public ResponMsg delByStatus(@RequestParam("status") int status) {
-        return sponsorService.delByStatus(status);
+    public ResponMsg delByStatus(@RequestParam("id") long id, @RequestParam("status") int status) {
+        return sponsorService.delByStatus(id, status);
     }
     /**
      * 通过条件查询赞助商

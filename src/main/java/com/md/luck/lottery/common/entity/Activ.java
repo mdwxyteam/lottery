@@ -56,6 +56,11 @@ public class Activ {
      * 活动当前参与人数
      */
     private int countNum;
+    /**
+     *  删除状态
+     *  赞助商状态 {0：禁用；1：启用}
+     */
+    private int delState = 1;
 
     public boolean isEmpty() {
         if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType)) {

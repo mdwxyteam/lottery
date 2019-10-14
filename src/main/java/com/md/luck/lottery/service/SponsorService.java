@@ -60,8 +60,9 @@ public interface SponsorService {
 
     /**
      * 修改赞助商状态
+     * @param id 赞助商id
      * @param status 赞助商状态 {0：禁用；1：启用}
      * @return ResponMsg
      */
-    ResponMsg delByStatus(int status);
+    ResponMsg delByStatus(long id, int status);
 }
