@@ -235,7 +235,28 @@ public class WebApiController extends BaseController {
      * @param sponsorName 赞助商名称
      * @return ResponMsg
      */
+    @GetMapping("/activ/page")
     public ResponMsg pageActiv(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("conditionType") int conditionType, @RequestParam("sponsorName") String sponsorName) {
         return activService.conditionPage(pageNum, pageSize, conditionType, sponsorName);
+    }
+
+    /**
+     * 启用/禁用
+     * @param id 活动id
+     * @param delState 赞助商状态 {0：禁用；1：启用}
+     * @return ResponMsg
+     */
+    @PostMapping("/activ/delState")
+    public ResponMsg updateDelState(@RequestParam("id") long id, @RequestParam("delState") int delState) {
+        return activService.updateDelState(id, delState);
+    }
+    /**
+     * 通过id查询活动
+     * @param id id
+     * @return ResponMsg
+     */
+    @GetMapping("/activ/id")
+    public ResponMsg activById(@Param("id") long id) {
+        return activService.activById(id);
     }
 }

@@ -29,4 +29,11 @@ public interface ActivService {
      * @return ResponMsg
      */
     ResponMsg updateDelState(long id, int delState);
+
+    /**
+     * 通过id查询活动
+     * @param id id
+     * @return ResponMsg
+     */
+    ResponMsg activById(long id);
 }

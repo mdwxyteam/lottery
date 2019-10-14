@@ -26,4 +26,7 @@ public interface ActivMapper {
 
     @Update("UPDATE lottery_activ SET del_state = #{delState} WHERE id = #{id}")
     int updateDelState(@Param("id") long id,@Param("delState") int delState);
+
+    @Select("SELECT * FROM lottery_activ WHERE id = #{id}")
+    Activ activById(@Param("id") long id);
 }

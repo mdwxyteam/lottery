@@ -67,4 +67,9 @@ public class ActivServiceImpl implements ActivService {
         }
         return ResponMsg.newSuccess(null);
     }
+
+    @Override
+    public ResponMsg activById(long id) {
+        return ResponMsg.newSuccess(activMapper.activById(id));
+    }
 }
