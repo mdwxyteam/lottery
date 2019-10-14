@@ -1,10 +1,10 @@
 package com.md.luck.lottery.controller.web;
 
 import com.github.pagehelper.PageInfo;
+import com.md.luck.lottery.common.RequestBodyObJ;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.controller.BaseController;
-import org.apache.coyote.Response;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -105,6 +105,16 @@ public class WebApiController extends BaseController {
     @GetMapping("/detail/sponsor")
     public ResponMsg detailSponsor(@RequestParam("sponsorId") long sponsorId) {
         return sponsorService.detailById(sponsorId);
+    }
+
+    /**
+     * 修改赞助商
+     * @param requestBodyChild requestBodyChild
+     * @return ResponMsg
+     */
+    @PostMapping("/update/sponsor")
+    public ResponMsg updateSponsor(@RequestBody RequestBodyChild requestBodyChild) {
+        return sponsorService.update(requestBodyChild.getId(), requestBodyChild.getSponsor(), requestBodyChild.getLocation(), requestBodyChild.getAddress(), requestBodyChild.getDetalis(), requestBodyChild.getTypeId(), requestBodyChild.getType());
     }
 
     /**

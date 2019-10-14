@@ -40,4 +40,17 @@ public interface SponsorService {
      * @return ResponMsg<Sponsor>
      */
     ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type);
+
+    /**
+     * 修改商户
+     *
+     * @param id  商户id
+     * @param sponsor  商户名称
+     * @param location 地理坐标
+     * @param address  地理位置
+     * @param detalis  详细信息
+     * @param type     商户类型
+     * @return ResponMsg<Sponsor>
+     */
+    ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type);
 }

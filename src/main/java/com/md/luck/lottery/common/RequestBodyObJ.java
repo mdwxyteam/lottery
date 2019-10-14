@@ -1,4 +1,4 @@
-package com.md.luck.lottery.common.entity;
+package com.md.luck.lottery.common;
 
 import lombok.Data;
 

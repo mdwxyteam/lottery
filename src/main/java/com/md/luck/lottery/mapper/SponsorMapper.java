@@ -1,10 +1,7 @@
 package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.Sponsor;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +19,16 @@ public interface SponsorMapper {
 
     @Select("SELECT * FROM lottery_sponsor WHERE type_id = #{typeId}")
     List<Sponsor> byType(@Param("typeId") Long typeId);
+
+    @Update("<script> UPDATE lottery_sponsor <set> " +
+            "<if test='sponsor.sponsorName != null'> sponsor_name = #{sponsor.sponsorName}," +
+            "<if test='sponsor.type != null'> type = #{sponsor.type}," +
+            "<if test='sponsor.detalis != null'> detalis = #{sponsor.detalis}," +
+            "<if test='sponsor.typeId != null'> type_id = #{sponsor.typeId}," +
+            "<if test='sponsor.location != null'> location = #{sponsor.location}," +
+            "<if test='sponsor.address != null'> address = #{sponsor.address}" +
+            "</set>" +
+            "WHERE id = #{sponsor.id}" +
+            "</script>")
+    int update(Sponsor sponsor);
 }

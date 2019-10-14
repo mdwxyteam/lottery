@@ -42,6 +42,28 @@ public class SponsorServiceImpl implements SponsorService {
         if (StrUtil.hasEmpty(sponsor, location, detalis)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type);
+        int i = sponsorMapper.add(sponsorObj);
+        if (i == Cont.ZERO) {
+            return ResponMsg.newFail(null).setMsg("添加是失败！");
+        }
+        return ResponMsg.newSuccess(sponsorObj);
+    }
+
+    @Override
+    public ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type) {
+        if (StrUtil.hasEmpty(sponsor, location, detalis)) {
+            return ResponMsg.newFail(null).setMsg("参数异常!");
+        }
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type);
+        sponsorObj.setId(id);
+        int i = sponsorMapper.update(sponsorObj);
+        if (i == Cont.ZERO) {
+            return ResponMsg.newFail(null).setMsg("修改是失败！");
+        }
+        return ResponMsg.newSuccess(sponsorObj);
+    }
+    private Sponsor creatSponsor(String sponsor, String location, String address, String detalis, long typeId, String type) {
         Sponsor sponsorObj = new Sponsor();
         sponsorObj.setType(type);
         sponsorObj.setTypeId(typeId);
@@ -49,10 +71,6 @@ public class SponsorServiceImpl implements SponsorService {
         sponsorObj.setLocation(location);
         sponsorObj.setSponsorName(sponsor);
         sponsorObj.setAddress(address);
-        int i = sponsorMapper.add(sponsorObj);
-        if (i == Cont.ZERO) {
-            return ResponMsg.newFail(null).setMsg("添加是失败！");
-        }
-        return ResponMsg.newSuccess(sponsorObj);
+        return sponsorObj;
     }
 }
