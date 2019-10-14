@@ -18,7 +18,7 @@ public interface SponsorService {
      * @param typeId 类型id
      * @return List<Sponsor>
      */
-    ResponMsg<List<Sponsor>> byType(Long typeId);
+    ResponMsg<List<Sponsor>> byType(int pageNum, int pageSize, Long typeId);
 
     /**
      * 分页查询赞助商

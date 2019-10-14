@@ -25,8 +25,11 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg<List<Sponsor>> byType(Long typeId) {
-        return ResponMsg.newSuccess(sponsorMapper.byType(typeId));
+    public ResponMsg<List<Sponsor>> byType(int pageNum, int pageSize, Long typeId) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Sponsor> sponsorTypeList = sponsorMapper.byType(typeId);
+        PageInfo<Sponsor> pageInfo = new PageInfo<Sponsor>(sponsorTypeList);
+        return ResponMsg.newSuccess(pageInfo);
     }
 
     @Override

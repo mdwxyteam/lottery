@@ -131,12 +131,14 @@ public class WebApiController extends BaseController {
     /**
      * 通过类型查询赞助商
      *
+     * @param pageNum 页面
+     * @param pageSize 页大小
      * @param typeId 类型id
      * @return List<Sponsor>
      */
     @GetMapping("/sponsor/byType")
-    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("typeId") Long typeId) {
-        return sponsorService.byType(typeId);
+    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("typeId") Long typeId) {
+        return sponsorService.byType(pageNum, pageSize, typeId);
     }
     /**
      * 新增奖品
