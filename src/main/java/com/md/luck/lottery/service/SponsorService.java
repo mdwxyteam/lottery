@@ -15,10 +15,14 @@ public interface SponsorService {
     /**
      * 通过类型查询赞助商
      *
+     * @param typeId pageNum
+     * @param typeId pageSize
      * @param typeId 类型id
+     * @param typeId sponsorName 赞助商名称
+     * @param typeId status 赞助商状态 {0：禁用；1：启用}
      * @return List<Sponsor>
      */
-    ResponMsg<List<Sponsor>> byType(int pageNum, int pageSize, Long typeId);
+    ResponMsg<List<Sponsor>> byType(int pageNum, int pageSize, Long typeId, String sponsorName, Integer status);
 
     /**
      * 分页查询赞助商
@@ -53,4 +57,11 @@ public interface SponsorService {
      * @return ResponMsg<Sponsor>
      */
     ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type);
+
+    /**
+     * 修改赞助商状态
+     * @param status 赞助商状态 {0：禁用；1：启用}
+     * @return ResponMsg
+     */
+    ResponMsg delByStatus(int status);
 }

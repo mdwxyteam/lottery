@@ -43,4 +43,8 @@ public class Sponsor implements Serializable {
      * 创建时间
      */
     private Date creatTime = new Date();
+    /**
+     * 赞助商状态 {0：禁用；1：启用}
+     */
+    private int status;
 }

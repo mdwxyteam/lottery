@@ -5,6 +5,7 @@ import com.md.luck.lottery.common.RequestBodyObJ;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.controller.BaseController;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -129,6 +130,15 @@ public class WebApiController extends BaseController {
     }
 
     /**
+     * 状态删除赞助商
+     * @param status 赞助商状态 {0：禁用；1：启用}
+     * @return ResponMsg
+     */
+    @PostMapping("/del/sponsor")
+    public ResponMsg delByStatus(@RequestParam("status") int status) {
+        return sponsorService.delByStatus(status);
+    }
+    /**
      * 通过类型查询赞助商
      *
      * @param pageNum 页面
@@ -137,8 +147,9 @@ public class WebApiController extends BaseController {
      * @return List<Sponsor>
      */
     @GetMapping("/sponsor/byType")
-    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("typeId") Long typeId) {
-        return sponsorService.byType(pageNum, pageSize, typeId);
+    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize,
+                                                  @RequestParam("typeId") Long typeId, @Param("sponsorName") String sponsorName, @Param("status") Integer status) {
+        return sponsorService.byType(pageNum, pageSize, typeId, sponsorName, status);
     }
     /**
      * 新增奖品
