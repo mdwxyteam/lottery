@@ -33,6 +33,9 @@ public class SponsorServiceImpl implements SponsorService {
         if (ObjectUtil.hasEmpty(status)) {
             return ResponMsg.newFail(null).setMsg("缺省必要参数!");
         }
+        if (StrUtil.hasEmpty(sponsorName)) {
+            sponsorName = null;
+        }
         PageHelper.startPage(pageNum, pageSize);
         List<Sponsor> sponsorTypeList = sponsorMapper.byType(typeId, sponsorName, status);
         PageInfo<Sponsor> pageInfo = new PageInfo<Sponsor>(sponsorTypeList);
