@@ -19,7 +19,7 @@ public interface SponsorMapper {
 
     @Select("<script>SELECT * FROM lottery_sponsor WHERE status = #{status}" +
             "<if test= 'typeId !=null'>  AND type_id = #{typeId}</if>" +
-            "<if test='sponsorName !=null'> AND LOCATE('#{sponsorName}', `sponsor_name`)>0</if>" +
+            "<if test='sponsorName !=null'> AND LOCATE(#{sponsorName}, `sponsor_name`)>0 </if>" +
             "</script>")
     List<Sponsor> byType(@Param("typeId") Long typeId, @Param("sponsorName") String sponsorName, @Param("status") int status);
 
