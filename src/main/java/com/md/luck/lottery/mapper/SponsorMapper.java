@@ -21,12 +21,12 @@ public interface SponsorMapper {
     List<Sponsor> byType(@Param("typeId") Long typeId);
 
     @Update("<script> UPDATE lottery_sponsor <set> " +
-            "<if test='sponsor.sponsorName != null'> sponsor_name = #{sponsor.sponsorName}," +
-            "<if test='sponsor.type != null'> type = #{sponsor.type}," +
-            "<if test='sponsor.detalis != null'> detalis = #{sponsor.detalis}," +
-            "<if test='sponsor.typeId != null'> type_id = #{sponsor.typeId}," +
-            "<if test='sponsor.location != null'> location = #{sponsor.location}," +
-            "<if test='sponsor.address != null'> address = #{sponsor.address}" +
+            "<if test='sponsor.sponsorName != null'> sponsor_name = #{sponsor.sponsorName} </if>," +
+            "<if test='sponsor.type != null'> type = #{sponsor.type} </if>," +
+            "<if test='sponsor.detalis != null'> detalis = #{sponsor.detalis} </if>," +
+            "<if test='sponsor.typeId != null'> type_id = #{sponsor.typeId} </if>," +
+            "<if test='sponsor.location != null'> location = #{sponsor.location} </if>," +
+            "<if test='sponsor.address != null'> address = #{sponsor.address} </if>" +
             "</set>" +
             "WHERE id = #{sponsor.id}" +
             "</script>")
