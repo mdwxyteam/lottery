@@ -139,15 +139,15 @@ public class WebApiController extends BaseController {
         return sponsorService.delByStatus(status);
     }
     /**
-     * 通过类型查询赞助商
+     * 通过条件查询赞助商
      *
      * @param pageNum 页面
      * @param pageSize 页大小
      * @param typeId 类型id
      * @return List<Sponsor>
      */
-    @GetMapping("/sponsor/byType")
-    public ResponMsg<List<Sponsor>> byTypeSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize,
+    @GetMapping("/sponsor/condition")
+    public ResponMsg<List<Sponsor>> conditionSponsor(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize,
                                                   @RequestParam("typeId") Long typeId, @Param("sponsorName") String sponsorName, @Param("status") Integer status) {
         return sponsorService.byType(pageNum, pageSize, typeId, sponsorName, status);
     }
