@@ -19,7 +19,7 @@ public class Activ {
     /**
      * 赞助商名称
      */
-    private String sponsor;
+    private String sponsorName;
     /**
      * 地点坐标
      */
@@ -58,7 +58,7 @@ public class Activ {
     private int countNum;
 
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(sponsorid, sponsor, location, address, condition, sponsorClaim, state, adv, conditionType)) {
+        if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType)) {
             return true;
         }
         return false;

@@ -225,4 +225,16 @@ public class WebApiController extends BaseController {
     public ResponMsg addActiv(@RequestBody Activ activ) {
         return activService.add(activ);
     }
+
+    /**
+     * 条件分页查询活动信息
+     * @param pageNum 页码
+     * @param pageSize 页大小
+     * @param conditionType 开奖条件类型：1： 时间限制；2：人数限制
+     * @param sponsorName 赞助商名称
+     * @return ResponMsg
+     */
+    public ResponMsg pageActiv(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("conditionType") int conditionType, @RequestParam("sponsorName") String sponsorName) {
+        return activService.conditionPage(pageNum, pageSize, conditionType, sponsorName);
+    }
 }

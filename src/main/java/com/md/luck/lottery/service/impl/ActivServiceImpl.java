@@ -36,4 +36,9 @@ public class ActivServiceImpl implements ActivService {
         }
         return ResponMsg.newSuccess(activ);
     }
+
+    @Override
+    public ResponMsg conditionPage(int pageNum, int pageSize, int conditionType, String sponsorName) {
+        return null;
+    }
 }
