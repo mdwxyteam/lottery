@@ -33,15 +33,19 @@ public class Activ {
      */
     private int conditionType;
     /**
-     * 开奖条件例子（2019.12.09日开奖）
+     * 开奖条件（2019.12.09 || 3000）
      */
     private String condition;
+    /**
+     * 开讲条件描述开奖条件例子（2019.12.09日开奖）
+     */
+    private String conditionalDescription;
     /**
      * 赞助商要求
      */
     private String sponsorClaim;
     /**
-     * 0:未结束；1结束；-1测试
+     * 1:未结束；0结束；-1测试
      */
     private int state;
     /**
@@ -61,6 +65,10 @@ public class Activ {
      *  赞助商状态 {0：禁用；1：启用}
      */
     private int delState = 1;
+    /**
+     * 参与条件
+     */
+    private String addCondition;
 
     public boolean isEmpty() {
         if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType)) {

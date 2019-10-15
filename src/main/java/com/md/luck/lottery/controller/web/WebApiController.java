@@ -72,7 +72,17 @@ public class WebApiController extends BaseController {
     public ResponMsg<PageInfo<Prize>> pagePrize(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
         return prizeService.page(pageNum, pageSize);
     }
-
+    /**
+     * 条件分页查询奖品
+     * @param pageNum 页码
+     * @param pageSize 每页数据长度
+     * @param prizeDescription 奖品描述
+     * @return ResponMsg ResponMsg
+     */
+    @GetMapping("/page/prize")
+    public ResponMsg<PageInfo<Prize>> queryByPrizeDescription(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("prizeDescription") String prizeDescription) {
+        return prizeService.queryByPrizeDescription(pageNum, pageSize, prizeDescription);
+    }
     /**
      * 分页查询商户类型
      *

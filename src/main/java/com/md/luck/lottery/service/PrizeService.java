@@ -39,4 +39,13 @@ public interface PrizeService {
      * @return
      */
     ResponMsg<Prize> del(Long prizeId);
+
+    /**
+     * 条件分页查询奖品
+     * @param pageNum 页码
+     * @param pageSize 每页数据长度
+     * @param prizeDescription 奖品描述
+     * @return ResponMsg
+     */
+    ResponMsg queryByPrizeDescription(int pageNum, int pageSize, String prizeDescription);
 }

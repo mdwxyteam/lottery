@@ -23,6 +23,11 @@ public interface PrizeMapper {
     @Select("SELECT * FROM lottery_prize WHERE is_delete = 0")
     List<Prize> all();
 
+    @Select("<script> SELECT * FROM lottery_prize WHERE is_delete = 0" +
+            " <if test='prizeDescription !=null'>AND LOCATE(#{prizeDescription}, `prize_description`)>0 </if>" +
+            "</script>")
+    List<Prize> queryByPrizeDescription(@Param("prizeDescription") String prizeDescription);
+
     /**
      * 更新商品
      * @param prize

@@ -97,4 +97,12 @@ public class PrizeServiceImpl implements PrizeService {
          }
         return ResponMsg.newSuccess(isPrize);
     }
+
+    @Override
+    public ResponMsg queryByPrizeDescription(int pageNum, int pageSize, String prizeDescription) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Prize> sponsorTypeList = prizeMapper.queryByPrizeDescription(prizeDescription);
+        PageInfo<Prize> pageInfo = new PageInfo<Prize>(sponsorTypeList);
+        return ResponMsg.newSuccess(pageInfo);
+    }
 }
