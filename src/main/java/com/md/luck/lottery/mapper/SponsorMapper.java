@@ -37,4 +37,10 @@ public interface SponsorMapper {
 
     @Update("UPDATE lottery_sponsor SET status = #{status} WHERE id = #{id}")
     int delByStatus(@Param("id") long id, @Param("status") int status);
+
+    @Select("<script>SELECT * FROM lottery_sponsor WHERE status = #{sponsor.status}" +
+            "<if test= 'sponsor.typeId !=null'>  AND type_id = #{sponsor.typeId}</if>" +
+            "<if test='sponsor.sponsorName !=null'> AND LOCATE(#{sponsor.sponsorName}, `sponsor_name`)>0 </if>" +
+            "</script>")
+    List<Sponsor> query(@Param("sponsor") Sponsor sponsor);
 }

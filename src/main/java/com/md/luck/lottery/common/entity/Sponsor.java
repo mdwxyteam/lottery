@@ -50,5 +50,5 @@ public class Sponsor implements Serializable {
     /**
      * 赞助商状态 {0：禁用；1：启用}
      */
-    private int status;
+    private int status = 1;
 }

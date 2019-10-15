@@ -65,4 +65,11 @@ public interface SponsorService {
      * @return ResponMsg
      */
     ResponMsg delByStatus(long id, int status);
+
+    /**
+     * 搜索赞助商
+     * @param sponsor sponsor
+     * @return ResponMsg
+     */
+    ResponMsg query(Sponsor sponsor);
 }

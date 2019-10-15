@@ -96,6 +96,15 @@ public class SponsorServiceImpl implements SponsorService {
         return ResponMsg.newSuccess(null);
     }
 
+    @Override
+    public ResponMsg query(Sponsor sponsor) {
+        if (ObjectUtil.hasEmpty(sponsor)) {
+            return ResponMsg.newFail(null).setMsg("缺省必要参数!");
+        }
+        List<Sponsor> sponsors = sponsorMapper.query(sponsor);
+        return ResponMsg.newSuccess(sponsors);
+    }
+
     private Sponsor creatSponsor(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
         Sponsor sponsorObj = new Sponsor();
         sponsorObj.setType(type);

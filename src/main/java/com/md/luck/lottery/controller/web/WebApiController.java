@@ -1,5 +1,6 @@
 package com.md.luck.lottery.controller.web;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.RequestBodyObJ;
 import com.md.luck.lottery.common.ResponMsg;
@@ -140,6 +141,21 @@ public class WebApiController extends BaseController {
     @PostMapping("/del/sponsor")
     public ResponMsg delByStatus(@RequestParam("id") long id, @RequestParam("status") int status) {
         return sponsorService.delByStatus(id, status);
+    }
+
+    /**
+     * 查询赞助商
+     * @param sponsorName sponsorName
+     * @return ResponMsg
+     */
+    @GetMapping("/query/sponsor")
+    public ResponMsg query(@RequestParam("sponsorName") String sponsorName) {
+        if (StrUtil.hasEmpty(sponsorName)) {
+            return ResponMsg.newFail(null).setMsg("缺省必须参数!");
+        }
+        Sponsor sponsor = new Sponsor();
+        sponsor.setSponsorName(sponsorName);
+        return sponsorService.query(sponsor);
     }
     /**
      * 通过条件查询赞助商
