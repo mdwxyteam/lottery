@@ -51,11 +51,11 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type) {
+    public ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
         if (StrUtil.hasEmpty(sponsor, location, detalis)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
-        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type);
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown);
         sponsorObj.setStatus(Cont.ONE);
         int i = sponsorMapper.add(sponsorObj);
         if (i == Cont.ZERO) {
@@ -65,11 +65,11 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type) {
+    public ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
         if (StrUtil.hasEmpty(sponsor, location, detalis)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
-        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type);
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown);
         sponsorObj.setId(id);
         int i = sponsorMapper.update(sponsorObj);
         if (i == Cont.ZERO) {
@@ -96,7 +96,7 @@ public class SponsorServiceImpl implements SponsorService {
         return ResponMsg.newSuccess(null);
     }
 
-    private Sponsor creatSponsor(String sponsor, String location, String address, String detalis, long typeId, String type) {
+    private Sponsor creatSponsor(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
         Sponsor sponsorObj = new Sponsor();
         sponsorObj.setType(type);
         sponsorObj.setTypeId(typeId);
@@ -104,6 +104,7 @@ public class SponsorServiceImpl implements SponsorService {
         sponsorObj.setLocation(location);
         sponsorObj.setSponsorName(sponsor);
         sponsorObj.setAddress(address);
+        sponsorObj.setMarkDown(markDown);
         return sponsorObj;
     }
 }

@@ -13,4 +13,5 @@ public class RequestBodyObJ {
     private String location;
     private String address;
     private String detalis;
+    private String markDown;
 }

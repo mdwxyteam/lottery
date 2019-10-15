@@ -26,6 +26,10 @@ public class Sponsor implements Serializable {
      */
     private String detalis;
     /**
+     * 详细信息的markDown语法
+     */
+    private String markDown;
+    /**
      * 类型id
      */
     private Long typeId;

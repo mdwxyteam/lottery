@@ -95,7 +95,8 @@ public class WebApiController extends BaseController {
      */
     @PostMapping("/add/sponsor")
     public ResponMsg addSponsor(@RequestBody RequestBodyObJ requestBodyObJ) {
-        return sponsorService.add(requestBodyObJ.getSponsor(), requestBodyObJ.getLocation(), requestBodyObJ.getAddress(), requestBodyObJ.getDetalis(), requestBodyObJ.getTypeId(), requestBodyObJ.getType());
+        return sponsorService.add(requestBodyObJ.getSponsor(), requestBodyObJ.getLocation(), requestBodyObJ.getAddress(),
+                requestBodyObJ.getDetalis(), requestBodyObJ.getTypeId(), requestBodyObJ.getType(), requestBodyObJ.getMarkDown());
     }
 
     /**
@@ -115,7 +116,8 @@ public class WebApiController extends BaseController {
      */
     @PostMapping("/update/sponsor")
     public ResponMsg updateSponsor(@RequestBody RequestBodyChild requestBodyChild) {
-        return sponsorService.update(requestBodyChild.getId(), requestBodyChild.getSponsor(), requestBodyChild.getLocation(), requestBodyChild.getAddress(), requestBodyChild.getDetalis(), requestBodyChild.getTypeId(), requestBodyChild.getType());
+        return sponsorService.update(requestBodyChild.getId(), requestBodyChild.getSponsor(), requestBodyChild.getLocation(),
+                requestBodyChild.getAddress(), requestBodyChild.getDetalis(), requestBodyChild.getTypeId(), requestBodyChild.getType(), requestBodyChild.getMarkDown());
     }
 
     /**

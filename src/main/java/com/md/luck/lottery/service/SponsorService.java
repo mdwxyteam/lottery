@@ -43,7 +43,7 @@ public interface SponsorService {
      * @param type     商户类型
      * @return ResponMsg<Sponsor>
      */
-    ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type);
+    ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown);
 
     /**
      * 修改商户
@@ -56,7 +56,7 @@ public interface SponsorService {
      * @param type     商户类型
      * @return ResponMsg<Sponsor>
      */
-    ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type);
+    ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type, String markDown);
 
     /**
      * 修改赞助商状态
