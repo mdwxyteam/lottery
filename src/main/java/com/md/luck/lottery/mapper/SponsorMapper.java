@@ -30,10 +30,11 @@ public interface SponsorMapper {
             "<if test='sponsor.typeId != null'> type_id = #{sponsor.typeId} </if>," +
             "<if test='sponsor.location != null'> location = #{sponsor.location} </if>," +
             "<if test='sponsor.address != null'> address = #{sponsor.address} </if>" +
+            "<if test='sponsor.markDown != null'> mark_down = #{sponsor.markDown} </if>" +
             "</set>" +
             "WHERE id = #{sponsor.id}" +
             "</script>")
-    int update(Sponsor sponsor);
+    int update(@Param("sponsor") Sponsor sponsor);
 
     @Update("UPDATE lottery_sponsor SET status = #{status} WHERE id = #{id}")
     int delByStatus(@Param("id") long id, @Param("status") int status);
