@@ -29,7 +29,7 @@ public interface SponsorMapper {
             "<if test='sponsor.detalis != null'> detalis = #{sponsor.detalis} </if>," +
             "<if test='sponsor.typeId != null'> type_id = #{sponsor.typeId} </if>," +
             "<if test='sponsor.location != null'> location = #{sponsor.location} </if>," +
-            "<if test='sponsor.address != null'> address = #{sponsor.address} </if>" +
+            "<if test='sponsor.address != null'> address = #{sponsor.address} </if>," +
             "<if test='sponsor.markDown != null'> mark_down = #{sponsor.markDown} </if>" +
             "</set>" +
             "WHERE id = #{sponsor.id}" +
