@@ -1,11 +1,9 @@
 package com.md.luck.lottery.controller.web;
 
-import com.md.luck.lottery.common.util.BasePath;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.util.FilePathUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +16,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -34,9 +32,14 @@ public class UploadController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+    public InputStream getBasePath() {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("static/loicon.png");
+        return is;
+    }
 
     /**
      * 上传图片
+     *
      * @param req req
      * @return ResponMsg
      */
@@ -64,10 +67,10 @@ public class UploadController {
                 .append(filePath);
         String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
         try {
-            System.out.println(BasePath.getBasePath());
+//            System.out.println(BasePath.getBasePath());
             Thumbnails.of(image.getInputStream())
                     .size(760, 460)
-                    .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(BasePath.getBasePath() + "/static/loicon.png")), 0.7f)
+                    .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(getBasePath()), 0.7f)
                     .outputQuality(0.8)
                     .toFile(new File(imgFolder, imgName));
 

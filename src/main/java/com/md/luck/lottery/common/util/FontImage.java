@@ -16,13 +16,15 @@ public class FontImage {
         int width = 110;
         int height = 24;
         Integer fontHight = 18;
-        drawTranslucentStringPic(width, height, fontHight, drawStr, new File(
-                BasePath.getBasePath() + "/static/loicon.png"));
-        System.out.println(BasePath.getBasePath() + "/static/loicon.png");
+//        drawTranslucentStringPic(width, height, fontHight, drawStr, new File(
+//                BasePath.getBasePath() + "/static/loicon.png"));
+//        System.out.println(BasePath.getBasePath() + "/static/loicon.png");
 //        createImage("请A1002到2号窗口", new Font("黑体", Font.BOLD, 35), new File(
 //                "e:/a1.png"), 4096, 64);
 //        createImage("请A1001到1号窗口", new Font("黑体", Font.PLAIN, 40), new File(
 //                "e:/a2.png"), 4096, 64);
+
+        System.out.println(System.getProperty("user.dir"));
 
     }
 

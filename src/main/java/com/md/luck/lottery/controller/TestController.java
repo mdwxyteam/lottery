@@ -31,7 +31,7 @@ public class TestController {
     }
     @PostMapping("/del")
     public void deleteJob() {
-        schedulService.deleteJob("jobName1", "jobGroupName1");
+        schedulService.deleteJob("jobName2", "jobGroupName2");
     }
 
 
