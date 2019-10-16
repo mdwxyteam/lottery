@@ -79,7 +79,7 @@ public class WebApiController extends BaseController {
      * @param prizeDescription 奖品描述
      * @return ResponMsg ResponMsg
      */
-    @GetMapping("/page/prize")
+    @GetMapping("/page/description/prize")
     public ResponMsg<PageInfo<Prize>> queryByPrizeDescription(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @RequestParam("prizeDescription") String prizeDescription) {
         return prizeService.queryByPrizeDescription(pageNum, pageSize, prizeDescription);
     }
