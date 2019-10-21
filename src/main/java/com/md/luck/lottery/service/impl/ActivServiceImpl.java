@@ -4,15 +4,20 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
+import com.md.luck.lottery.common.PrizeChild;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
+import com.md.luck.lottery.common.entity.ActivRequestBody;
+import com.md.luck.lottery.common.entity.AtivPrize;
 import com.md.luck.lottery.mapper.ActivMapper;
+import com.md.luck.lottery.mapper.AtivPrizeMapper;
 import com.md.luck.lottery.service.ActivService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,15 +28,26 @@ public class ActivServiceImpl implements ActivService {
 
     @Autowired
     private ActivMapper activMapper;
+    @Autowired
+    private AtivPrizeMapper ativPrizeMapper;
 
+    @Transactional(rollbackFor = SqlSessionException.class)
     @Override
-    public ResponMsg add(Activ activ) {
+    public ResponMsg add(ActivRequestBody activ) {
         if (ObjectUtil.hasEmpty(activ) || activ.isEmpty()) {
             return ResponMsg.newFail(null).setMsg("参数异常");
         }
         boolean ie = false;
         try {
-            activMapper.add(activ);
+            long id = activMapper.add(activ);
+            for (PrizeChild prizeChild: activ.getPrizeList()) {
+                AtivPrize ativPrize = new AtivPrize();
+                ativPrize.setPrizeCount(prizeChild.getPrizeCount());
+                ativPrize.setPrizeId(prizeChild.getId());
+                ativPrize.setAtivId(id);
+                ativPrize.setRanking(prizeChild.getRanking());
+                ativPrizeMapper.add(ativPrize);
+            }
         } catch (SqlSessionException e) {
             ie = true;
             log.error(e.getMessage());

@@ -13,9 +13,10 @@ public interface ActivMapper {
      * @param activ activ
      * @return int
      */
-    @Insert("INSERT INTO lottery_activ (del_state, sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, condition, release_time, conditional_description, add_condition)" +
+    @Insert("INSERT INTO lottery_activ (del_state, sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, `condition`, release_time, conditional_description, add_condition)" +
             " VALUES (#{activ.delState}, #{activ.sponsorid}, #{activ.sponsorName}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
             ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition}, now(), #{activ.conditionalDescription}, #{activ.addCondition})")
+    @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int add(@Param("activ") Activ activ);
 
     @Select("<script> SELECT lottery_activ WHERE " +

@@ -47,7 +47,7 @@ public class Activ {
     /**
      * 1:未结束；0结束；-1测试
      */
-    private int state;
+    private int state = 1;
     /**
      * 活动发布时间 时间戳
      */

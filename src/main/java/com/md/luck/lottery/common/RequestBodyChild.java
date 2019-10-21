@@ -1,4 +1,4 @@
-package com.md.luck.lottery.common.entity;
+package com.md.luck.lottery.common;
 
 import com.md.luck.lottery.common.RequestBodyObJ;
 import lombok.Data;

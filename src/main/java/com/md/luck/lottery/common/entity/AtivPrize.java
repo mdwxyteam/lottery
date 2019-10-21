@@ -20,4 +20,8 @@ public class AtivPrize {
      * 奖品数量
      */
     private int prizeCount;
+    /**
+     * 奖品获取条件（一等奖）
+     */
+    private String ranking;
 }

@@ -2,6 +2,7 @@ package com.md.luck.lottery.service;
 
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
+import com.md.luck.lottery.common.entity.ActivRequestBody;
 
 public interface ActivService {
 
@@ -10,7 +11,7 @@ public interface ActivService {
      * @param activ activ
      * @return ResponMsg
      */
-    ResponMsg add(Activ activ);
+    ResponMsg add(ActivRequestBody activ);
 
     /**
      * 条件分页查询活动信息

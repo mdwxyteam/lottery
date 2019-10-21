@@ -2,6 +2,7 @@ package com.md.luck.lottery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
  * @author madong
  */
 @SpringBootApplication
+@EnableTransactionManagement
 public class LotteryApplication {
 
     public static void main(String[] args) {

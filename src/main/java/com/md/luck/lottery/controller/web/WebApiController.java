@@ -2,6 +2,7 @@ package com.md.luck.lottery.controller.web;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
+import com.md.luck.lottery.common.RequestBodyChild;
 import com.md.luck.lottery.common.RequestBodyObJ;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
@@ -247,12 +248,12 @@ public class WebApiController extends BaseController {
 
     /**
      * 新增活动信息
-     * @param activ 活动信息
+     * @param activRequestBody 活动信息
      * @return ResponMsg
      */
     @PostMapping("/add/activ")
-    public ResponMsg addActiv(@RequestBody Activ activ) {
-        return activService.add(activ);
+    public ResponMsg addActiv(@RequestBody ActivRequestBody activRequestBody) {
+        return activService.add(activRequestBody);
     }
 
     /**
