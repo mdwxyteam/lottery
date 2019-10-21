@@ -1,6 +1,7 @@
 package com.md.luck.lottery.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
@@ -9,9 +10,11 @@ import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.ActivRequestBody;
 import com.md.luck.lottery.common.entity.AtivPrize;
+import com.md.luck.lottery.common.util.ConUtil;
 import com.md.luck.lottery.mapper.ActivMapper;
 import com.md.luck.lottery.mapper.AtivPrizeMapper;
 import com.md.luck.lottery.service.ActivService;
+import com.md.luck.lottery.service.SchedulService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
@@ -30,6 +33,8 @@ public class ActivServiceImpl implements ActivService {
     private ActivMapper activMapper;
     @Autowired
     private AtivPrizeMapper ativPrizeMapper;
+    @Autowired
+    private SchedulService schedulService;
 
     @Transactional(rollbackFor = SqlSessionException.class)
     @Override
@@ -39,6 +44,7 @@ public class ActivServiceImpl implements ActivService {
         }
         boolean ie = false;
         try {
+
             long id = activMapper.add(activ);
             for (PrizeChild prizeChild: activ.getPrizeList()) {
                 AtivPrize ativPrize = new AtivPrize();
@@ -47,6 +53,14 @@ public class ActivServiceImpl implements ActivService {
                 ativPrize.setAtivId(id);
                 ativPrize.setRanking(prizeChild.getRanking());
                 ativPrizeMapper.add(ativPrize);
+            }
+            if (activ.getConditionType() == Cont.ONE) {
+                String taskStr = "com.md.luck.lottery.quartz.task.ActivityCountdownTask";
+                String con = ConUtil.getCron(activ.getCondition(),"yyyy-MM-dd HH:mm:ss");
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("activName", id);
+                jsonObject.put("huodong", "--START ACTIV--");
+                schedulService.addSchedul(Cont.quartz + id, Cont.quartz + id, Cont.quartz + id,  Cont.quartz + id, taskStr, con, jsonObject);
             }
         } catch (SqlSessionException e) {
             ie = true;

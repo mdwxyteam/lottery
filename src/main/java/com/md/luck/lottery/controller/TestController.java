@@ -1,6 +1,7 @@
 package com.md.luck.lottery.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.md.luck.lottery.common.util.ConUtil;
 import com.md.luck.lottery.service.SchedulService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,9 @@ public class TestController {
     @PostMapping("/add")
     public void startJob() {
         String taskStr = "com.md.luck.lottery.quartz.task.TestTask";
-        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, "0/1 * * * * ?", new JSONObject());
+        String con = ConUtil.getCron("2019-10-21 14:27:30","yyyy-MM-dd HH:mm:ss");
+//        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, "0/1 * * * * ?", new JSONObject());
+        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, con, new JSONObject());
     }
     @PostMapping("/del")
     public void deleteJob() {
