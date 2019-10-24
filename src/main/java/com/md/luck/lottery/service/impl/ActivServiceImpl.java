@@ -106,4 +106,25 @@ public class ActivServiceImpl implements ActivService {
     public ResponMsg activById(long id) {
         return ResponMsg.newSuccess(activMapper.activById(id));
     }
+
+    @Override
+    public ResponMsg updateActiv(Activ activ) {
+        boolean bl = false;
+        if (ObjectUtil.hasEmpty(activ) || activ.getId() == 0l) {
+            return ResponMsg.newFail(null).setMsg("缺省参数！");
+        }
+        try {
+            int i = activMapper.updateActiv(activ);
+            if (i == Cont.ZERO) {
+                return ResponMsg.newFail(null).setMsg("修改失败！");
+            }
+        }catch (SqlSessionException e) {
+            bl = true;
+            log.error(e.getMessage());
+        }
+        if (bl) {
+            return ResponMsg.newFail(null).setMsg("修改失败！");
+        }
+        return ResponMsg.newSuccess(null);
+    }
 }

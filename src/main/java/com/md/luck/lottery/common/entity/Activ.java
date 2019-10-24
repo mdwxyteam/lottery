@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public class Activ {
-    private Long id;
+    private Long id = 0l;
     /**
      * 赞助商id
      */

@@ -37,4 +37,11 @@ public interface ActivService {
      * @return ResponMsg
      */
     ResponMsg activById(long id);
+
+    /**
+     * 更新活动
+     * @param activ activ
+     * @return ResponMsg
+     */
+    ResponMsg updateActiv(Activ activ);
 }

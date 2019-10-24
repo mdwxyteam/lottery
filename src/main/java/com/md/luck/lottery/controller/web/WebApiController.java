@@ -1,5 +1,6 @@
 package com.md.luck.lottery.controller.web;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.RequestBodyChild;
@@ -288,5 +289,15 @@ public class WebApiController extends BaseController {
     @GetMapping("/activ/id")
     public ResponMsg activById(@Param("id") long id) {
         return activService.activById(id);
+    }
+
+    /**
+     * 更新活动
+     * @param activ activ
+     * @return ResponMsg
+     */
+    @PostMapping("/update/activ")
+    public ResponMsg updateActiv(@RequestBody Activ activ) {
+        return activService.updateActiv(activ);
     }
 }

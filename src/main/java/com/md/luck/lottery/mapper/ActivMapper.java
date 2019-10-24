@@ -30,4 +30,21 @@ public interface ActivMapper {
 
     @Select("SELECT * FROM lottery_activ WHERE id = #{id}")
     Activ activById(@Param("id") long id);
+
+    @Update("<script> UPDATE lottery_activ <set>" +
+            "<if test='activ.sponsorid != null'> sponsorid = #{activ.sponsorid} </if>," +
+            "<if test='activ.sponsorName != null'> sponsor_name = #{activ.sponsorName} </if>," +
+            "<if test='activ.location != null'> location = #{activ.location} </if>," +
+            "<if test='activ.address != null'> address = #{activ.address} </if>," +
+            "<if test='activ.conditionType != null'> condition_type = #{activ.conditionType} </if>," +
+            "<if test='activ.sponsorClaim != null'> sponsor_claim = #{activ.sponsorClaim} </if>," +
+            "<if test='activ.adv != null'> adv = #{activ.adv} </if>," +
+            "<if test='activ.condition != null'> condition = #{activ.condition} </if>," +
+            "<if test='activ.delState != null'> del_state = #{activ.delState} </if>," +
+            "<if test='activ.conditionalDescription != null'> conditional_description = #{activ.conditionalDescription} </if>," +
+            "<if test='activ.addCondition != null'> add_condition = #{activ.addCondition} </if>" +
+            "</set>" +
+            "WHERE id = #{activ.id}" +
+            "</script>")
+    int updateActiv(@Param("activ") Activ activ);
 }
