@@ -19,4 +19,13 @@ public class ActivityCountdownTask extends QuartzJobBean {
         JSONObject jsonObject = JSONObject.parseObject(param);
         System.out.println(jsonObject.get("activName").toString() + jsonObject.get("huodong").toString());
     }
+
+    public static void main(String[] args) {
+        double a = 0.0000011;
+        long i = 30000;
+        double d = 0.00;
+        long x = (long) (d + 0.5);
+        System.out.println(i * a);
+        System.out.println(x);
+    }
 }
