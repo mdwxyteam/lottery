@@ -19,7 +19,7 @@ public interface ActivMapper {
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int add(@Param("activ") Activ activ);
 
-    @Select("<script> SELECT lottery_activ WHERE " +
+    @Select("<script> SELECT * FROM lottery_activ WHERE " +
             "condition_type = #{conditionType}" +
             "<if test='sponsorName !=null'> AND LOCATE(#{sponsorName}, `sponsor_name`)>0 </if>" +
             "</script>")

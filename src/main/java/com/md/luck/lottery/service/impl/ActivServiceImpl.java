@@ -1,6 +1,7 @@
 package com.md.luck.lottery.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -75,6 +76,9 @@ public class ActivServiceImpl implements ActivService {
     @Override
     public ResponMsg conditionPage(int pageNum, int pageSize, int conditionType, String sponsorName) {
         PageHelper.startPage(pageNum, pageSize);
+        if (StrUtil.hasEmpty(sponsorName)) {
+            sponsorName = null;
+        }
         List<Activ> activs = activMapper.conditionPage(conditionType, sponsorName);
         PageInfo<Activ> pageInfo = new PageInfo<Activ>(activs);
         return ResponMsg.newSuccess(pageInfo);

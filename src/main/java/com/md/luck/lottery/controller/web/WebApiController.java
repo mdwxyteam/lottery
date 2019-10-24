@@ -271,13 +271,14 @@ public class WebApiController extends BaseController {
 
     /**
      * 启用/禁用
+     * @param activ 活动
      * @param id 活动id
      * @param delState 赞助商状态 {0：禁用；1：启用}
      * @return ResponMsg
      */
     @PostMapping("/activ/delState")
-    public ResponMsg updateDelState(@RequestParam("id") long id, @RequestParam("delState") int delState) {
-        return activService.updateDelState(id, delState);
+    public ResponMsg updateDelState(@RequestBody Activ activ) {
+        return activService.updateDelState(activ.getId(), activ.getDelState());
     }
     /**
      * 通过id查询活动
