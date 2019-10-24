@@ -10,5 +10,12 @@ public interface ActivPrizeService {
      * @param prizeCount 奖品数量
      * @return ResponMsg
      */
-    ResponMsg add(Long ativId, Long prizeId, int prizeCount);
+    ResponMsg add(Long ativId, Long prizeId, int prizeCount, String icouUrl);
+
+    /**
+     * 通过活动id查询活动与奖品关联数据
+     * @param ativId 活动id
+     * @return ResponMsg
+     */
+    ResponMsg queryActivPrize(long ativId);
 }

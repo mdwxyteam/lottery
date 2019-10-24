@@ -234,11 +234,12 @@ public class WebApiController extends BaseController {
      * @param ativId     活动id
      * @param prizeId    奖品id
      * @param prizeCount 奖品数量
+     * @param icouUrl 奖品url
      * @return ResponMsg
      */
     @PostMapping("/add/activ/prize")
-    public ResponMsg addAtivPrize(@RequestParam("ativId") Long ativId, @RequestParam("prizeId") Long prizeId, @RequestParam("prizeCount") int prizeCount) {
-        return activPrizeService.add(ativId, prizeId, prizeCount);
+    public ResponMsg addAtivPrize(@RequestParam("ativId") Long ativId, @RequestParam("prizeId") Long prizeId, @RequestParam("prizeCount") int prizeCount, @RequestParam("icouUrl") String icouUrl) {
+        return activPrizeService.add(ativId, prizeId, prizeCount, icouUrl);
     }
 
     public ResponMsg addActiv(@RequestParam("sponsorid") Long sponsorid, @RequestParam("sponsor") String sponsor, @RequestParam("location") String location,
@@ -247,6 +248,15 @@ public class WebApiController extends BaseController {
         return null;
     }
 
+    /**
+     * 通过活动id查询活动与奖品关联数据
+     * @param id 通过活动id
+     * @return ResponMsg
+     */
+    @GetMapping("/query/activPrize/activid")
+    public ResponMsg queryActivPrize(@RequestParam("id") long id) {
+        return activPrizeService.queryActivPrize(id);
+    }
     /**
      * 新增活动信息
      * @param activRequestBody 活动信息
@@ -273,8 +283,8 @@ public class WebApiController extends BaseController {
     /**
      * 启用/禁用
      * @param activ 活动
-     * @param id 活动id
-     * @param delState 赞助商状态 {0：禁用；1：启用}
+//     * @param id 活动id
+//     * @param delState 赞助商状态 {0：禁用；1：启用}
      * @return ResponMsg
      */
     @PostMapping("/activ/delState")

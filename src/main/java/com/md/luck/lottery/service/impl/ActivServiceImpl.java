@@ -46,13 +46,15 @@ public class ActivServiceImpl implements ActivService {
         boolean ie = false;
         try {
 
-            long id = activMapper.add(activ);
+            activMapper.add(activ);
+            long id = activ.getId();
             for (PrizeChild prizeChild: activ.getPrizeList()) {
                 AtivPrize ativPrize = new AtivPrize();
                 ativPrize.setPrizeCount(prizeChild.getPrizeCount());
                 ativPrize.setPrizeId(prizeChild.getId());
                 ativPrize.setAtivId(id);
                 ativPrize.setRanking(prizeChild.getRanking());
+                ativPrize.setIconUrl(prizeChild.getIconUrl());
                 ativPrizeMapper.add(ativPrize);
             }
             if (activ.getConditionType() == Cont.ONE) {
@@ -118,6 +120,7 @@ public class ActivServiceImpl implements ActivService {
             if (i == Cont.ZERO) {
                 return ResponMsg.newFail(null).setMsg("修改失败！");
             }
+            // todo 更新奖品与活动关联
         }catch (SqlSessionException e) {
             bl = true;
             log.error(e.getMessage());

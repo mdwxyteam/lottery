@@ -24,4 +24,8 @@ public class AtivPrize {
      * 奖品获取条件（一等奖）
      */
     private String ranking;
+    /**
+     * 奖品url
+     */
+    private String iconUrl;
 }

@@ -17,7 +17,7 @@ public interface ActivMapper {
             " VALUES (#{activ.delState}, #{activ.sponsorid}, #{activ.sponsorName}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
             ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition}, now(), #{activ.conditionalDescription}, #{activ.addCondition})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
-    int add(@Param("activ") Activ activ);
+    void add(@Param("activ") Activ activ);
 
     @Select("<script> SELECT * FROM lottery_activ WHERE " +
             "condition_type = #{conditionType}" +
