@@ -11,6 +11,8 @@ import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActivPrizeServiceImpl implements ActivPrizeService {
 
@@ -48,16 +50,16 @@ public class ActivPrizeServiceImpl implements ActivPrizeService {
             return ResponMsg.newFail("缺省必要参数！");
         }
         boolean isbc = false;
-        AtivPrize ativPrize = null;
+        List<AtivPrize> ativPrizeList = null;
         try {
-            ativPrize = ativPrizeMapper.queryByAtivId(ativId);
+            ativPrizeList = ativPrizeMapper.queryByAtivId(ativId);
         } catch (SqlSessionException e) {
             isbc = true;
             log.error(e.getMessage());
         }
-        if (isbc || ObjectUtil.hasEmpty(ativPrize)) {
+        if (isbc || ObjectUtil.hasEmpty(ativPrizeList)) {
             return ResponMsg.newFail(null).setMsg("操作失败！");
         }
-        return ResponMsg.newSuccess(ativPrize);
+        return ResponMsg.newSuccess(ativPrizeList);
     }
 }

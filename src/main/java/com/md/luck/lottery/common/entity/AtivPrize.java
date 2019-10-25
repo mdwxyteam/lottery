@@ -9,7 +9,7 @@ import lombok.Data;
 public class AtivPrize {
     private Long id;
     /**
-     * 赞助商id
+     * 活动id
      */
     private Long ativId;
     /**
@@ -28,4 +28,8 @@ public class AtivPrize {
      * 奖品url
      */
     private String iconUrl;
+    /**
+     * 奖品描述
+     */
+    private String prizeDescription;
 }

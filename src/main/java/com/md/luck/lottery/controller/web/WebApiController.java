@@ -303,11 +303,11 @@ public class WebApiController extends BaseController {
 
     /**
      * 更新活动
-     * @param activ activ
+     * @param activRequestBody activRequestBody
      * @return ResponMsg
      */
     @PostMapping("/update/activ")
-    public ResponMsg updateActiv(@RequestBody Activ activ) {
-        return activService.updateActiv(activ);
+    public ResponMsg updateActiv(@RequestBody ActivRequestBody activRequestBody) {
+        return activService.updateActiv(activRequestBody);
     }
 }

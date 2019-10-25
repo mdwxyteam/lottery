@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,22 +49,23 @@ public class ActivServiceImpl implements ActivService {
 
             activMapper.add(activ);
             long id = activ.getId();
-            for (PrizeChild prizeChild: activ.getPrizeList()) {
+            for (PrizeChild prizeChild : activ.getPrizeList()) {
                 AtivPrize ativPrize = new AtivPrize();
                 ativPrize.setPrizeCount(prizeChild.getPrizeCount());
                 ativPrize.setPrizeId(prizeChild.getId());
                 ativPrize.setAtivId(id);
                 ativPrize.setRanking(prizeChild.getRanking());
                 ativPrize.setIconUrl(prizeChild.getIconUrl());
+                ativPrize.setPrizeDescription(prizeChild.getPrizeDescription());
                 ativPrizeMapper.add(ativPrize);
             }
             if (activ.getConditionType() == Cont.ONE) {
                 String taskStr = "com.md.luck.lottery.quartz.task.ActivityCountdownTask";
-                String con = ConUtil.getCron(activ.getCondition(),"yyyy-MM-dd HH:mm:ss");
+                String con = ConUtil.getCron(activ.getCondition(), "yyyy-MM-dd HH:mm:ss");
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("activName", id);
                 jsonObject.put("huodong", "--START ACTIV--");
-                schedulService.addSchedul(Cont.quartz + id, Cont.quartz + id, Cont.quartz + id,  Cont.quartz + id, taskStr, con, jsonObject);
+                schedulService.addSchedul(Cont.quartz + id, Cont.quartz + id, Cont.quartz + id, Cont.quartz + id, taskStr, con, jsonObject);
             }
         } catch (SqlSessionException e) {
             ie = true;
@@ -94,7 +96,7 @@ public class ActivServiceImpl implements ActivService {
             if (i == Cont.ZERO) {
                 return ResponMsg.newFail(null).setMsg("修改失败！");
             }
-        }catch (SqlSessionException e) {
+        } catch (SqlSessionException e) {
             bl = true;
             log.error(e.getMessage());
         }
@@ -109,19 +111,53 @@ public class ActivServiceImpl implements ActivService {
         return ResponMsg.newSuccess(activMapper.activById(id));
     }
 
+    @Transactional(rollbackFor = SqlSessionException.class)
     @Override
-    public ResponMsg updateActiv(Activ activ) {
+    public ResponMsg updateActiv(ActivRequestBody activ) {
         boolean bl = false;
         if (ObjectUtil.hasEmpty(activ) || activ.getId() == 0l) {
             return ResponMsg.newFail(null).setMsg("缺省参数！");
         }
         try {
             int i = activMapper.updateActiv(activ);
-            if (i == Cont.ZERO) {
-                return ResponMsg.newFail(null).setMsg("修改失败！");
+            if (i == Cont.ONE) {
+
+                List<PrizeChild> prizeChildren = new ArrayList<>();
+                for (PrizeChild prizeChild : activ.getPrizeList()) {
+
+                    // 没有id的表示新的奖品
+                    if (prizeChild.getId() == 0l) {
+                        AtivPrize ativPrize = new AtivPrize();
+                        ativPrize.setPrizeCount(prizeChild.getPrizeCount());
+                        ativPrize.setPrizeId(prizeChild.getId());
+                        ativPrize.setAtivId(activ.getId());
+                        ativPrize.setRanking(prizeChild.getRanking());
+                        ativPrize.setIconUrl(prizeChild.getIconUrl());
+                        ativPrize.setPrizeDescription(prizeChild.getPrizeDescription());
+                        ativPrizeMapper.add(ativPrize);
+                        continue;
+                    }
+                    prizeChildren.add(prizeChild);
+                }
+                List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
+                // 对比新的奖品与以前的奖品
+                for (AtivPrize ativPrize : ativPrizes) {
+                    boolean as = false;
+                    for (PrizeChild prizeChild : prizeChildren) {
+                        if (ativPrize.getId() == prizeChild.getId()) {
+                            as = true;
+                            continue;
+                            //判断内容，跟新
+                        }
+                    }
+                    if (!as) {
+                        //删除
+                        ativPrizeMapper.delAtivPrize(ativPrize.getId());
+                    }
+                }
             }
-            // todo 更新奖品与活动关联
-        }catch (SqlSessionException e) {
+            return ResponMsg.newFail(null).setMsg("修改失败！");
+        } catch (SqlSessionException e) {
             bl = true;
             log.error(e.getMessage());
         }

@@ -13,9 +13,9 @@ public interface ActivMapper {
      * @param activ activ
      * @return int
      */
-    @Insert("INSERT INTO lottery_activ (del_state, sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, `condition`, release_time, conditional_description, add_condition)" +
+    @Insert("INSERT INTO lottery_activ (del_state, sponsorid, sponsor_name, location, address, condition_type, sponsor_claim, state, adv, `condition`, release_time, conditional_description, add_condition, markdown_adv)" +
             " VALUES (#{activ.delState}, #{activ.sponsorid}, #{activ.sponsorName}, #{activ.location}, #{activ.address}, #{activ.conditionType}" +
-            ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition}, now(), #{activ.conditionalDescription}, #{activ.addCondition})")
+            ", #{activ.sponsorClaim}, #{activ.state}, #{activ.adv}, #{activ.condition}, now(), #{activ.conditionalDescription}, #{activ.addCondition}, #{activ.markdownAdv})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void add(@Param("activ") Activ activ);
 
@@ -39,10 +39,10 @@ public interface ActivMapper {
             "<if test='activ.conditionType != null'> condition_type = #{activ.conditionType} </if>," +
             "<if test='activ.sponsorClaim != null'> sponsor_claim = #{activ.sponsorClaim} </if>," +
             "<if test='activ.adv != null'> adv = #{activ.adv} </if>," +
-            "<if test='activ.condition != null'> condition = #{activ.condition} </if>," +
-            "<if test='activ.delState != null'> del_state = #{activ.delState} </if>," +
+            "<if test='activ.condition != null'> `condition` = #{activ.condition} </if>," +
             "<if test='activ.conditionalDescription != null'> conditional_description = #{activ.conditionalDescription} </if>," +
-            "<if test='activ.addCondition != null'> add_condition = #{activ.addCondition} </if>" +
+            "<if test='activ.addCondition != null'> add_condition = #{activ.addCondition} </if>," +
+            "<if test='activ.markdownAdv != null'> markdown_adv = #{activ.markdownAdv} </if>" +
             "</set>" +
             "WHERE id = #{activ.id}" +
             "</script>")

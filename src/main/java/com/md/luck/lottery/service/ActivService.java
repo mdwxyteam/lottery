@@ -40,8 +40,8 @@ public interface ActivService {
 
     /**
      * 更新活动
-     * @param activ activ
+     * @param activRequestBody activRequestBody
      * @return ResponMsg
      */
-    ResponMsg updateActiv(Activ activ);
+    ResponMsg updateActiv(ActivRequestBody activRequestBody);
 }

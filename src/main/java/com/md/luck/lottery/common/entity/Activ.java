@@ -57,6 +57,10 @@ public class Activ {
      */
     private String adv;
     /**
+     * 广告富文本框markdown
+     */
+    private String markdownAdv;
+    /**
      * 活动当前参与人数
      */
     private int countNum;
@@ -71,7 +75,7 @@ public class Activ {
     private String addCondition;
 
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType)) {
+        if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
             return true;
         }
         return false;
