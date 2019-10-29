@@ -14,4 +14,16 @@ public class RequestBodyObJ {
     private String address;
     private String detalis;
     private String markDown;
+    /**
+     * 负责人
+     */
+    private String principal;
+    /**
+     * 联系方式
+     */
+    private String contact;
+    /**
+     * 封面图
+     */
+    private String cover;
 }

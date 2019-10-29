@@ -51,4 +51,16 @@ public class Sponsor implements Serializable {
      * 赞助商状态 {0：禁用；1：启用}
      */
     private int status = 1;
+    /**
+     * 负责人
+     */
+    private String principal;
+    /**
+     * 联系方式
+     */
+    private String contact;
+    /**
+     * 封面图
+     */
+    private String cover;
 }

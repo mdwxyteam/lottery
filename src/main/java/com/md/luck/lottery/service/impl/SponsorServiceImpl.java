@@ -51,11 +51,13 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg<Sponsor> add(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
-        if (StrUtil.hasEmpty(sponsor, location, detalis)) {
+    public ResponMsg<Sponsor> add(String sponsor, String location, String address,
+                                  String detalis, long typeId, String type, String markDown,
+                                  String principal, String contact, String cover) {
+        if (StrUtil.hasEmpty(sponsor, location, detalis, principal, contact, cover)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
-        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown);
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown, principal, contact, cover);
         sponsorObj.setStatus(Cont.ONE);
         int i = sponsorMapper.add(sponsorObj);
         if (i == Cont.ZERO) {
@@ -65,11 +67,13 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public ResponMsg<Sponsor> update(long id, String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
-        if (StrUtil.hasEmpty(sponsor, location, detalis)) {
+    public ResponMsg<Sponsor> update(long id, String sponsor, String location,
+                                     String address, String detalis, long typeId, String type, String markDown,
+                                     String principal, String contact, String cover) {
+        if (StrUtil.hasEmpty(sponsor, location, detalis, principal, contact, cover)) {
             return ResponMsg.newFail(null).setMsg("参数异常!");
         }
-        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown);
+        Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown, principal, contact, cover);
         sponsorObj.setId(id);
         int i = sponsorMapper.update(sponsorObj);
         if (i == Cont.ZERO) {
@@ -105,7 +109,9 @@ public class SponsorServiceImpl implements SponsorService {
         return ResponMsg.newSuccess(sponsors);
     }
 
-    private Sponsor creatSponsor(String sponsor, String location, String address, String detalis, long typeId, String type, String markDown) {
+    private Sponsor creatSponsor(String sponsor, String location,
+                                 String address, String detalis, long typeId, String type, String markDown,
+                                 String principal, String contact, String cover) {
         Sponsor sponsorObj = new Sponsor();
         sponsorObj.setType(type);
         sponsorObj.setTypeId(typeId);
@@ -114,6 +120,9 @@ public class SponsorServiceImpl implements SponsorService {
         sponsorObj.setSponsorName(sponsor);
         sponsorObj.setAddress(address);
         sponsorObj.setMarkDown(markDown);
+        sponsorObj.setPrincipal(principal);
+        sponsorObj.setContact(contact);
+        sponsorObj.setCover(cover);
         return sponsorObj;
     }
 }
