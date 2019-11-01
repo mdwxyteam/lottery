@@ -36,8 +36,8 @@ public interface SponsorMapper {
             "<if test='sponsor.location != null'> location = #{sponsor.location} </if>," +
             "<if test='sponsor.address != null'> address = #{sponsor.address} </if>," +
             "<if test='sponsor.principal != null'> principal = #{sponsor.principal} </if>," +
-            "<if test='sponsor.contact != null'> address = #{sponsor.contact} </if>," +
-            "<if test='sponsor.cover != null'> address = #{sponsor.cover} </if>," +
+            "<if test='sponsor.contact != null'> contact = #{sponsor.contact} </if>," +
+            "<if test='sponsor.cover != null'> cover = #{sponsor.cover} </if>," +
             "<if test='sponsor.markDown != null'> mark_down = #{sponsor.markDown} </if>" +
             "</set>" +
             "WHERE id = #{sponsor.id}" +
