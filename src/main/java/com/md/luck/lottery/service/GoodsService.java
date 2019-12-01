@@ -27,4 +27,11 @@ public interface GoodsService {
      * @return ResponMsg
      */
     ResponMsg edit(Goods goods);
+
+    /**
+     * 通过商品状态查询商品信息
+     * @param state state
+     * @return ResponMsg
+     */
+    ResponMsg queryByState(int state);
 }

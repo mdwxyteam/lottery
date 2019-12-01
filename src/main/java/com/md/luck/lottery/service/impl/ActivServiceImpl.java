@@ -46,7 +46,7 @@ public class ActivServiceImpl implements ActivService {
         }
         boolean ie = false;
         try {
-
+            activ.setState(1);
             activMapper.add(activ);
             long id = activ.getId();
             for (PrizeChild prizeChild : activ.getPrizeList()) {
@@ -123,40 +123,46 @@ public class ActivServiceImpl implements ActivService {
             if (i == Cont.ONE) {
 
                 List<PrizeChild> prizeChildren = new ArrayList<>();
-                for (PrizeChild prizeChild : activ.getPrizeList()) {
+                if (activ.getPrizeList() != null) {
+                    for (PrizeChild prizeChild : activ.getPrizeList()) {
 
-                    // 没有id的表示新的奖品
-                    if (prizeChild.getId() == 0l) {
-                        AtivPrize ativPrize = new AtivPrize();
-                        ativPrize.setPrizeCount(prizeChild.getPrizeCount());
-                        ativPrize.setPrizeId(prizeChild.getId());
-                        ativPrize.setAtivId(activ.getId());
-                        ativPrize.setRanking(prizeChild.getRanking());
-                        ativPrize.setIconUrl(prizeChild.getIconUrl());
-                        ativPrize.setPrizeDescription(prizeChild.getPrizeDescription());
-                        ativPrizeMapper.add(ativPrize);
-                        continue;
-                    }
-                    prizeChildren.add(prizeChild);
-                }
-                List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
-                // 对比新的奖品与以前的奖品
-                for (AtivPrize ativPrize : ativPrizes) {
-                    boolean as = false;
-                    for (PrizeChild prizeChild : prizeChildren) {
-                        if (ativPrize.getId() == prizeChild.getId()) {
-                            as = true;
+                        // 没有id的表示新的奖品
+                        if (prizeChild.getId() == 0l) {
+                            AtivPrize ativPrize = new AtivPrize();
+                            ativPrize.setPrizeCount(prizeChild.getPrizeCount());
+                            ativPrize.setPrizeId(prizeChild.getId());
+                            ativPrize.setAtivId(activ.getId());
+                            ativPrize.setRanking(prizeChild.getRanking());
+                            ativPrize.setIconUrl(prizeChild.getIconUrl());
+                            ativPrize.setPrizeDescription(prizeChild.getPrizeDescription());
+                            ativPrizeMapper.add(ativPrize);
                             continue;
-                            //判断内容，跟新
+                        }
+                        prizeChildren.add(prizeChild);
+                    }
+                }
+
+                if (activ.isPrizeBool()) {
+                    List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
+                    // 对比新的奖品与以前的奖品
+                    for (AtivPrize ativPrize : ativPrizes) {
+                        boolean as = false;
+                        for (PrizeChild prizeChild : prizeChildren) {
+                            if (ativPrize.getId() == prizeChild.getId()) {
+                                as = true;
+                                continue;
+                                //判断内容，跟新
+                            }
+                        }
+                        if (!as) {
+                            //删除
+                            ativPrizeMapper.delAtivPrize(ativPrize.getId());
                         }
                     }
-                    if (!as) {
-                        //删除
-                        ativPrizeMapper.delAtivPrize(ativPrize.getId());
-                    }
                 }
+
             }
-            return ResponMsg.newFail(null).setMsg("修改失败！");
+//            return ResponMsg.newFail(null).setMsg("修改失败！");
         } catch (SqlSessionException e) {
             bl = true;
             log.error(e.getMessage());

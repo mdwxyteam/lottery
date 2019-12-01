@@ -61,4 +61,20 @@ public class GoodsServiceImpl implements GoodsService {
         }
         return responMsg;
     }
+
+    @Override
+    public ResponMsg queryByState(int state) {
+        if(ObjectUtil.hasEmpty(state)) {
+            return ResponMsg.newFail(null).setMsg("缺少参数!");
+        }
+        ResponMsg responMsg = null;
+        try {
+            List<Goods> goods = goodsMapper.queryByState(state);
+            responMsg = ResponMsg.newSuccess(goods);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("数据库操作失败");
+        }
+        return responMsg;
+    }
+
 }

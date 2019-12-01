@@ -28,4 +28,7 @@ public interface GoodsMapper {
             "WHERE id = #{goods.id}" +
             "</script>")
     int edit(@Param("goods") Goods goods);
+
+    @Select("SELECT * FROM lottery_goods WHERE state = #{state}")
+    List<Goods> queryByState(@Param("state") int state);
 }

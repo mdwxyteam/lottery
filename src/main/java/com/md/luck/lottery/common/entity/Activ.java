@@ -31,7 +31,7 @@ public class Activ {
     /**
      * 开奖条件类型：1： 时间限制；2：人数限制
      */
-    private int conditionType;
+    private Integer conditionType;
     /**
      * 开奖条件（2019.12.09 || 3000）
      */
@@ -47,7 +47,7 @@ public class Activ {
     /**
      * 1:未结束；0结束；-1测试
      */
-    private int state = 1;
+    private Integer state;
     /**
      * 活动发布时间 时间戳
      */
@@ -63,17 +63,24 @@ public class Activ {
     /**
      * 活动当前参与人数
      */
-    private int countNum;
+    private Integer countNum;
     /**
      *  删除状态
      *  赞助商状态 {0：禁用；1：启用}
      */
-    private int delState = 1;
+    private Integer delState;
     /**
      * 参与条件
      */
     private String addCondition;
-
+    /**
+     * 0:不上轮播；1上轮播
+     */
+    private Integer carousel;
+    /**
+     * 0:抽奖；1:表示抢
+     */
+    private Integer activType;
     public boolean isEmpty() {
         if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
             return true;
