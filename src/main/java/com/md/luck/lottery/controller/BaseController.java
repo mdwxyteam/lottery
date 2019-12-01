@@ -23,5 +23,7 @@ public class BaseController {
     protected ActivPrizeService activPrizeService;
     @Autowired
     protected ActivService activService;
+    @Autowired
+    protected GoodsService goodsService;
 
 }

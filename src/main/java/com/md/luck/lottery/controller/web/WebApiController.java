@@ -312,4 +312,39 @@ public class WebApiController extends BaseController {
     public ResponMsg updateActiv(@RequestBody ActivRequestBody activRequestBody) {
         return activService.updateActiv(activRequestBody);
     }
+
+    /**
+     * 新增商品
+     * @param goods goods
+     * @return ResponMsg
+     */
+    @PostMapping("/add/goods")
+    public ResponMsg addGoods(@RequestBody Goods goods) {
+        return goodsService.add(goods);
+    }
+
+    /**
+     * 分页查询商品
+     * @param pageNum 页码
+     * @param pageSize 页大小
+     * @param goodsName 商品名称
+     * @param state 商品状态
+     * @return ResponMsg
+     */
+    @GetMapping("/page/goods")
+    public ResponMsg goodsPage(@RequestParam("pageNum") int pageNum,
+                               @RequestParam("pageSize") int pageSize,
+                               @RequestParam("goodsName") String goodsName, @RequestParam("state") int state) {
+        return goodsService.page(pageNum, pageSize, goodsName, state);
+    }
+
+    /**
+     * 编辑商品信息
+     * @param goods 商品对象
+     * @return ResponMsg
+     */
+    @PostMapping("/edit/goods")
+    public ResponMsg editGoods(@RequestBody Goods goods) {
+        return goodsService.edit(goods);
+    }
 }
