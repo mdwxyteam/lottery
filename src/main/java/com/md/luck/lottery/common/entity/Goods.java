@@ -12,15 +12,15 @@ public class Goods {
     /**
      * 商品价格
      */
-    private int price;
+    private Integer price;
     /**
      * 商品状态 状态：1：正在售卖中；2：售卖结束；3：售卖准备中；-1：关闭（删除）
      */
-    private int state = 3;
+    private Integer state;
     /**
      * 购买人数小于等于price
      */
-    private int payNum;
+    private Integer payNum;
     /**
      * 商品名称
      */
@@ -29,9 +29,17 @@ public class Goods {
      * 商品图片
      */
     private String goodsImg;
+    /**
+     * 实际售价
+     */
+    private Integer actualPrice;
+    /**
+     * 商品相关讨论群
+     */
+    private String goodsGroup;
 
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(price, state, payNum, goodsName, goodsImg)){
+        if (ObjectUtil.hasEmpty(price, state, payNum, goodsName, goodsImg, actualPrice)){
             return true;
         }else {
             return false;

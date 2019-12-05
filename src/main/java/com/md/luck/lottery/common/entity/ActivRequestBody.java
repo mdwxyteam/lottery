@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class ActivRequestBody extends Activ{
-    private List<PrizeChild> prizeList;
+    private List<AtivPrize> prizeList;
     /**
      * 关联奖品数据是否更改
      */

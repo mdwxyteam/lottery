@@ -16,4 +16,7 @@ public interface AtivPrizeMapper {
 
     @Delete("DELETE FROM lottery_ativ_prize WHERE id = #{id}")
     void delAtivPrize(@Param("id") long id);
+
+    @Select("SELECT lap.* FROM lottery_activ la JOIN lottery_ativ_prize lap ON la.id = lap.ativ_id WHERE la.carousel = #{carousel} GROUP BY lap.ativ_id")
+    List<AtivPrize> queryByCarousel(@Param("carousel") Integer carousel);
 }

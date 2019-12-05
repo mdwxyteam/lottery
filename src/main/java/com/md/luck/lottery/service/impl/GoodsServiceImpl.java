@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.Goods;
@@ -27,7 +28,8 @@ public class GoodsServiceImpl implements GoodsService {
         }
         ResponMsg responMsg = null;
         try {
-            goods.setPayNum(goods.getPrice());
+            goods.setState(Cont.SELL_READY);
+            goods.setPayNum(0);
             goodsMapper.insert(goods);
             responMsg = ResponMsg.newSuccess(null);
         } catch (SqlSessionException e) {

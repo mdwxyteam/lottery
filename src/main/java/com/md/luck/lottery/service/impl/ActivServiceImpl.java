@@ -49,7 +49,7 @@ public class ActivServiceImpl implements ActivService {
             activ.setState(1);
             activMapper.add(activ);
             long id = activ.getId();
-            for (PrizeChild prizeChild : activ.getPrizeList()) {
+            for (AtivPrize prizeChild : activ.getPrizeList()) {
                 AtivPrize ativPrize = new AtivPrize();
                 ativPrize.setPrizeCount(prizeChild.getPrizeCount());
                 ativPrize.setPrizeId(prizeChild.getId());
@@ -119,15 +119,18 @@ public class ActivServiceImpl implements ActivService {
             return ResponMsg.newFail(null).setMsg("缺省参数！");
         }
         try {
-            int i = activMapper.updateActiv(activ);
-            if (i == Cont.ONE) {
-
-                List<PrizeChild> prizeChildren = new ArrayList<>();
+            activ.setReleaseTime(null);
+            int i = 0;
+            if (activ.hasNotEmpty()) {
+                i = activMapper.updateActiv(activ);
+            }
+            if (activ.isPrizeBool()) {
+                List<AtivPrize> prizeChildren = new ArrayList<>();
                 if (activ.getPrizeList() != null) {
-                    for (PrizeChild prizeChild : activ.getPrizeList()) {
+                    for (AtivPrize prizeChild : activ.getPrizeList()) {
 
                         // 没有id的表示新的奖品
-                        if (prizeChild.getId() == 0l) {
+                        if (ObjectUtil.hasEmpty(prizeChild.getAtivId())) {
                             AtivPrize ativPrize = new AtivPrize();
                             ativPrize.setPrizeCount(prizeChild.getPrizeCount());
                             ativPrize.setPrizeId(prizeChild.getId());
@@ -142,12 +145,12 @@ public class ActivServiceImpl implements ActivService {
                     }
                 }
 
-                if (activ.isPrizeBool()) {
+
                     List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
                     // 对比新的奖品与以前的奖品
                     for (AtivPrize ativPrize : ativPrizes) {
                         boolean as = false;
-                        for (PrizeChild prizeChild : prizeChildren) {
+                        for (AtivPrize prizeChild : prizeChildren) {
                             if (ativPrize.getId() == prizeChild.getId()) {
                                 as = true;
                                 continue;
@@ -161,7 +164,7 @@ public class ActivServiceImpl implements ActivService {
                     }
                 }
 
-            }
+//            }
 //            return ResponMsg.newFail(null).setMsg("修改失败！");
         } catch (SqlSessionException e) {
             bl = true;
@@ -171,5 +174,21 @@ public class ActivServiceImpl implements ActivService {
             return ResponMsg.newFail(null).setMsg("修改失败！");
         }
         return ResponMsg.newSuccess(null);
+    }
+
+    @Override
+    public ResponMsg queryByCarousel(Integer carousel) {
+        if (ObjectUtil.hasEmpty(carousel)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数!");
+        }
+        ResponMsg responMsg = null;
+        try{
+            List<Activ> activs = activMapper.queryByCarousel(carousel);
+            responMsg = ResponMsg.newSuccess(activs);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败!");
+            log.error(e.getMessage());
+        }
+        return responMsg;
     }
 }

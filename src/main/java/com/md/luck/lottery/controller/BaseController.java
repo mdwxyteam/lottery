@@ -1,5 +1,6 @@
 package com.md.luck.lottery.controller;
 
+import cn.hutool.db.sql.Order;
 import com.md.luck.lottery.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,5 +26,9 @@ public class BaseController {
     protected ActivService activService;
     @Autowired
     protected GoodsService goodsService;
+    @Autowired
+    protected PayCodeService payCodeService;
+    @Autowired
+    protected OrderService orderService;
 
 }

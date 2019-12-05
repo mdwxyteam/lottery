@@ -18,4 +18,10 @@ public interface ActivPrizeService {
      * @return ResponMsg
      */
     ResponMsg queryActivPrize(long ativId);
+
+    /**
+     * 查询上轮播的活动信息
+     * @return ResponMsg
+     */
+    ResponMsg queryByCarousel(Integer carousel);
 }

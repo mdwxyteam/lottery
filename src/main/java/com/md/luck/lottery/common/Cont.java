@@ -4,6 +4,7 @@ public final class Cont {
     public static final int ZERO = 0;
     public static final int ONE = 1;
     public static final int TWO = 2;
+    public static final int NEGATIVE_ONE = -1;
 
     /**
      * 正在售卖状态

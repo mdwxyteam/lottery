@@ -51,4 +51,7 @@ public interface ActivMapper {
             "WHERE id = #{activ.id}" +
             "</script>")
     int updateActiv(@Param("activ") Activ activ);
+
+    @Select("SELECT * FROM lottery_activ WHERE carousel = #{carousel}")
+    List<Activ> queryByCarousel(@Param("carousel") Integer carousel);
 }

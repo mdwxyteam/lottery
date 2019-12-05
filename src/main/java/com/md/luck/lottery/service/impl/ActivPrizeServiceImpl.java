@@ -2,6 +2,7 @@ package com.md.luck.lottery.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.md.luck.lottery.common.ResponMsg;
+import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.AtivPrize;
 import com.md.luck.lottery.mapper.AtivPrizeMapper;
 import com.md.luck.lottery.service.ActivPrizeService;
@@ -49,17 +50,31 @@ public class ActivPrizeServiceImpl implements ActivPrizeService {
         if (ativId == 0l) {
             return ResponMsg.newFail("缺省必要参数！");
         }
-        boolean isbc = false;
         List<AtivPrize> ativPrizeList = null;
+        ResponMsg responMsg = null;
         try {
             ativPrizeList = ativPrizeMapper.queryByAtivId(ativId);
+            responMsg = ResponMsg.newSuccess(ativPrizeList);
         } catch (SqlSessionException e) {
-            isbc = true;
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败！");
             log.error(e.getMessage());
         }
-        if (isbc || ObjectUtil.hasEmpty(ativPrizeList)) {
-            return ResponMsg.newFail(null).setMsg("操作失败！");
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg queryByCarousel(Integer carousel) {
+        if (ObjectUtil.hasEmpty(carousel)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数!");
         }
-        return ResponMsg.newSuccess(ativPrizeList);
+        ResponMsg responMsg = null;
+        try{
+            List<AtivPrize> activs = ativPrizeMapper.queryByCarousel(carousel);
+            responMsg = ResponMsg.newSuccess(activs);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败!");
+            log.error(e.getMessage());
+        }
+        return responMsg;
     }
 }

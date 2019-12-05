@@ -44,4 +44,10 @@ public interface ActivService {
      * @return ResponMsg
      */
     ResponMsg updateActiv(ActivRequestBody activRequestBody);
+
+    /**
+     * 查询上轮播的活动信息
+     * @return ResponMsg
+     */
+    ResponMsg queryByCarousel(Integer carousel);
 }

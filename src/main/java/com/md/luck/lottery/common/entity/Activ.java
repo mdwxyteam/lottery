@@ -2,6 +2,8 @@ package com.md.luck.lottery.common.entity;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.md.luck.lottery.common.util.MaObjUtil;
 import lombok.Data;
 
 import java.util.Date;
@@ -82,7 +84,13 @@ public class Activ {
      */
     private Integer activType;
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
+        if (MaObjUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
+            return true;
+        }
+        return false;
+    }
+    public boolean hasNotEmpty() {
+        if (!MaObjUtil.isAllEmpty(carousel, activType, sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
             return true;
         }
         return false;
