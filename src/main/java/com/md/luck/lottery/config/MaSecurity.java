@@ -1,11 +1,7 @@
 package com.md.luck.lottery.config;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.asymmetric.AsymmetricAlgorithm;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.md.luck.lottery.common.util.MaObjUtil;
@@ -50,21 +46,14 @@ public class MaSecurity {
      * @return 加密后的结果
      */
     public String encrypt(String content) {
-        if (null == key) {
-            if (MaObjUtil.isEmpty(publicKey)) {
-                getPublicKey();
-            }
-            key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), publicKey.getBytes()).getEncoded();
-        }
-        // 构建
-        AES aes = SecureUtil.aes(key);
+        AES aes = creatAes();
         // 加密
         String se = aes.encryptHex(content);
         log.info("encryptStr:" + se);
         return se;
     }
 
-    public String decrypt(String content){
+    private AES creatAes() {
         if (null == key) {
             if (MaObjUtil.isEmpty(publicKey)) {
                 getPublicKey();
@@ -72,6 +61,11 @@ public class MaSecurity {
             key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), publicKey.getBytes()).getEncoded();
         }
         AES aes = SecureUtil.aes(key);
+        return aes;
+    }
+
+    public String decrypt(String content) {
+        AES aes = creatAes();
         // 解密为字符串
         String decryptStr = aes.decryptStr(content, CharsetUtil.CHARSET_UTF_8);
         log.info("decryptStr:" + decryptStr);

@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
                     Goods goods1 = new Goods();
                     goods1.setId(goods.getId());
                     int p = goods.getPrice();
-                    int c = goods.getPayNum() + 1;
+                    int c = goods.getPayNum() + price;
                     goods1.setPayNum(c);
                     if (p == c) {
                         //商品停止售卖，改变状态为售卖结束
