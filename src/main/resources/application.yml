@@ -2,8 +2,8 @@ spring:
   application:
     name: quzrtz-cluster-node-second
   datasource:
-    url: jdbc:mysql://182.61.39.185:3306/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username:
+    url: jdbc:mysql://18/lottery?serverTimezone=GMT&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: m
     password: c
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -37,7 +37,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mysql://182.61.39.189:3306/lottery?characterEncoding=utf-8
+              URL: jdbc:mysql://182.0/lottery?characterEncoding=utf-8
               user: m
               password: c
               driver: com.mysql.jdbc.Driver
@@ -48,12 +48,26 @@ spring:
     #jdbc:
     #initialize-schema: never
 server:
-  port: 8080
-
+  port: 8082
+logging:
+  level:
+    com.md.luck.lottery.mapper : debug
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+public:
+  key: 12345678
+jwt:
+  secret: secret
+  expiration: 7200000
+  token: Authorization
+weixin:
+  appid: wxdaa41879edaa1cf5
+  appsecret: 78e9bf4a0d432e150acdec77f0276c48
+  redirecturi: http://zwpj6g.natappfree.cc/weixin/api/userInfo
+  returnurl: http://4jqi4d.natappfree.cc
+  loginurl: http://4jqi4d.natappfree.cc
 #静态资源对外暴露的访问路径
 file:
   staticAccessPath: /upload/**

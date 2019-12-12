@@ -2,6 +2,7 @@ package com.md.luck.lottery.controller;
 
 import cn.hutool.db.sql.Order;
 import com.md.luck.lottery.service.*;
+import com.md.luck.lottery.service.impl.WeixinServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,5 +31,7 @@ public class BaseController {
     protected PayCodeService payCodeService;
     @Autowired
     protected OrderService orderService;
+    @Autowired
+    protected WexinService weixinService;
 
 }

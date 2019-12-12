@@ -10,8 +10,21 @@ import org.springframework.web.bind.annotation.*;
  * 微信端api
  */
 @RestController
-@RequestMapping("/lottery/api")
+@RequestMapping("/weixin/api")
 public class WeixinController extends BaseController {
+
+    @GetMapping("/code")
+    public ResponMsg getCode() {
+        return weixinService.getCode();
+    }
+//    @GetMapping("/userInfo")
+//    public ResponMsg getUserInfo(@RequestParam("code") String code,
+//                              @RequestParam("state") String state) {
+//        System.out.println(code);
+//        System.out.println(state);
+//        ResponMsg responMsg = weixinService.getToken(state, code);
+//        return responMsg;
+//    }
     /**
      * 获取所有正在售卖商品数据
      * @return ResponMsg

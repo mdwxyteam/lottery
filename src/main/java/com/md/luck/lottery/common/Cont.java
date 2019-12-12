@@ -6,6 +6,8 @@ public final class Cont {
     public static final int TWO = 2;
     public static final int NEGATIVE_ONE = -1;
 
+    public static final Long WEIXIN_USER_ROLE = 1L;
+
     /**
      * 正在售卖状态
      */
