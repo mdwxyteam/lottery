@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/weixin/api/code").permitAll()
-//                .antMatchers("/weixin/api/*").permitAll()
+                .antMatchers("/web/api/*").permitAll()
                 .antMatchers("/weixin/api/userInfo").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
                 .anyRequest().authenticated()       // 剩下所有的验证都需要验证

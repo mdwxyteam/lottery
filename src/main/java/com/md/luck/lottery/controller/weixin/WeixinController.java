@@ -25,8 +25,10 @@ public class WeixinController extends BaseController {
 //        ResponMsg responMsg = weixinService.getToken(state, code);
 //        return responMsg;
 //    }
+
     /**
      * 获取所有正在售卖商品数据
+     *
      * @return ResponMsg
      */
     @GetMapping("/goods/state")
@@ -36,6 +38,7 @@ public class WeixinController extends BaseController {
 
     /**
      * 查询上轮播的所有活动
+     *
      * @return ResponMsg
      */
     @GetMapping("/activ/carousel")
@@ -44,7 +47,18 @@ public class WeixinController extends BaseController {
     }
 
     /**
+     * 通过openid获取用户数据
+     * @param openid openid
+     * @return ResponMsg
+     */
+    @GetMapping("/user/info")
+    public ResponMsg getUserInfo(@RequestParam("openid") String openid) {
+        return customerService.getUserInfo(openid);
+    }
+
+    /**
      * 创建订单
+     *
      * @param requestBodyOrder 订单参数
      * @return ResponMsg
      */

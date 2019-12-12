@@ -33,5 +33,6 @@ public class BaseController {
     protected OrderService orderService;
     @Autowired
     protected WexinService weixinService;
-
+    @Autowired
+    protected CustomerService customerService;
 }
