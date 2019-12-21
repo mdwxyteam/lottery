@@ -1,17 +1,29 @@
 package com.md.luck.lottery.controller.weixin;
 
+import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.BaseEntity;
+import com.md.luck.lottery.common.util.WechatMpConfig;
 import com.md.luck.lottery.controller.BaseController;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/weixin/api")
 public class RedrectController extends BaseController {
+
+    @Autowired
+    private WechatMpConfig wechatMpConfig;
 
     @Value("${weixin.loginurl}")
     private String loginurl;
@@ -26,5 +38,25 @@ public class RedrectController extends BaseController {
     @RequestMapping("/login")
     public String login() {
         return "redirect:" + loginurl;
+    }
+
+    /**
+     * 分享H5相关页码
+     * @param request request
+     * @param url
+     * @return
+     */
+    @RequestMapping(value = "/share/config", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponMsg wxJsSdkConfig(HttpServletRequest request, String url) {
+        ResponMsg responMsg = null;
+        try { // 直接调用wxMpServer 接口
+            WxMpService wxMpService = wechatMpConfig.wxMpService();
+            WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature(url);
+            responMsg = ResponMsg.newSuccess(wxJsapiSignature);
+        } catch (WxErrorException e) {
+            responMsg = ResponMsg.newFail(e).setMsg("异常..");
+        }
+        return responMsg;
     }
 }

@@ -37,6 +37,10 @@ public class Goods {
      * 商品相关讨论群
      */
     private String goodsGroup;
+    /**
+     * 群二维码
+     */
+    private String groupIcon;
 
     public boolean isEmpty() {
         if (ObjectUtil.hasEmpty(price, state, payNum, goodsName, goodsImg, actualPrice)){

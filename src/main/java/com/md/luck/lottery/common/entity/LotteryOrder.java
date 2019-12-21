@@ -2,11 +2,14 @@ package com.md.luck.lottery.common.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 订单实体类
  */
 @Data
 public class LotteryOrder extends BaseEntity{
+
     /**
      * 商品名称
      */
@@ -22,7 +25,7 @@ public class LotteryOrder extends BaseEntity{
     /**
      * 订单生成时间
      */
-    private String creatTime;
+    private Date creatTime;
     /**
      * 用户唯一标识
      */

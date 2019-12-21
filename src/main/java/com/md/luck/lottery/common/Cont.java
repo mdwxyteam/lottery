@@ -8,6 +8,10 @@ public final class Cont {
 
     public static final Long WEIXIN_USER_ROLE = 1L;
 
+    public static final int MAX_PAGE_SIZE = 36;
+
+    public static final Integer[] RANDOM_LIMIT = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
     /**
      * 正在售卖状态
      */

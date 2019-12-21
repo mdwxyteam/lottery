@@ -1,5 +1,6 @@
 package com.md.luck.lottery.config.authority;
 
+import com.md.luck.lottery.service.WexinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,6 +31,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
 
+//    @Autowired
+//    UserDetailsService userDetailsService;
+//    @Autowired
+//     WexinService weixinService;
+//    @Autowired
+//     JwtTokenUtil jwtTokenUtil;
+//     String tokenHeader;
+
 
     //先来这里认证一下
     @Autowired
@@ -43,13 +53,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/lottery/pay/**").permitAll()
+                .antMatchers("/weixin/api/**").permitAll()
+                .antMatchers("/web/api/**").permitAll()
                 .antMatchers("/weixin/api/code").permitAll()
-                .antMatchers("/web/api/*").permitAll()
                 .antMatchers("/weixin/api/userInfo").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
                 .anyRequest().authenticated()       // 剩下所有的验证都需要验证
                 .and()
                 .csrf().disable()                      // 禁用 Spring Security 自带的跨域处理
+//                .cors()                     // 禁用 Spring Security 自带的跨域处理
+//                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
 

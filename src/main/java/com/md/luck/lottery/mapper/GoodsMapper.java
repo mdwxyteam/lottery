@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface GoodsMapper {
 
-    @Insert("INSERT INTO lottery_goods (goods_name, goods_img, price, state, pay_num, actual_price, goods_group)" +
-            "VALUES (#{goods.goodsName}, #{goods.goodsImg}, #{goods.price}, #{goods.state}, #{goods.payNum}), #{goods.actualPrice}, #{goods.goodsGroup}")
+    @Insert("INSERT INTO lottery_goods (goods_name, goods_img, price, state, pay_num, actual_price, goods_group, group_icon)" +
+            "VALUES (#{goods.goodsName}, #{goods.goodsImg}, #{goods.price}, #{goods.state}, #{goods.payNum}), #{goods.actualPrice}, #{goods.goodsGroup}, #{goods.groupIcon}")
     int insert(@Param("goods") Goods goods);
 
     @Select("<script> SELECT * FROM lottery_goods WHERE " +
@@ -25,15 +25,22 @@ public interface GoodsMapper {
             "<if test='goods.state != null'> state = #{goods.state}, </if>" +
             "<if test='goods.actualPrice != null'> actual_price = #{goods.actualPrice}, </if>" +
             "<if test='goods.goodsGroup != null'> goods_group = #{goods.goodsGroup}, </if>" +
+            "<if test='goods.groupIcon != null'> group_icon = #{goods.groupIcon}, </if>" +
             "<if test='goods.payNum != null'> pay_num = #{goods.payNum} </if>" +
             "</set>" +
             "WHERE id = #{goods.id}" +
             "</script>")
     int edit(@Param("goods") Goods goods);
 
-    @Select("SELECT * FROM lottery_goods WHERE state = #{state}")
+    @Select("SELECT id, goods_name, goods_img, price, actual_price, pay_num  FROM lottery_goods WHERE state = #{state}")
+    List<Goods> queryByStateWeixin(@Param("state") int state);
+
+    @Select("SELECT *  FROM lottery_goods WHERE state = #{state}")
     List<Goods> queryByState(@Param("state") int state);
 
     @Select("SELECT * FROM lottery_goods WHERE state = #{state} AND id = #{id}")
     Goods queryByStateAndId(@Param("state") int state, @Param("id") Long id);
+
+    @Select("SELECT * FROM lottery_goods WHERE id = #{id}")
+    Goods queryById( @Param("id") Long id);
 }

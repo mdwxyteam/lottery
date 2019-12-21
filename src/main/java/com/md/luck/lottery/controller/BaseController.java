@@ -35,4 +35,10 @@ public class BaseController {
     protected WexinService weixinService;
     @Autowired
     protected CustomerService customerService;
+    @Autowired
+    protected ActivityAddRecordService activityAddRecordService;
+    @Autowired
+    protected CastCulpService castCulpService;
+    @Autowired
+    protected LuckRecordService luckRecordService;
 }

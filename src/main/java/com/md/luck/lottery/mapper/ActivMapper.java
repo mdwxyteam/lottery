@@ -1,7 +1,11 @@
 package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.Activ;
+import com.md.luck.lottery.common.entity.WeixinActivChildChild;
+import com.md.luck.lottery.common.entity.WeixnActiv;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -54,4 +58,40 @@ public interface ActivMapper {
 
     @Select("SELECT * FROM lottery_activ WHERE carousel = #{carousel}")
     List<Activ> queryByCarousel(@Param("carousel") Integer carousel);
+
+
+    @Select("SELECT * FROM lottery_activ WHERE activ_type = #{activType} AND state =#{state}")
+    List<Activ> queryByActivTypeAndState(@Param("activType") Integer activType, @Param("state") Integer state);
+
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state}")
+    @Results({
+            @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+            @Result(property = "ativPrizes", column = "id",
+                    many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
+    })
+    List<WeixnActiv> queryWeixinActiv(@Param("activType") Integer activType, @Param("state") Integer state);
+
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name " +
+            "FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state} AND la.id = #{id}")
+    @Results({
+            @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+            @Result(property = "ativPrizes", column = "id",
+                    many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
+    })
+    WeixinActivChildChild queryWeixinActivByIdAndActivTypeAndstate(@Param("activType") Integer activType, @Param("state") Integer state, @Param("id") Long id);
+
+    @Select("SELECT popularity FROM  lottery_activ  WHERE id = #{id}")
+    int queryPopularity(@Param("id") Long id);
+
+    @Update("UPDATE lottery_activ SET popularity = #{popularity} WHERE id = #{id}")
+    int updatePopularity(@Param("popularity") Integer popularity, @Param("id") Long id);
+
+    @Select("SELECT count_num FROM  lottery_activ  WHERE id = #{id}")
+    int queryCountNum(@Param("id") Long id);
+
+    @Update("UPDATE lottery_activ SET count_num = #{countNum} WHERE id = #{id}")
+    int updateCountNum(@Param("countNum") Integer countNum, @Param("id") Long id);
+
+    @Update("UPDATE lottery_activ SET popularity = #{popularity}, state = #{state} WHERE id = #{id}")
+    int updatePopularityAndState(@Param("popularity") Integer popularity, @Param("state") Integer state, @Param("id") Long id);
 }

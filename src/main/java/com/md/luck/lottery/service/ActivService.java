@@ -3,11 +3,14 @@ package com.md.luck.lottery.service;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.ActivRequestBody;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ActivService {
 
     /**
      * 新增活动
+     *
      * @param activ activ
      * @return ResponMsg
      */
@@ -15,17 +18,19 @@ public interface ActivService {
 
     /**
      * 条件分页查询活动信息
-     * @param pageNum 页码
-     * @param pageSize 页大小
+     *
+     * @param pageNum       页码
+     * @param pageSize      页大小
      * @param conditionType 开奖条件类型：1： 时间限制；2：人数限制
-     * @param sponsorName 赞助商名称
+     * @param sponsorName   赞助商名称
      * @return ResponMsg
      */
     ResponMsg conditionPage(int pageNum, int pageSize, int conditionType, String sponsorName);
 
     /**
      * 禁用启用
-     * @param id 赞id
+     *
+     * @param id       赞id
      * @param delState 赞助商状态 {0：禁用；1：启用}
      * @return ResponMsg
      */
@@ -33,6 +38,7 @@ public interface ActivService {
 
     /**
      * 通过id查询活动
+     *
      * @param id id
      * @return ResponMsg
      */
@@ -40,6 +46,7 @@ public interface ActivService {
 
     /**
      * 更新活动
+     *
      * @param activRequestBody activRequestBody
      * @return ResponMsg
      */
@@ -47,7 +54,26 @@ public interface ActivService {
 
     /**
      * 查询上轮播的活动信息
+     *
      * @return ResponMsg
      */
     ResponMsg queryByCarousel(Integer carousel);
+
+    /**
+     * 微信端展示活动列表数据
+     *
+     * @param activType 活动类型 0:抽奖；1:表示抢
+     * @param state     1:未结束；0结束；-1测试
+     * @return ResponMsg
+     */
+    ResponMsg queryWeixinActiv(Integer activType, Integer state);
+
+    /**
+     * 通过活动id查询活动详情信息
+     * openid 登录中获取的
+     * @param activId activId
+     * @return ResponMsg
+     */
+    ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId);
+
 }

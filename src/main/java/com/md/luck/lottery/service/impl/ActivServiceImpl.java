@@ -8,12 +8,10 @@ import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.PrizeChild;
 import com.md.luck.lottery.common.ResponMsg;
-import com.md.luck.lottery.common.entity.Activ;
-import com.md.luck.lottery.common.entity.ActivRequestBody;
-import com.md.luck.lottery.common.entity.AtivPrize;
+import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.common.util.ConUtil;
-import com.md.luck.lottery.mapper.ActivMapper;
-import com.md.luck.lottery.mapper.AtivPrizeMapper;
+import com.md.luck.lottery.common.util.MaObjUtil;
+import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.ActivService;
 import com.md.luck.lottery.service.SchedulService;
 import org.apache.commons.logging.Log;
@@ -24,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ActivServiceImpl implements ActivService {
@@ -37,6 +37,12 @@ public class ActivServiceImpl implements ActivService {
     private AtivPrizeMapper ativPrizeMapper;
     @Autowired
     private SchedulService schedulService;
+    @Autowired
+    private ActivityAddRecordMapper activityAddRecordMapper;
+    @Autowired
+    private CastCulpMapper castCulpMapper;
+    @Autowired
+    private LuckRecordMapper luckRecordMapper;
 
     @Transactional(rollbackFor = SqlSessionException.class)
     @Override
@@ -47,6 +53,7 @@ public class ActivServiceImpl implements ActivService {
         boolean ie = false;
         try {
             activ.setState(1);
+            activ.setDelState(1);
             activMapper.add(activ);
             long id = activ.getId();
             for (AtivPrize prizeChild : activ.getPrizeList()) {
@@ -146,23 +153,23 @@ public class ActivServiceImpl implements ActivService {
                 }
 
 
-                    List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
-                    // 对比新的奖品与以前的奖品
-                    for (AtivPrize ativPrize : ativPrizes) {
-                        boolean as = false;
-                        for (AtivPrize prizeChild : prizeChildren) {
-                            if (ativPrize.getId() == prizeChild.getId()) {
-                                as = true;
-                                continue;
-                                //判断内容，跟新
-                            }
-                        }
-                        if (!as) {
-                            //删除
-                            ativPrizeMapper.delAtivPrize(ativPrize.getId());
+                List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activ.getId());
+                // 对比新的奖品与以前的奖品
+                for (AtivPrize ativPrize : ativPrizes) {
+                    boolean as = false;
+                    for (AtivPrize prizeChild : prizeChildren) {
+                        if (ativPrize.getId() == prizeChild.getId()) {
+                            as = true;
+                            continue;
+                            //判断内容，跟新
                         }
                     }
+                    if (!as) {
+                        //删除
+                        ativPrizeMapper.delAtivPrize(ativPrize.getId());
+                    }
                 }
+            }
 
 //            }
 //            return ResponMsg.newFail(null).setMsg("修改失败！");
@@ -182,11 +189,82 @@ public class ActivServiceImpl implements ActivService {
             return ResponMsg.newFail(null).setMsg("缺省参数!");
         }
         ResponMsg responMsg = null;
-        try{
+        try {
             List<Activ> activs = activMapper.queryByCarousel(carousel);
             responMsg = ResponMsg.newSuccess(activs);
         } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败!");
+            log.error(e.getMessage());
+        }
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg queryWeixinActiv(Integer activType, Integer state) {
+        if (MaObjUtil.hasEmpty(activType, state)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数");
+        }
+        ResponMsg responMsg = null;
+        try {
+            List<WeixnActiv> activs = activMapper.queryWeixinActiv(activType, state);
+            responMsg = ResponMsg.newSuccess(activs);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败");
+            log.error(e.getMessage());
+        }
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId) {
+        if (MaObjUtil.hasEmpty(openid, activType, state, activId)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数");
+        }
+        ResponMsg responMsg = null;
+        try {
+            WeixinActivChildChild weixinActivChildChild = activMapper.queryWeixinActivByIdAndActivTypeAndstate(activType, state, activId);
+            if (MaObjUtil.isEmpty(weixinActivChildChild)) {
+                return ResponMsg.newFail(null).setMsg("没有数据");
+            }
+            ActivityAddRecord activityAddRecord = null;
+            LuckyRecord luckyRecord = null;
+            if (activType == Cont.ONE) {
+
+                activityAddRecord = activityAddRecordMapper.queryByOpenidAndId(openid, activId);
+            } else if (activType == Cont.ZERO) {
+                luckyRecord = luckRecordMapper.queryByActivIdAndOpenid(openid, activId);
+            }
+
+
+            Map<String, Object> resMap = new HashMap<>();
+            if (activType == Cont.ONE) {
+                if (MaObjUtil.isEmpty(activityAddRecord)) {
+                    resMap.put("recordBool", false);
+                    CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(openid, activId);
+                    if (MaObjUtil.isEmpty(castCulp)) {
+                        resMap.put("castBool", false);
+                    } else {
+                        resMap.put("castBool", true);
+                        ActivityAddRecord addRecord = activityAddRecordMapper.queryById(castCulp.getActAddRecordId());
+                        resMap.put("recordBool", true);
+                        resMap.put("activityAddRecord", addRecord);
+                    }
+                } else {
+                    resMap.put("recordBool", true);
+                    resMap.put("activityAddRecord", activityAddRecord);
+                    resMap.put("castBool", false);
+                }
+            } else if (activType == Cont.ZERO) {
+               if (MaObjUtil.isEmpty(luckyRecord)) {
+                   resMap.put("recordBool", false);
+               } else {
+                   resMap.put("recordBool", true);
+               }
+            }
+            resMap.put("weixinActivChildChild", weixinActivChildChild);
+            responMsg = ResponMsg.newSuccess(resMap);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());
         }
         return responMsg;

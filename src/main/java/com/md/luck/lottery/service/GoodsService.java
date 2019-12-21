@@ -34,4 +34,9 @@ public interface GoodsService {
      * @return ResponMsg
      */
     ResponMsg queryByState(int state);
+    /**
+     * 微信查询商品信息
+     * @return ResponMsg
+     */
+    ResponMsg queryByStateWeixin();
 }

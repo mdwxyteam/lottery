@@ -83,6 +83,12 @@ public class Activ {
      * 0:抽奖；1:表示抢
      */
     private Integer activType;
+
+    /**
+     * 抢类型活动中需要的 人气
+     */
+    private Integer popularity;
+
     public boolean isEmpty() {
         if (MaObjUtil.hasEmpty(sponsorid, sponsorName, location, address, condition, sponsorClaim, state, adv, conditionType, markdownAdv)) {
             return true;
