@@ -17,4 +17,11 @@ public interface ActivityAddRecordService {
      * @return ResponMsg
      */
     ResponMsg queryAllCommitGrab(String teamPlayerOpenid, Integer pageNum, Integer pageSize, Long activId);
+
+    /**
+     * 通过id查询活动记录
+     * @param id id
+     * @return ResponMsg
+     */
+    ResponMsg queryById(Long id);
 }

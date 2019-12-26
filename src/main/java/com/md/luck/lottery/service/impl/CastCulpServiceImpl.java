@@ -5,16 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
-import com.md.luck.lottery.common.entity.ActivityAddRecord;
-import com.md.luck.lottery.common.entity.CastCulp;
-import com.md.luck.lottery.common.entity.Customer;
+import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.common.entity.request.HelpGrab;
 import com.md.luck.lottery.common.entity.respons.CastCulpChild;
 import com.md.luck.lottery.common.util.MaObjUtil;
-import com.md.luck.lottery.mapper.ActivMapper;
-import com.md.luck.lottery.mapper.ActivityAddRecordMapper;
-import com.md.luck.lottery.mapper.CastCulpMapper;
-import com.md.luck.lottery.mapper.CustomerMapper;
+import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.CastCulpService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,6 +33,10 @@ public class CastCulpServiceImpl implements CastCulpService {
     CastCulpMapper castCulpMapper;
     @Autowired
     ActivityAddRecordMapper activityAddRecordMapper;
+    @Autowired
+    AtivPrizeMapper ativPrizeMapper;
+    @Autowired
+    LuckProMapper luckProMapper;
 
     @Transactional(rollbackFor = SqlSessionException.class)
     @Override
@@ -57,9 +56,32 @@ public class CastCulpServiceImpl implements CastCulpService {
             // 助力数量
             int ran = RandomUtil.randomEle(Cont.RANDOM_LIMIT);
             // 修改活动人气数
-            int popularity = activMapper.queryPopularity(helpGrab.getActivId());
-            popularity ++;
-            activMapper.updatePopularity(popularity, helpGrab.getActivId());
+            Activ activ = activMapper.activById(helpGrab.getActivId());
+            int popularity = activ.getPopularity();
+            popularity++;
+            if (popularity == Integer.parseInt(activ.getCondition())) {
+                activMapper.updatePopularityAndState(popularity, Cont.ZERO, helpGrab.getActivId());
+                List<ActivityAddRecord> activityAddRecordList = activityAddRecordMapper.queryByActivId(helpGrab.getActivId());
+                List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(helpGrab.getActivId());
+                // 奖品对应的或得者
+                for (AtivPrize ativPrize : ativPrizes) {
+                    int ran1 = RandomUtil.randomInt(1, activityAddRecordList.size());
+                    ActivityAddRecord addRecord = activityAddRecordList.get(ran1);
+                    activityAddRecordList.remove(addRecord);
+                    LuckPeo luckPeo = new LuckPeo();
+                    luckPeo.setIcon(addRecord.getIcon());
+                    luckPeo.setNickName(addRecord.getNickName());
+                    luckPeo.setOpenid(addRecord.getOpenid());
+                    luckPeo.setRank(Integer.parseInt(ativPrize.getRanking()));
+                    luckPeo.setRecordId(addRecord.getId());
+                    luckPeo.setPrizeName(ativPrize.getPrizeDescription());
+                    luckPeo.setActivId(helpGrab.getActivId());
+                    luckProMapper.insert(luckPeo);
+//                    luckRecordMapper.updateLuck(Cont.ZERO, luckyRecordLucky.getId());
+                }
+            } else {
+                activMapper.updatePopularity(popularity, helpGrab.getActivId());
+            }
             // 更新参与记录中助力数量，助力人数
             ActivityAddRecord activityAddRecordYs = activityAddRecordMapper.queryTeamMateCountAndCulp(helpGrab.getGrabRecordId(), helpGrab.getOepnid());
             int teamMateCount = activityAddRecordYs.getTeamMateCount() + 1;
@@ -80,7 +102,7 @@ public class CastCulpServiceImpl implements CastCulpService {
             castCulpChild.setTotalCulp(activityAddRecord.getCulp());
             castCulpChild.setRank(activityAddRecord.getRank());
             responMsg = ResponMsg.newSuccess(castCulpChild);
-        }catch (SqlSessionException e) {
+        } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());
         }
@@ -88,11 +110,11 @@ public class CastCulpServiceImpl implements CastCulpService {
     }
 
     @Override
-    public ResponMsg queryPage( Integer pageNum, Integer pageSize, Long recordId) {
+    public ResponMsg queryPage(Integer pageNum, Integer pageSize, Long recordId) {
         if (MaObjUtil.hasEmpty(pageNum, pageSize, recordId)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
-        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
+        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE : pageSize;
         ResponMsg responMsg = null;
         try {
             PageHelper.startPage(pageNum, pageSize);
@@ -100,7 +122,7 @@ public class CastCulpServiceImpl implements CastCulpService {
             PageInfo<CastCulp> pageInfo = new PageInfo<CastCulp>(castCulpList);
 
             responMsg = ResponMsg.newSuccess(pageInfo);
-        }catch (SqlSessionException e) {
+        } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());
         }
@@ -108,7 +130,7 @@ public class CastCulpServiceImpl implements CastCulpService {
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i<1000; i++) {
+        for (int i = 0; i < 1000; i++) {
 
             System.out.println(RandomUtil.randomEle(Cont.RANDOM_LIMIT));
         }

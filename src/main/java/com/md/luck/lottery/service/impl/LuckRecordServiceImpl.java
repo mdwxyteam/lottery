@@ -1,16 +1,13 @@
 package com.md.luck.lottery.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
-import com.md.luck.lottery.common.entity.Activ;
-import com.md.luck.lottery.common.entity.Customer;
-import com.md.luck.lottery.common.entity.LuckyRecord;
+import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.common.util.MaObjUtil;
-import com.md.luck.lottery.mapper.ActivMapper;
-import com.md.luck.lottery.mapper.CustomerMapper;
-import com.md.luck.lottery.mapper.LuckRecordMapper;
+import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.LuckRecordService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,6 +27,10 @@ public class LuckRecordServiceImpl implements LuckRecordService {
     ActivMapper activMapper;
     @Autowired
     CustomerMapper customerMapper;
+    @Autowired
+    AtivPrizeMapper ativPrizeMapper;
+    @Autowired
+    LuckProMapper luckProMapper;
 
     @Override
     public ResponMsg queryByActivIdAndOpenid(String openid, Long activId) {
@@ -65,12 +66,30 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                     //活动结束，更新state
                     activMapper.updatePopularityAndState(newPopularity, Cont.ZERO, activId);
                     // 抽奖   1、查出所有抽奖人员id;2、随机抽取奖品数量人数，即为奖品或得者；3、更新信息
-                    // todo 抽奖
+                    List<LuckyRecord> records = luckRecordMapper.queryByActivId(activId);
+                    List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
+                    // 奖品对应的或得者
+                    for (AtivPrize ativPrize: ativPrizes) {
+                        int ran = RandomUtil.randomInt(1, records.size());
+                        LuckyRecord luckyRecordLucky = records.get(ran);
+                        records.remove(luckyRecordLucky);
+                        LuckPeo luckPeo = new LuckPeo();
+                        luckPeo.setIcon(luckyRecordLucky.getIcon());
+                        luckPeo.setNickName(luckyRecordLucky.getNickName());
+                        luckPeo.setOpenid(luckyRecordLucky.getOpenid());
+                        luckPeo.setRank(Integer.parseInt(ativPrize.getRanking()));
+                        luckPeo.setRecordId(luckyRecordLucky.getId());
+                        luckPeo.setPrizeName(ativPrize.getPrizeDescription());
+                        luckPeo.setActivId(activId);
+                        luckProMapper.insert(luckPeo);
+                        luckRecordMapper.updateLuck(Cont.ZERO, luckyRecordLucky.getId());
+                    }
+
                 } else {
                     activMapper.updatePopularity(newPopularity, activId);
                 }
 
-                responMsg = ResponMsg.newSuccess(null);
+                responMsg = ResponMsg.newSuccess(newPopularity);
             }
         } catch (
                 SqlSessionException e) {

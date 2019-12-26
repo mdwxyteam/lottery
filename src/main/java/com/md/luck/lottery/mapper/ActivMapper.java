@@ -71,14 +71,14 @@ public interface ActivMapper {
     })
     List<WeixnActiv> queryWeixinActiv(@Param("activType") Integer activType, @Param("state") Integer state);
 
-    @Select("SELECT la.id, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name " +
-            "FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state} AND la.id = #{id}")
+    @Select("SELECT la.id, la.state, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name " +
+            "FROM lottery_activ la WHERE la.activ_type = #{activType}  AND la.id = #{id}")
     @Results({
             @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
             @Result(property = "ativPrizes", column = "id",
                     many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
     })
-    WeixinActivChildChild queryWeixinActivByIdAndActivTypeAndstate(@Param("activType") Integer activType, @Param("state") Integer state, @Param("id") Long id);
+    WeixinActivChildChild queryWeixinActivByIdAndActivType(@Param("activType") Integer activType,  @Param("id") Long id);
 
     @Select("SELECT popularity FROM  lottery_activ  WHERE id = #{id}")
     int queryPopularity(@Param("id") Long id);

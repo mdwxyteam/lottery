@@ -41,4 +41,6 @@ public class BaseController {
     protected CastCulpService castCulpService;
     @Autowired
     protected LuckRecordService luckRecordService;
+    @Autowired
+    protected LuckPeoService luckPeoService;
 }

@@ -200,14 +200,17 @@ public class ActivServiceImpl implements ActivService {
     }
 
     @Override
-    public ResponMsg queryWeixinActiv(Integer activType, Integer state) {
+    public ResponMsg queryWeixinActiv( Integer pageNum, Integer pageSize, Integer activType, Integer state) {
         if (MaObjUtil.hasEmpty(activType, state)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
+        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
         ResponMsg responMsg = null;
         try {
+            PageHelper.startPage(pageNum, pageSize);
             List<WeixnActiv> activs = activMapper.queryWeixinActiv(activType, state);
-            responMsg = ResponMsg.newSuccess(activs);
+            PageInfo<WeixnActiv> pageInfo = new PageInfo<WeixnActiv>(activs);
+            responMsg = ResponMsg.newSuccess(pageInfo);
         } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());
@@ -216,13 +219,13 @@ public class ActivServiceImpl implements ActivService {
     }
 
     @Override
-    public ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId) {
+    public ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId, Long recordId) {
         if (MaObjUtil.hasEmpty(openid, activType, state, activId)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
         ResponMsg responMsg = null;
         try {
-            WeixinActivChildChild weixinActivChildChild = activMapper.queryWeixinActivByIdAndActivTypeAndstate(activType, state, activId);
+            WeixinActivChildChild weixinActivChildChild = activMapper.queryWeixinActivByIdAndActivType(activType, activId);
             if (MaObjUtil.isEmpty(weixinActivChildChild)) {
                 return ResponMsg.newFail(null).setMsg("没有数据");
             }
@@ -240,9 +243,17 @@ public class ActivServiceImpl implements ActivService {
             if (activType == Cont.ONE) {
                 if (MaObjUtil.isEmpty(activityAddRecord)) {
                     resMap.put("recordBool", false);
+                    resMap.put("friend", false);
                     CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(openid, activId);
                     if (MaObjUtil.isEmpty(castCulp)) {
-                        resMap.put("castBool", false);
+                        if (recordId != -1l) {
+                            ActivityAddRecord addRecord = activityAddRecordMapper.queryById(recordId);
+                            resMap.put("friend", true);
+                            resMap.put("activityAddRecord", addRecord);
+                        } else {
+
+                            resMap.put("castBool", false);
+                        }
                     } else {
                         resMap.put("castBool", true);
                         ActivityAddRecord addRecord = activityAddRecordMapper.queryById(castCulp.getActAddRecordId());

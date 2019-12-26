@@ -19,4 +19,8 @@ public class LuckPeo extends BaseEntity{
      * 奖品名称
      */
     private String prizeName;
+    /**
+     * 活动id
+     */
+    private Long activId;
 }

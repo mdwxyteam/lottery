@@ -1,10 +1,7 @@
 package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.LuckyRecord;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,4 +17,10 @@ public interface LuckRecordMapper {
 
     @Select("SELECT icon FROM lottery_lucky_record WHERE activ_id = #{activId}")
     List<LuckyRecord> queryIconByActivId(@Param("activId") Long activId);
+
+    @Select("SELECT * FROM lottery_lucky_record WHERE activ_id = #{activId}")
+    List<LuckyRecord> queryByActivId(@Param("activId") Long activId);
+
+    @Update("UPDATE lottery_lucky_record SET luck = #{luck} WHERE id = #{id}")
+    void updateLuck(@Param("luck") Integer luck, @Param("id") Long id);
 }

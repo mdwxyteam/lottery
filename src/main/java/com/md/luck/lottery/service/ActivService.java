@@ -66,7 +66,7 @@ public interface ActivService {
      * @param state     1:未结束；0结束；-1测试
      * @return ResponMsg
      */
-    ResponMsg queryWeixinActiv(Integer activType, Integer state);
+    ResponMsg queryWeixinActiv(Integer pageNum, Integer pageSize, Integer activType, Integer state);
 
     /**
      * 通过活动id查询活动详情信息
@@ -74,6 +74,6 @@ public interface ActivService {
      * @param activId activId
      * @return ResponMsg
      */
-    ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId);
+    ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId, Long recordId );
 
 }
