@@ -3,6 +3,7 @@ package com.md.luck.lottery.mapper;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.WeixinActivChildChild;
 import com.md.luck.lottery.common.entity.WeixnActiv;
+import com.md.luck.lottery.common.entity.respons.WeixinActivRecord;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.parameters.P;
@@ -86,6 +87,9 @@ public interface ActivMapper {
     @Update("UPDATE lottery_activ SET popularity = #{popularity} WHERE id = #{id}")
     int updatePopularity(@Param("popularity") Integer popularity, @Param("id") Long id);
 
+    @Update("UPDATE lottery_activ SET popularity = #{popularity}, count_num = #{countNum} WHERE id = #{id}")
+    int updatePopularityAndCountNum(@Param("popularity") Integer popularity, @Param("countNum") Integer countNum, @Param("id") Long id);
+
     @Select("SELECT count_num FROM  lottery_activ  WHERE id = #{id}")
     int queryCountNum(@Param("id") Long id);
 
@@ -94,4 +98,25 @@ public interface ActivMapper {
 
     @Update("UPDATE lottery_activ SET popularity = #{popularity}, state = #{state} WHERE id = #{id}")
     int updatePopularityAndState(@Param("popularity") Integer popularity, @Param("state") Integer state, @Param("id") Long id);
+
+    @Update("UPDATE lottery_activ SET popularity = #{popularity}, state = #{state}, count_num = #{countNum} WHERE id = #{id}")
+    int updatePopularityAndCounNumAndState(@Param("popularity") Integer popularity, @Param("state") Integer state, @Param("countNum") Integer countNum,  @Param("id") Long id);
+
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description, laar.add_time FROM lottery_activ la JOIN lottery_activity_add_record laar ON la.id = laar.activ_id " +
+            "WHERE laar.openid = #{openid} ORDER BY laar.add_time DESC")
+    @Results({
+            @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+            @Result(property = "ativPrizes", column = "id",
+                    many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
+    })
+    List<WeixinActivRecord> aueryGrabRecordByOpenid(@Param("openid") String openid);
+
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description, llr.add_time FROM lottery_activ la JOIN lottery_lucky_record llr ON la.id = llr.activ_id " +
+            "WHERE llr.openid = #{openid} ORDER BY llr.add_time DESC")
+    @Results({
+            @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+            @Result(property = "ativPrizes", column = "id",
+                    many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
+    })
+    List<WeixinActivRecord> aueryLuckRecordByOpenid(@Param("openid") String openid);
 }

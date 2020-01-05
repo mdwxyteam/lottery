@@ -20,6 +20,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throws IOException, ServletException {
 
         System.out.println("JwtAuthenticationEntryPoint:"+authException.getMessage());
+
+//        response.addHeader("Access-Control-Allo-Origin", "http://localhost:8080");
+//        response.addHeader("Access-Control-Allo-Methods", "*");
+//        response.addHeader("Access-Control-Max-Age", "100");
+//        response.addHeader("Access-Control-Allo-Headers", "Content-Type");
+//        response.addHeader("Access-Control-Allo-Credentials", "true");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"没有凭证");
 
         response.setContentType("application/json;charset=utf-8");

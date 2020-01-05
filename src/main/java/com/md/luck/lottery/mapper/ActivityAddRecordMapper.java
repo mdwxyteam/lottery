@@ -2,14 +2,13 @@ package com.md.luck.lottery.mapper;
 
 import com.md.luck.lottery.common.entity.ActivityAddRecord;
 import org.apache.ibatis.annotations.*;
-import org.springframework.security.access.method.P;
 
 import java.util.List;
 
 @Mapper
 public interface ActivityAddRecordMapper {
-    @Insert("INSERT INTO lottery_activity_add_record (activ_id, openid, nick_name, icon, culp, rank, team_mate_count) VALUES (#{activityAddRecord.activId}," +
-            "#{activityAddRecord.openid}, #{activityAddRecord.nickName}, #{activityAddRecord.icon}, #{activityAddRecord.culp}, #{activityAddRecord.rank}, #{activityAddRecord.teamMateCount})")
+    @Insert("INSERT INTO lottery_activity_add_record (activ_id, openid, nick_name, icon, culp, rank, team_mate_count, add_time) VALUES (#{activityAddRecord.activId}," +
+            "#{activityAddRecord.openid}, #{activityAddRecord.nickName}, #{activityAddRecord.icon}, #{activityAddRecord.culp}, #{activityAddRecord.rank}, #{activityAddRecord.teamMateCount}, now())")
     @Options(useGeneratedKeys = true, keyProperty = "activityAddRecord.id")
     void add(@Param("activityAddRecord") ActivityAddRecord activityAddRecord);
 

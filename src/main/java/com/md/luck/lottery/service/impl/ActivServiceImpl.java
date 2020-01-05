@@ -9,6 +9,7 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.PrizeChild;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
+import com.md.luck.lottery.common.entity.respons.WeixinActivRecord;
 import com.md.luck.lottery.common.util.ConUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.*;
@@ -274,6 +275,32 @@ public class ActivServiceImpl implements ActivService {
             }
             resMap.put("weixinActivChildChild", weixinActivChildChild);
             responMsg = ResponMsg.newSuccess(resMap);
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败");
+            log.error(e.getMessage());
+        }
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg queryRecord(String openid, Integer pageNum, Integer pageSize, Integer activType) {
+        if (MaObjUtil.hasEmpty(openid, pageNum, pageSize, activType)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数");
+        }
+        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
+        ResponMsg responMsg = null;
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            if (Cont.ZERO == activType) {
+                List<WeixinActivRecord> activs = activMapper.aueryLuckRecordByOpenid(openid);
+                PageInfo<WeixinActivRecord> pageInfo = new PageInfo<WeixinActivRecord>(activs);
+                responMsg = ResponMsg.newSuccess(pageInfo);
+            } else if (Cont.ONE == activType) {
+                List<WeixinActivRecord> activs = activMapper.aueryGrabRecordByOpenid(openid);
+                PageInfo<WeixinActivRecord> pageInfo = new PageInfo<WeixinActivRecord>(activs);
+                responMsg = ResponMsg.newSuccess(pageInfo);
+            }
+
         } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());

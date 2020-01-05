@@ -24,6 +24,8 @@ public class JwtTokenUtil implements Serializable {
 
     @Value("${jwt.expiration}")
     private Long expiration = 7200000l;
+//    private Long expiration = 7200l;
+
 
     @Value("${jwt.token}")
     private String tokenHeader = "Authorization";

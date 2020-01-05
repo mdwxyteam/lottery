@@ -65,11 +65,15 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             Activ activ = activMapper.activById(activId);
            int popularity =  activ.getPopularity();
             popularity ++;
+            int countNum = activ.getCountNum();
+            countNum++;
 //          todo 如果结束，就出结果  if (countNum == )
+
+            // todo 更新参与人数
 
             Map<String, Object> map = new HashMap<>();
             if (popularity == Integer.parseInt(activ.getCondition())) {
-                activMapper.updatePopularityAndState(popularity, Cont.ZERO, activId);
+                activMapper.updatePopularityAndCounNumAndState(popularity, Cont.ZERO, countNum, activId);
                 List<ActivityAddRecord> activityAddRecordList = activityAddRecordMapper.queryByActivId(activId);
                 List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
                 // 奖品对应的或得者
@@ -89,9 +93,10 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
 //                    luckRecordMapper.updateLuck(Cont.ZERO, luckyRecordLucky.getId());
                 }
             } else {
-                activMapper.updatePopularity(popularity, activId);
+                activMapper.updatePopularityAndCountNum(popularity, countNum, activId);
             }
             map.put("popularity", popularity);
+            map.put("countNum", countNum);
             map.put("activityAddRecord", activityAddRecord);
             responMsg = ResponMsg.newSuccess(map);
         } catch (SqlSessionException e) {

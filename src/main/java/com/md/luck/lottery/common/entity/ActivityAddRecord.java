@@ -2,6 +2,8 @@ package com.md.luck.lottery.common.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 活动参与用户
  */
@@ -35,4 +37,8 @@ public class ActivityAddRecord extends BaseEntity{
      * 队友数量
      */
     private Integer teamMateCount;
+    /**
+     * 添加时间
+     */
+    private Date addTime;
 }

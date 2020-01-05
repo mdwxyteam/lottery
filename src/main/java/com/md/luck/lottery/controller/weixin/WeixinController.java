@@ -204,4 +204,20 @@ public class WeixinController extends BaseController {
         String openid = (String) request.getAttribute("openid");
         return orderService.creatOrder(openid, requestBodyOrder);
     }
+
+
+    /**
+     * 查询参与记录
+     * @param request request
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @param activType activType
+     * @param activType activType 0:抽奖；1:表示抢
+     * @return ResponMsg
+     */
+    @GetMapping("/add/record/activ")
+    public ResponMsg queryGrabRecord(HttpServletRequest request,@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("activType") Integer activType) {
+        String openid = (String) request.getAttribute("openid");
+        return activService.queryRecord(openid, pageNum, pageSize, activType);
+    }
 }

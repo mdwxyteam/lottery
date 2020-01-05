@@ -2,6 +2,8 @@ package com.md.luck.lottery.common.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 抽奖记录表
  */
@@ -15,4 +17,8 @@ public class LuckyRecord extends BaseEntity{
      * 0：没有中奖；1：中奖
      */
     private Integer luck;
+    /**
+     * 参与时间
+     */
+    private Date addTime;
 }

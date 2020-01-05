@@ -7,6 +7,9 @@ import com.md.luck.lottery.controller.BaseController;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.config.WxMpConfigStorage;
+import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,8 +33,7 @@ public class RedrectController extends BaseController {
     @RequestMapping("/userInfo")
     public String getUserInfo(@RequestParam("code") String code,
                               @RequestParam("state") String state) {
-        System.out.println(code);
-        System.out.println(state);
+
         Map<String, Object> map = (Map<String, Object>) weixinService.getToken(state, code).getData();
         return "redirect:" + state + "?openid=" + map.get("openid") + "&token=" + map.get("token");
     }
@@ -52,6 +54,12 @@ public class RedrectController extends BaseController {
         ResponMsg responMsg = null;
         try { // 直接调用wxMpServer 接口
             WxMpService wxMpService = wechatMpConfig.wxMpService();
+            // todo AccessToken过期刷新
+//            wechatMpConfig.
+//            wxMpService.g();
+//            wxMpService.oauth2getAccessToken()
+//            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2refreshAccessToken(wxMpOAuth2AccessToken.getRefreshToken());
+//            WxMpDefaultConfigImpl wxMpConfigStorage = (WxMpDefaultConfigImpl) wechatMpConfig.wxMpConfigStorage();
             WxJsapiSignature wxJsapiSignature = wxMpService.createJsapiSignature(url);
             responMsg = ResponMsg.newSuccess(wxJsapiSignature);
         } catch (WxErrorException e) {

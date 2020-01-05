@@ -76,4 +76,14 @@ public interface ActivService {
      */
     ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId, Long recordId );
 
+    /**
+     * 查询助力活动参与记录
+     * @param openid openid
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @param activType activType 0:抽奖；1:表示抢
+     * @return ResponMsg
+     */
+    ResponMsg queryRecord(String openid, Integer pageNum, Integer pageSize, Integer activType);
+
 }

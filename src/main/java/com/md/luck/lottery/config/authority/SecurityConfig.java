@@ -62,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()       // 剩下所有的验证都需要验证
                 .and()
                 .csrf().disable()                      // 禁用 Spring Security 自带的跨域处理
-//                .cors()                     // 禁用 Spring Security 自带的跨域处理
-//                .and()
+                .cors()                     // 禁用 Spring Security 自带的跨域处理
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
 
