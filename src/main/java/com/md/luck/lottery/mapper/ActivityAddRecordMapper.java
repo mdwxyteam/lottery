@@ -36,7 +36,7 @@ public interface ActivityAddRecordMapper {
     ActivityAddRecord queryTeamMateCountAndRank( @Param("id") Long id, @Param("openid") String openid);
 
     @Update("UPDATE lottery_activity_add_record SET culp = #{culp}, team_mate_count = #{teamMateCount} WHERE id = #{id} AND openid = #{openid}")
-    int updateCulpAndTeamMateCount( @Param("culp") Integer culp, @Param("teamMateCount") Integer teamMateCount, @Param("id") Long id, @Param("openid") String openid);
+    int updateCulpAndTeamMateCount( @Param("culp") Integer culp, @Param("teamMat   eCount") Integer teamMateCount, @Param("id") Long id, @Param("openid") String openid);
 
     @Update("UPDATE lottery_activity_add_record SET rank = #{rank} WHERE id = #{id} AND openid = #{openid}")
     int updateCulpRank( @Param("rank") Integer rank, @Param("id") Long id, @Param("openid") String openid);

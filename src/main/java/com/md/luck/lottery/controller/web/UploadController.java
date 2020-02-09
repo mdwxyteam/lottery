@@ -31,6 +31,8 @@ public class UploadController {
 
     @Value("${file.uploadFolder}")
     private String uploadFolder;
+    @Value("${file.staticPath}")
+    private String staticPath;
 
     public InputStream getBasePath() {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("static/loicon.png");
@@ -47,6 +49,7 @@ public class UploadController {
     @RequestMapping(value = "/upload/image", method = RequestMethod.POST)
     public ResponMsg upLoadFile(HttpServletRequest req, @RequestParam("file") MultipartFile image) {
         StringBuffer url = new StringBuffer();
+        StringBuffer refileUrl = new StringBuffer();
         String filePath = uploadFolder;
         if (uploadFolder.contains(":")) {
             filePath = FilePathUtil.getLinePath(uploadFolder.split(":")[1]);
@@ -62,9 +65,18 @@ public class UploadController {
                 .append("://")
                 .append(req.getServerName())
                 .append(":")
-                .append(req.getServerPort())
+                .append("/yyyy")
+//                .append(req.getServerPort()) 80和443端口不需要
                 .append(req.getContextPath())
                 .append(filePath);
+        refileUrl.append(req.getScheme())
+                .append("://")
+                .append(req.getServerName())
+                .append(":")
+                .append("/yyyy")
+//                .append(req.getServerPort())
+                .append(req.getContextPath())
+                .append(staticPath);
         String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
         try {
 //            System.out.println(BasePath.getBasePath());
@@ -77,7 +89,8 @@ public class UploadController {
 
 //            IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
             url.append(imgName);
-            return ResponMsg.newSuccess(url.toString()).setMsg("success");
+            refileUrl.append(imgName);
+            return ResponMsg.newSuccess(refileUrl.toString()).setMsg("success");
         } catch (IOException e) {
             e.printStackTrace();
         }

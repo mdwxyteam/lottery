@@ -2,6 +2,7 @@ package com.md.luck.lottery.config.authority;
 
 import com.md.luck.lottery.service.WexinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
 
+    @Value("${file.staticAccessPath}")
+    private String staticAccessPath;
+
 //    @Autowired
 //    UserDetailsService userDetailsService;
 //    @Autowired
@@ -58,6 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/web/api/**").permitAll()
                 .antMatchers("/weixin/api/code").permitAll()
                 .antMatchers("/weixin/api/userInfo").permitAll()
+                .antMatchers("/lottery/upload/image").permitAll()
+                .antMatchers(staticAccessPath).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
                 .anyRequest().authenticated()       // 剩下所有的验证都需要验证
                 .and()

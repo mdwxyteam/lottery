@@ -47,6 +47,11 @@ public class CastCulpServiceImpl implements CastCulpService {
         if (teamPlayerOpenid.equals(helpGrab.getOepnid())) {
             return ResponMsg.newFail(null).setMsg("已经参与过此活动");
         }
+        //检查是否参与过助力
+        CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(teamPlayerOpenid, helpGrab.getActivId());
+        if (!MaObjUtil.isEmpty(castCulp)) {
+            return ResponMsg.newFail(null).setMsg("已经助力过此活动");
+        }
         ResponMsg responMsg = null;
         try {
             Customer customer = customerMapper.queryByOpenid(teamPlayerOpenid);

@@ -43,7 +43,7 @@ public class Goods {
     private String groupIcon;
 
     public boolean isEmpty() {
-        if (ObjectUtil.hasEmpty(price, state, payNum, goodsName, goodsImg, actualPrice)){
+        if (ObjectUtil.hasEmpty(price, goodsName, goodsImg, actualPrice)){
             return true;
         }else {
             return false;
