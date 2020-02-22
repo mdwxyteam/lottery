@@ -32,7 +32,7 @@ public class ActivityAddRecord extends BaseEntity{
     /**
      * 排名
      */
-    private Integer rank;
+    private Long rank;
     /**
      * 队友数量
      */

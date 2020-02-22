@@ -106,7 +106,7 @@ public class WeixinController extends BaseController {
     public ResponMsg commitGrab(HttpServletRequest request, @RequestBody WeixnActiv weixnActiv){
 //        String openid = (String) request.getAttribute("openid");
         String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
-        return activityAddRecordService.addGrabRecord(openid, weixnActiv.getId());
+        return activityAddRecordService.addGrabRecordByRedis(openid, weixnActiv.getId());
     }
 
     /**
@@ -171,7 +171,7 @@ public class WeixinController extends BaseController {
     public ResponMsg help(HttpServletRequest request, @RequestBody HelpGrab helpGrab) {
 //        String teamPlayerOpenid = (String) request.getAttribute("openid");
         String teamPlayerOpenid = "ot6_Xvl8aCuHNf8jQL9ljna6EFdo";
-        return castCulpService.culp(teamPlayerOpenid, helpGrab);
+        return castCulpService.culpByRedis(teamPlayerOpenid, helpGrab);
     }
     /**
      * 通过openid获取用户数据

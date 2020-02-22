@@ -12,6 +12,13 @@ public interface CastCulpService {
      * @return ResponMsg
      */
     ResponMsg culp(String teamPlayerOpenid, HelpGrab helpGrab);
+    /**
+     * 助力 (redis版)
+     * @param teamPlayerOpenid  助力用户openid
+     * @param helpGrab 包含活动id，被助力用户的openid
+     * @return ResponMsg
+     */
+    ResponMsg culpByRedis(String teamPlayerOpenid, HelpGrab helpGrab);
 
     /**
      * 分页查询助力记录

@@ -12,6 +12,14 @@ public interface ActivityAddRecordService {
     ResponMsg addGrabRecord(String openid, Long activId);
 
     /**
+     * 新增抢助力活动类型参与记录
+     * @param openid openid
+     * @param activId 活动id
+     * @return ResponMsg
+     */
+    ResponMsg addGrabRecordByRedis(String openid, Long activId);
+
+    /**
      * 查询此活动所有参与人员
      * @param activId 活动id
      * @return ResponMsg

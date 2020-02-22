@@ -12,5 +12,5 @@ public class CastCulpChild extends CastCulp {
     /**
      * 排名
      */
-    private Integer rank;
+    private Long rank;
 }

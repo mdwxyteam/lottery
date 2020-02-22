@@ -4,8 +4,10 @@ import cn.hutool.core.util.RandomUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
+import com.md.luck.lottery.common.JoinAttributes;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.ActivityAddRecordService;
@@ -13,16 +15,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
     private Log log = LogFactory.getLog(this.getClass());
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     private ActivityAddRecordMapper activityAddRecordMapper;
     @Autowired
@@ -58,7 +64,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             activityAddRecord.setIcon(customer.getIcon());
             activityAddRecord.setNickName(customer.getNickName());
             activityAddRecord.setOpenid(customer.getOpenid());
-            activityAddRecord.setRank(Cont.ZERO);
+            activityAddRecord.setRank(Cont.ZEROL);
             activityAddRecord.setTeamMateCount(0);
             activityAddRecordMapper.add(activityAddRecord);
             // 更新活动参与人员数量
@@ -103,6 +109,121 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());
         }
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg addGrabRecordByRedis(String openid, Long activId) {
+        if (MaObjUtil.hasEmpty(openid, activId)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数");
+        }
+        // 活动结束判断
+        String activityEndKey = Cont.ACTIVITY_END_PRE + activId;
+        String isActivityEnd = (String) redisTemplate.opsForHash().get(activityEndKey, activityEndKey);
+        if (!MaObjUtil.isEmpty(isActivityEnd)) {
+            return ResponMsg.newFail(null).setMsg("活动已结束不能再助力");
+        }
+        ResponMsg responMsg = null;
+        // 通过活动id和当前用户openid判断是否参与过当前活动
+        // 1、查询活动所有参与者判断是否有参与；2、判断用户是否助力过这个活动
+        String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
+        JoinAttributes joinAttributes = JoinAttributes.getInstance(openid);
+        boolean isJoinActivity = redisTemplate.opsForHash().hasKey(joinKey, joinAttributes.getOpenid());
+        if (isJoinActivity) {
+            return ResponMsg.newFail(null).setMsg("已经参与过此活动");
+        }
+        String jKey = Cont.ACTIV_RESDIS_J_PRE + openid;
+        String jFeild = Cont.OPENID + openid;
+        boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
+        if (isGrab) {
+            return ResponMsg.newFail(null).setMsg("已经助力过此活动");
+        }
+        //判断此账号是否存在
+        Customer customer = customerMapper.queryByOpenid(openid);
+        if (MaObjUtil.isEmpty(customer)) {
+            return ResponMsg.newFail(null).setMsg("用户信息异常");
+        }
+        // 添加到排行榜
+        //修改排名  //修改排行榜
+        String rKey = Cont.RANK_PRE + activId;
+        redisTemplate.opsForZSet().incrementScore(rKey, openid, Cont.ZERO);
+        //获取排名
+        Long rank = redisTemplate.opsForZSet().rank(rKey, openid);
+
+        Long recordId = MaMathUtil.creatId();
+        ActivityAddRecord activityAddRecord = new ActivityAddRecord();
+        activityAddRecord.setActivId(activId);
+        activityAddRecord.setCulp(Cont.ZERO);
+        activityAddRecord.setIcon(customer.getIcon());
+        activityAddRecord.setNickName(customer.getNickName());
+        activityAddRecord.setOpenid(customer.getOpenid());
+        activityAddRecord.setRank(rank);
+        activityAddRecord.setTeamMateCount(Cont.ZERO);
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getId(), recordId);
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getActivId(), activId);
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getCulp(), Cont.ZERO);
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getIcon(), customer.getIcon());
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getNickName(), customer.getNickName());
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getOpenid(), customer.getOpenid());
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getRank(), rank);
+        redisTemplate.opsForHash().put(jKey, joinAttributes.getTeamMateCount(), Cont.ZERO);
+
+        // 更新活动参与人员数量和人气
+        Activ activ = activMapper.activById(activId);
+        int popularity =  activ.getPopularity();
+        popularity ++;
+        int countNum = activ.getCountNum();
+        countNum++;
+        activMapper.updatePopularityAndCountNum(popularity, countNum, activId);
+
+        //判断活动是否结束
+        //活动是否结束
+        if (popularity == Integer.parseInt(activ.getCondition())) {
+            // 结束
+            // 修改活动状态为结束
+            activMapper.updatePopularityAndState(popularity, Cont.ZERO, activId);
+            //活动所有奖品
+            List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
+            //活动前五参与者
+            Set<String> preFiveAdder = redisTemplate.opsForZSet().range(rKey, Cont.ZERO, Cont.FIVE);
+            for (AtivPrize ativPrize: ativPrizes) {
+                int i = 0;
+                String recordOpenid = null;
+                for (String recordop : preFiveAdder) {
+                    i++;
+                    int prizeRank = Integer.valueOf(ativPrize.getRanking());
+                    if (prizeRank == i) {
+                        recordOpenid = recordop;
+                        break;
+                    }
+                }
+                JoinAttributes joinAttributesRecord = JoinAttributes.getInstance(recordOpenid);
+                LuckPeo luckPeo = new LuckPeo();
+                String icon = (String) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getIcon());
+                luckPeo.setIcon(icon);
+                String nickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getNickName());
+                luckPeo.setNickName(nickName);
+                String luckyOpenid = (String) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getOpenid());
+                luckPeo.setOpenid(luckyOpenid);
+                luckPeo.setRank(Integer.parseInt(ativPrize.getRanking()));
+                Long luckyRecordId = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getId());
+                luckPeo.setRecordId(luckyRecordId);
+                luckPeo.setPrizeName(ativPrize.getPrizeDescription());
+                luckPeo.setActivId(activId);
+                luckPeo.setId(MaMathUtil.creatId());
+                //保存奖品获得者记录
+                String rlKey = Cont.RANL_LUCKY_PRE + activId;
+                redisTemplate.opsForHash().put(rlKey, luckPeo.getId(), luckPeo);
+                //redis添加活动结束标志
+                String aendKey = Cont.ACTIVITY_END_PRE + activId;
+                redisTemplate.opsForHash().put(aendKey, aendKey, Cont.END);
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("popularity", popularity);
+        map.put("countNum", countNum);
+        map.put("activityAddRecord", activityAddRecord);
+        responMsg = ResponMsg.newSuccess(map);
         return responMsg;
     }
 
