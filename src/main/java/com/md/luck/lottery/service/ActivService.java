@@ -72,16 +72,18 @@ public interface ActivService {
      * 通过活动id查询活动详情信息
      * openid 登录中获取的
      * @param activId activId
+     * @param ropenid 分享者的openid
+     * @param recordId 分享者的记录的id
      * @return ResponMsg
      */
-    ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId, Long recordId );
+    ResponMsg queryByActivIdToWeixin(String openid, Integer activType, Integer state, Long activId, String ropenid, Long recordId );
 
     /**
      * 查询助力活动参与记录
      * @param openid openid
      * @param pageNum pageNum
      * @param pageSize pageSize
-     * @param activType activType 0:抽奖；1:表示抢
+     * @param activType activType 0:抽奖；1:表示助力
      * @return ResponMsg
      */
     ResponMsg queryRecord(String openid, Integer pageNum, Integer pageSize, Integer activType);

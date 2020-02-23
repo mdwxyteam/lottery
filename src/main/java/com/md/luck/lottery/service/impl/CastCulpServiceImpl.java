@@ -146,7 +146,7 @@ public class CastCulpServiceImpl implements CastCulpService {
         if (isJoinActivity) {
             return ResponMsg.newFail(null).setMsg("已经参与过此活动");
         }
-        String jKey = Cont.ACTIV_RESDIS_J_PRE + teamPlayerOpenid;
+        String jKey = Cont.ACTIV_RESDIS_J_PRE + helpGrab.getActivId();
         String jFeild = Cont.OPENID + teamPlayerOpenid;
         boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
         if (isGrab) {
@@ -156,9 +156,9 @@ public class CastCulpServiceImpl implements CastCulpService {
         // 助力数量
         Integer grabNum = RandomUtil.randomEle(Cont.RANDOM_LIMIT);
         //助力标志
-        redisTemplate.opsForHash().put(jKey, jFeild, teamPlayerOpenid);
+        redisTemplate.opsForHash().put(jKey, jFeild, helpGrab.getGrabRecordId());
         //保存助力记录
-        String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + helpGrab.getActivId();
+        String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + helpGrab.getActivId() + "_" + helpGrab.getGrabRecordId();
         Snowflake snowflake = IdUtil.createSnowflake(1, 1);
         long cid = snowflake.nextId();
 
@@ -171,7 +171,8 @@ public class CastCulpServiceImpl implements CastCulpService {
         castCulp.setCastCulp(grabNum);
         castCulp.setActivid(helpGrab.getActivId());
         castCulp.setActAddRecordId(helpGrab.getGrabRecordId());
-        redisTemplate.opsForHash().put(gKey, helpGrab.getGrabRecordId(), castCulp);
+        redisTemplate.opsForHash().put(gKey, teamPlayerOpenid, castCulp);
+
 
         //修改排名  //修改排行榜
         String rKey = Cont.RANK_PRE + helpGrab.getActivId();

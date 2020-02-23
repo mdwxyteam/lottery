@@ -132,7 +132,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         if (isJoinActivity) {
             return ResponMsg.newFail(null).setMsg("已经参与过此活动");
         }
-        String jKey = Cont.ACTIV_RESDIS_J_PRE + openid;
+        String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
         String jFeild = Cont.OPENID + openid;
         boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
         if (isGrab) {
@@ -159,14 +159,14 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         activityAddRecord.setOpenid(customer.getOpenid());
         activityAddRecord.setRank(rank);
         activityAddRecord.setTeamMateCount(Cont.ZERO);
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getId(), recordId);
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getActivId(), activId);
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getCulp(), Cont.ZERO);
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getIcon(), customer.getIcon());
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getNickName(), customer.getNickName());
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getOpenid(), customer.getOpenid());
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getRank(), rank);
-        redisTemplate.opsForHash().put(jKey, joinAttributes.getTeamMateCount(), Cont.ZERO);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getId(), recordId);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getActivId(), activId);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getCulp(), Cont.ZERO);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getIcon(), customer.getIcon());
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getNickName(), customer.getNickName());
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getOpenid(), customer.getOpenid());
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getRank(), rank);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getTeamMateCount(), Cont.ZERO);
 
         // 更新活动参与人员数量和人气
         Activ activ = activMapper.activById(activId);

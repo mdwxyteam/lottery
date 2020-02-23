@@ -72,10 +72,10 @@ public class WeixinController extends BaseController {
      * @return ResponMsg
      */
     @GetMapping("/activ/id")
-    public ResponMsg queryByActivId(HttpServletRequest request, @RequestParam("activType") Integer activType, @RequestParam("state") Integer state, @RequestParam("activId") Long activId, @RequestParam("recordId") Long recordId) {
+    public ResponMsg queryByActivId(HttpServletRequest request, @RequestParam("activType") Integer activType, @RequestParam("state") Integer state, @RequestParam("activId") Long activId, @RequestParam("recordId")Long recordId, @RequestParam("ropenid") String ropenid) {
 //        String openid = (String) request.getAttribute("openid");
         String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
-        return activService.queryByActivIdToWeixin(openid, activType, state, activId, recordId);
+        return activService.queryByActivIdToWeixin(openid, activType, state, activId, ropenid, recordId);
     }
 
     /**
@@ -97,7 +97,7 @@ public class WeixinController extends BaseController {
         return luckPeoService.queryLucker(activId);
     }
     /**
-     * 参与抢 活动
+     * 参与助力 活动
      * @param request request获取用户openid
      * @param weixnActiv 活动
      * @return ResponMsg
