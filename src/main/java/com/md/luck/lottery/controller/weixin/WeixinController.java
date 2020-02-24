@@ -138,7 +138,7 @@ public class WeixinController extends BaseController {
     }
 
     /**
-     * 分页查询
+     * 分页查询助力参与人员
      * @param pageNum 页码
      * @param pageSize 页大小
      * @param activId 活动id

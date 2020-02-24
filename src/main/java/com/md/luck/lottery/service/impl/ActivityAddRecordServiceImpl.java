@@ -238,6 +238,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             PageHelper.startPage(pageNum, pageSize);
             List<ActivityAddRecord> activityAddRecords = activityAddRecordMapper.queryByActivId(activId);
             PageInfo<ActivityAddRecord> pageInfo = new PageInfo<ActivityAddRecord>(activityAddRecords);
+            // 标志当前用户是否参与（助力或参与）此活动
             boolean isa = false;
             Map<String, Object> resMap = new HashMap<>();
             for (ActivityAddRecord activityAddRecord: activityAddRecords) {
@@ -249,6 +250,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             if (isa) {
                 resMap.put("castBool", true);
             } else {
+                // 判断是否助力过此活动
                 CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(teamPlayerOpenid, activId);
                 if (!MaObjUtil.isEmpty(castCulp)) {
                     resMap.put("castBool", true);
