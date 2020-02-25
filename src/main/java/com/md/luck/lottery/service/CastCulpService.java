@@ -22,10 +22,12 @@ public interface CastCulpService {
 
     /**
      * 分页查询助力记录
+     * @param activId 活动id
+     * @param teamPlayerOpenid 当前用户openid
      * @param pageNum 页码
      * @param pageSize 页大小
      * @param recordId 参与记录id
      * @return ResponMsg
      */
-    ResponMsg queryPage(Integer pageNum, Integer pageSize, Long recordId);
+    ResponMsg queryPage(Long activId, String teamPlayerOpenid, Integer pageNum, Integer pageSize, Long recordId);
 }

@@ -30,6 +30,8 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
+    private RedisServiceImpl redisService;
+    @Autowired
     private ActivityAddRecordMapper activityAddRecordMapper;
     @Autowired
     private CustomerMapper customerMapper;
@@ -234,10 +236,18 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         }
         pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
         ResponMsg responMsg = null;
+        PageInfo<ActivityAddRecord> pageInfo = null;
+        List<ActivityAddRecord> activityAddRecords = null;
         try {
-            PageHelper.startPage(pageNum, pageSize);
-            List<ActivityAddRecord> activityAddRecords = activityAddRecordMapper.queryByActivId(activId);
-            PageInfo<ActivityAddRecord> pageInfo = new PageInfo<ActivityAddRecord>(activityAddRecords);
+            pageInfo = redisService.getActivityAddRecordByRank(teamPlayerOpenid, activId, pageNum, pageSize);
+            // 尝试从redis中获取参与记录，没有则从数据库中获取
+            if (MaObjUtil.isEmpty(pageInfo)) {
+                activityAddRecords = pageInfo.getList();
+            } else {
+                PageHelper.startPage(pageNum, pageSize);
+                activityAddRecords = activityAddRecordMapper.queryByActivId(activId);
+                pageInfo = new PageInfo<ActivityAddRecord>(activityAddRecords);
+            }
             // 标志当前用户是否参与（助力或参与）此活动
             boolean isa = false;
             Map<String, Object> resMap = new HashMap<>();
@@ -251,12 +261,23 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
                 resMap.put("castBool", true);
             } else {
                 // 判断是否助力过此活动
-                CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(teamPlayerOpenid, activId);
-                if (!MaObjUtil.isEmpty(castCulp)) {
+                String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
+                String jFeild = Cont.OPENID + teamPlayerOpenid;
+                boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
+                // 现从redis中尝试判断是否助力过，没有则再从数据库判断
+                if (isGrab) {
+                    // 助力过
                     resMap.put("castBool", true);
                 } else {
-                    resMap.put("castBool", false);
+                    // 从数据库中判断
+                    CastCulp castCulp = castCulpMapper.queryByOpenidAndActivId(teamPlayerOpenid, activId);
+                    if (!MaObjUtil.isEmpty(castCulp)) {
+                        resMap.put("castBool", true);
+                    } else {
+                        resMap.put("castBool", false);
+                    }
                 }
+
             }
             resMap.put("pageInfo", pageInfo);
             responMsg = ResponMsg.newSuccess(resMap);

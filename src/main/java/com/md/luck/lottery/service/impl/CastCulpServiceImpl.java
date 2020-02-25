@@ -251,13 +251,19 @@ public class CastCulpServiceImpl implements CastCulpService {
     }
 
     @Override
-    public ResponMsg queryPage(Integer pageNum, Integer pageSize, Long recordId) {
+    public ResponMsg queryPage(Long activId, String teamPlayerOpenid, Integer pageNum, Integer pageSize, Long recordId) {
         if (MaObjUtil.hasEmpty(pageNum, pageSize, recordId)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
         pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE : pageSize;
         ResponMsg responMsg = null;
         try {
+            String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
+            String jFeild = Cont.OPENID + teamPlayerOpenid;
+            boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
+            if (isGrab) {
+                // todo 如何查询助力人员数据
+            }
             PageHelper.startPage(pageNum, pageSize);
             List<CastCulp> castCulpList = castCulpMapper.queryByRecordId(recordId);
             PageInfo<CastCulp> pageInfo = new PageInfo<CastCulp>(castCulpList);
