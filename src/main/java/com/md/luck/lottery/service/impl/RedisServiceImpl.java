@@ -5,6 +5,7 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.JoinAttributes;
 import com.md.luck.lottery.common.entity.ActivityAddRecord;
 import com.md.luck.lottery.common.entity.CastCulp;
+import com.md.luck.lottery.common.util.MaObjUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -83,7 +84,62 @@ public class RedisServiceImpl {
      * @return PageInfo<CastCulp>
      */
     public PageInfo<CastCulp> getCastCulpPage(String teamPlayerOpenid, Long activId, Long recordId, Integer pageNum, Integer pageSize) {
-        // todo 如何查询助力人员数据
-        return null;
+        //
+        String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + activId + "_" + recordId;
+        if (!hasData(gKey)) {
+            return null;
+        }
+//        if (pageNum == Cont.ONE) {
+//            pageSize += 29;
+//        } else {
+            pageSize += 30;
+//        }
+        Map<String, CastCulp> entries = redisTemplate.opsForHash().entries(gKey);
+        List<CastCulp> castCulpList = new ArrayList<>();
+        boolean isMine = false;
+        int i = 1;
+        for (Map.Entry<String, CastCulp> entry : entries.entrySet()) {
+            int ia = pageNum * pageSize - pageSize + 1;
+            if (ia != i) {
+                i++;
+                continue;
+            }
+//            if (pageNum == Cont.ONE && entry.getKey().equals(teamPlayerOpenid)) {
+//                isMine = true;
+//            }
+            castCulpList.add(entry.getValue());
+            i++;
+        }
+//        if (!isMine) {
+//            CastCulp castCulp = (CastCulp) redisTemplate.opsForHash().get(gKey, teamPlayerOpenid);
+//            if (!MaObjUtil.isEmpty(castCulp)) {
+//                castCulpList.add(castCulp);
+//            }
+//
+//        }
+        PageInfo<CastCulp> pageInfo = new PageInfo();
+        Integer zlength = entries.size();
+        pageInfo.setTotal(zlength); // 总量
+        pageInfo.setSize(pageSize); // 每页条数
+        pageInfo.setPrePage(pageNum - 1 == 0 ? 1 : pageNum - 1); // 当前页
+        int pageNums = zlength % pageSize == 0 ? (int) (zlength / pageSize) : Double.valueOf(zlength / pageSize).intValue() + 1; // 总页数
+        pageInfo.setPageNum(pageNum); // 当前页
+        pageInfo.setPages(pageNums); // 总页数
+        pageInfo.setNextPage(pageNums == pageNum ? pageNums : pageNum + 1); // 下一页
+        pageInfo.setList(castCulpList);
+        return pageInfo;
+    }
+
+    /**
+     * 判断hash中是否有数据
+     * @param key key hash key
+     * @return boolean
+     */
+    public boolean hasData(String key) {
+        long size = redisTemplate.opsForHash().size(key);
+        if (size == 0) {
+            return false;
+        }
+        return true;
     }
 }

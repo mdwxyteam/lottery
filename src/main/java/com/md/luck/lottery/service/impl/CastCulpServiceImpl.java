@@ -33,6 +33,9 @@ public class CastCulpServiceImpl implements CastCulpService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    RedisServiceImpl redisService;
+
 
     @Autowired
     CustomerMapper customerMapper;
@@ -257,16 +260,17 @@ public class CastCulpServiceImpl implements CastCulpService {
         }
         pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE : pageSize;
         ResponMsg responMsg = null;
+        PageInfo<CastCulp> pageInfo = null;
         try {
             String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
             String jFeild = Cont.OPENID + teamPlayerOpenid;
-            boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
-            if (isGrab) {
-                // todo 如何查询助力人员数据
+            pageInfo = redisService.getCastCulpPage(teamPlayerOpenid, activId, recordId, pageNum, pageSize);
+            // redis中没有数据，从数据库中获取
+            if (MaObjUtil.isEmpty(pageInfo)) {
+                PageHelper.startPage(pageNum, pageSize);
+                List<CastCulp> castCulpList = castCulpMapper.queryByRecordId(recordId);
+                pageInfo = new PageInfo<CastCulp>(castCulpList);
             }
-            PageHelper.startPage(pageNum, pageSize);
-            List<CastCulp> castCulpList = castCulpMapper.queryByRecordId(recordId);
-            PageInfo<CastCulp> pageInfo = new PageInfo<CastCulp>(castCulpList);
 
             responMsg = ResponMsg.newSuccess(pageInfo);
         } catch (SqlSessionException e) {

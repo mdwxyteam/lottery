@@ -158,9 +158,10 @@ public class WeixinController extends BaseController {
      * @return ResponMsg
      */
     @GetMapping("/culp/page")
-    public ResponMsg queryCulpByPage( @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("recordId") Long recordId) {
-
-        return castCulpService.queryPage(pageNum, pageSize, recordId);
+    public ResponMsg queryCulpByPage(HttpServletRequest request, @RequestParam("activId") Long activId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("recordId") Long recordId) {
+//        String teamPlayerOpenid = (String) request.getAttribute("openid");
+        String teamPlayerOpenid = "ot6_Xvl8aCuHNf8jQL9ljna6EFdo";
+        return castCulpService.queryPage(activId, teamPlayerOpenid, pageNum, pageSize, recordId);
     }
 
     /**
