@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Sponsor;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.SponsorMapper;
 import com.md.luck.lottery.service.SponsorService;
 import org.apache.commons.logging.Log;
@@ -59,6 +60,8 @@ public class SponsorServiceImpl implements SponsorService {
         }
         Sponsor sponsorObj = creatSponsor(sponsor, location, address, detalis, typeId, type, markDown, principal, contact, cover);
         sponsorObj.setStatus(Cont.ONE);
+        Long id = MaMathUtil.creatId();
+        sponsorObj.setId(id);
         int i = sponsorMapper.add(sponsorObj);
         if (i == Cont.ZERO) {
             return ResponMsg.newFail(null).setMsg("添加是失败！");

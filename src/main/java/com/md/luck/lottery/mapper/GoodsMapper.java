@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface GoodsMapper {
 
-    @Insert("INSERT INTO lottery_goods (goods_name, goods_img, price, state, pay_num, actual_price, goods_group, group_icon)" +
-            "VALUES (#{goods.goodsName}, #{goods.goodsImg}, #{goods.price}, #{goods.state}, #{goods.payNum}, #{goods.actualPrice}, #{goods.goodsGroup}, #{goods.groupIcon})")
+    @Insert("INSERT INTO lottery_goods (id, goods_name, goods_img, price, state, pay_num, actual_price, goods_group, group_icon)" +
+            "VALUES (#{goods.id}, #{goods.goodsName}, #{goods.goodsImg}, #{goods.price}, #{goods.state}, #{goods.payNum}, #{goods.actualPrice}, #{goods.goodsGroup}, #{goods.groupIcon})")
     int insert(@Param("goods") Goods goods);
 
     @Select("<script> SELECT * FROM lottery_goods WHERE " +

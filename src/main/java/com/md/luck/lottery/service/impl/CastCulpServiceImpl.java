@@ -13,6 +13,7 @@ import com.md.luck.lottery.common.entity.request.HelpGrab;
 import com.md.luck.lottery.common.entity.respons.CastCulpChild;
 import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
+import com.md.luck.lottery.common.util.NumberUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.CastCulpService;
 import org.apache.commons.logging.Log;
@@ -23,6 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -143,11 +145,19 @@ public class CastCulpServiceImpl implements CastCulpService {
         Customer customer = customerMapper.queryByOpenid(teamPlayerOpenid);
         // 通过活动id和当前用户openid判断是否参与过当前活动
         // 1、查询活动所有参与者判断是否有参与；2、判断用户是否助力过这个活动
+        // 判断当前用户是否参与过此活动
         String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + helpGrab.getActivId();
         JoinAttributes joinAttributes = JoinAttributes.getInstance(teamPlayerOpenid);
         boolean isJoinActivity = redisTemplate.opsForHash().hasKey(joinKey, joinAttributes.getOpenid());
         if (isJoinActivity) {
             return ResponMsg.newFail(null).setMsg("已经参与过此活动");
+        }
+        // 判断参与者是否真的参与过此活动
+        String joinKeyJoed = Cont.ACTIV_RESDIS_KEY_PRE + helpGrab.getActivId();
+        JoinAttributes joinAttributesJoed = JoinAttributes.getInstance(helpGrab.getOepnid());
+        boolean isJoinActivityJoed = redisTemplate.opsForHash().hasKey(joinKeyJoed, joinAttributesJoed.getOpenid());
+        if (!isJoinActivityJoed) {
+            return ResponMsg.newFail(null).setMsg("数据异常");
         }
         String jKey = Cont.ACTIV_RESDIS_J_PRE + helpGrab.getActivId();
         String jFeild = Cont.OPENID + teamPlayerOpenid;
@@ -174,25 +184,32 @@ public class CastCulpServiceImpl implements CastCulpService {
         castCulp.setCastCulp(grabNum);
         castCulp.setActivid(helpGrab.getActivId());
         castCulp.setActAddRecordId(helpGrab.getGrabRecordId());
+        castCulp.setRecordOpenid(helpGrab.getOepnid());
         redisTemplate.opsForHash().put(gKey, teamPlayerOpenid, castCulp);
 
 
         //修改排名  //修改排行榜
         String rKey = Cont.RANK_PRE + helpGrab.getActivId();
-        redisTemplate.opsForZSet().incrementScore(rKey, helpGrab.getOepnid(), grabNum);
+        Double dscore = null;
+        try {
+            dscore = NumberUtil.strTime2Double(grabNum + "", "1");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        redisTemplate.opsForZSet().incrementScore(rKey, helpGrab.getOepnid(), dscore);
 
         //修改基本数据（排名，助力数， 助力人数）
-        Long rank = redisTemplate.opsForZSet().rank(rKey, helpGrab.getGrabRecordId());
+        Long rank = redisTemplate.opsForZSet().reverseRank(rKey, helpGrab.getOepnid()) + Cont.ONE;
         //排名
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getRank(), rank);
         //助力数
-        Integer culp = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getCulp());
+        Integer culp = (Integer) redisTemplate.opsForHash().get(joinKeyJoed, joinAttributesJoed.getCulp());
         culp = culp + grabNum;
-        redisTemplate.opsForHash().put(joinKey, joinAttributes.getCulp(), culp);
+        redisTemplate.opsForHash().put(joinKey, joinAttributesJoed.getCulp(), culp);
         //助力人数
-        Integer teamCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
+        Integer teamCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributesJoed.getTeamMateCount());
         teamCount++;
-        redisTemplate.opsForHash().put(joinKey, joinAttributes.getTeamMateCount(), teamCount);
+        redisTemplate.opsForHash().put(joinKey, joinAttributesJoed.getTeamMateCount(), teamCount);
 
         //修改活动人气
         Activ activ = activMapper.activById(helpGrab.getActivId());

@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.SponsorType;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.SponsorTypeMapper;
 import com.md.luck.lottery.service.SponsorTypeService;
 import org.apache.commons.logging.Log;
@@ -36,6 +37,8 @@ public class SponsorTypeServiceImpl implements SponsorTypeService {
         }
         SponsorType sponsorType = new SponsorType();
         sponsorType.setTypeName(type);
+        Long id = MaMathUtil.creatId();
+        sponsorType.setId(id);
         sponsorTypeMapper.add(sponsorType);
         return ResponMsg.newSuccess(null);
     }

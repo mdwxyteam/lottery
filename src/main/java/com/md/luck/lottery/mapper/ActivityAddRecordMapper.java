@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface ActivityAddRecordMapper {
     @Insert("INSERT INTO lottery_activity_add_record (activ_id, openid, nick_name, icon, culp, rank, team_mate_count, add_time) VALUES (#{activityAddRecord.activId}," +
-            "#{activityAddRecord.openid}, #{activityAddRecord.nickName}, #{activityAddRecord.icon}, #{activityAddRecord.culp}, #{activityAddRecord.rank}, #{activityAddRecord.teamMateCount}, now())")
+            "#{activityAddRecord.openid}, #{activityAddRecord.nickName}, #{activityAddRecord.icon}, #{activityAddRecord.culp}, #{activityAddRecord.rank}, #{activityAddRecord.teamMateCount}, #{activityAddRecord.addTime})")
     @Options(useGeneratedKeys = true, keyProperty = "activityAddRecord.id")
     void add(@Param("activityAddRecord") ActivityAddRecord activityAddRecord);
 

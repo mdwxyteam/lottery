@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface AtivPrizeMapper {
 
-    @Insert("INSERT INTO lottery_ativ_prize (ativ_id, prize_id, prize_count, ranking, icon_url, prize_description) VALUES (#{ativPrize.ativId}, #{ativPrize.prizeId}, #{ativPrize.prizeCount}, #{ativPrize.ranking}, #{ativPrize.iconUrl}, #{ativPrize.prizeDescription})")
+    @Insert("INSERT INTO lottery_ativ_prize (id, ativ_id, prize_id, prize_count, ranking, icon_url, prize_description) VALUES (#{ativPrize.id}, #{ativPrize.ativId}, #{ativPrize.prizeId}, #{ativPrize.prizeCount}, #{ativPrize.ranking}, #{ativPrize.iconUrl}, #{ativPrize.prizeDescription})")
     int add(@Param("ativPrize") AtivPrize ativPrize);
 
     @Select("SELECT * FROM lottery_ativ_prize WHERE ativ_id = #{id}")

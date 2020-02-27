@@ -12,6 +12,7 @@ import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
 import com.md.luck.lottery.common.entity.respons.WeixinActivRecord;
 import com.md.luck.lottery.common.util.ConUtil;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.ActivService;
@@ -60,6 +61,8 @@ public class ActivServiceImpl implements ActivService {
         try {
             activ.setState(1);
             activ.setDelState(1);
+            Long aid = MaMathUtil.creatId();
+            activ.setId(aid);
             activMapper.add(activ);
             long id = activ.getId();
             for (AtivPrize prizeChild : activ.getPrizeList()) {
@@ -257,7 +260,8 @@ public class ActivServiceImpl implements ActivService {
                     String rNickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getNickName());
                     activityAddRecord.setNickName(rNickName);
                     activityAddRecord.setOpenid(openid);
-                    Long rRank = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+                    Integer rRankInteger = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+                    Long rRank =  rRankInteger.longValue();
                     activityAddRecord.setRank(rRank);
                     Integer rTeamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
                     activityAddRecord.setTeamMateCount(rTeamMateCount);
@@ -277,13 +281,15 @@ public class ActivServiceImpl implements ActivService {
                     resMap.put("friend", false);
 
                     String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
+
                     String jFeild = Cont.OPENID + openid;
                     boolean isJCastCulp = redisTemplate.opsForHash().hasKey(jKey,jFeild);
                     CastCulp castCulp = null;
+                    String grabRecordId = null;
                     // 如果redis中有数据则从redis中获取 ，否则从数据库中获取，判断是否给朋友助力过，查询出该朋友数据
                     if (isJCastCulp) {
                         castCulp = new CastCulp();
-                        String grabRecordId = (String) redisTemplate.opsForHash().get(jKey, jFeild);
+                        grabRecordId = String.valueOf(redisTemplate.opsForHash().get(jKey, jFeild));
 
                         String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + activId + "_" + grabRecordId;
                         castCulp.setOpenid(openid);
@@ -327,9 +333,34 @@ public class ActivServiceImpl implements ActivService {
                         }
                     } else {
                         resMap.put("castBool", true);
-                        ActivityAddRecord addRecord = activityAddRecordMapper.queryById(castCulp.getActAddRecordId());
-                        resMap.put("recordBool", true);
-                        resMap.put("activityAddRecord", addRecord);
+                        if (isJCastCulp) {
+                            // todo 如何从助力记录中获取参与者openid
+                            String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
+                            JoinAttributes joinAttributes = JoinAttributes.getInstance(castCulp.getRecordOpenid());
+                            ActivityAddRecord activityAddRecordJoed = new ActivityAddRecord();
+                            activityAddRecordJoed.setActivId(activId);
+                            Long rId = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributes.getId());
+                            activityAddRecordJoed.setId(rId);
+                            Integer rCulp = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getCulp());
+                            activityAddRecordJoed.setCulp(rCulp);
+                            String rIcon = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getIcon());
+                            activityAddRecordJoed.setIcon(rIcon);
+                            String rNickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getNickName());
+                            activityAddRecordJoed.setNickName(rNickName);
+                            activityAddRecordJoed.setOpenid(openid);
+                            Integer rRankInteger = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+                            Long rRank =  rRankInteger.longValue();
+                            activityAddRecordJoed.setRank(rRank);
+                            Integer rTeamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
+                            activityAddRecordJoed.setTeamMateCount(rTeamMateCount);
+                            resMap.put("recordBool", true);
+                            resMap.put("activityAddRecord", activityAddRecordJoed);
+                        } else {
+                            ActivityAddRecord addRecord = activityAddRecordMapper.queryById(castCulp.getActAddRecordId());
+                            resMap.put("recordBool", true);
+                            resMap.put("activityAddRecord", addRecord);
+                        }
+
                     }
                 } else {
                     resMap.put("recordBool", true);

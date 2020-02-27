@@ -13,7 +13,7 @@ public interface PrizeMapper {
      * @param prize 奖品对象
      * @return int
      */
-    @Insert("INSERT INTO lottery_prize (prize_description, icon_url, prize_count,is_delete) VALUES (#{prize.prizeDescription}, #{prize.iconUrl}, #{prize.prizeCount},0)")
+    @Insert("INSERT INTO lottery_prize (id, prize_description, icon_url, prize_count,is_delete) VALUES (#{prize.id}, #{prize.prizeDescription}, #{prize.iconUrl}, #{prize.prizeCount},0)")
     int add(@Param("prize") Prize prize);
 
     /**

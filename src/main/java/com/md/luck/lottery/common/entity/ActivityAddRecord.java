@@ -40,5 +40,5 @@ public class ActivityAddRecord extends BaseEntity{
     /**
      * 添加时间
      */
-    private Date addTime;
+    private String addTime;
 }

@@ -3,6 +3,7 @@ package com.md.luck.lottery.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.SponsorPrize;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.SponsorPrizeMapper;
 import com.md.luck.lottery.service.SponsorPrizeService;
 import org.apache.commons.logging.Log;
@@ -28,6 +29,8 @@ public class SponsorPrizeServiceImpl implements SponsorPrizeService {
         sponsorPrize.setPrizeCount(prizeCount);
         sponsorPrize.setSponid(sponsorId);
         sponsorPrize.setPrizeid(prizeid);
+        Long id = MaMathUtil.creatId();
+        sponsorPrize.setId(id);
         boolean ie = false;
         try {
             sponsorPrizeMapper.add(sponsorPrize);

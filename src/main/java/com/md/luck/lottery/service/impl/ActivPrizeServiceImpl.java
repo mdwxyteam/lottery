@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.AtivPrize;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.AtivPrizeMapper;
 import com.md.luck.lottery.service.ActivPrizeService;
 import org.apache.commons.logging.Log;
@@ -32,6 +33,8 @@ public class ActivPrizeServiceImpl implements ActivPrizeService {
         ativPrize.setPrizeId(prizeId);
         ativPrize.setPrizeCount(prizeCount);
         ativPrize.setIconUrl(icouUrl);
+        Long id = MaMathUtil.creatId();
+        ativPrize.setId(id);
         boolean isbc = false;
         try {
             ativPrizeMapper.add(ativPrize);

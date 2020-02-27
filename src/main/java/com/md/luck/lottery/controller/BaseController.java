@@ -2,6 +2,7 @@ package com.md.luck.lottery.controller;
 
 import cn.hutool.db.sql.Order;
 import com.md.luck.lottery.service.*;
+import com.md.luck.lottery.service.impl.RedisServiceImpl;
 import com.md.luck.lottery.service.impl.WeixinServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,4 +44,6 @@ public class BaseController {
     protected LuckRecordService luckRecordService;
     @Autowired
     protected LuckPeoService luckPeoService;
+    @Autowired
+    protected RedisServiceImpl redisService;
 }

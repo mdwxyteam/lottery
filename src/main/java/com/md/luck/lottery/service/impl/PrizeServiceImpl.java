@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Prize;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.PrizeMapper;
 import com.md.luck.lottery.service.PrizeService;
 import org.apache.commons.logging.Log;
@@ -33,6 +34,8 @@ public class PrizeServiceImpl implements PrizeService {
         prize.setPrizeDescription(prizeDescription);
         prize.setIconUrl(iconUrl);
         prize.setPrizeCount(prizeCount);
+        Long id = MaMathUtil.creatId();
+        prize.setId(id);
         boolean isPrize = false;
         try {
             prizeMapper.add(prize);

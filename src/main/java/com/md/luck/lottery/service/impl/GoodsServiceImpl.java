@@ -8,6 +8,7 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Activ;
 import com.md.luck.lottery.common.entity.Goods;
+import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.GoodsMapper;
 import com.md.luck.lottery.service.GoodsService;
 import org.apache.ibatis.session.SqlSessionException;
@@ -30,6 +31,8 @@ public class GoodsServiceImpl implements GoodsService {
         try {
             goods.setState(Cont.SELL_READY);
             goods.setPayNum(0);
+            Long id = MaMathUtil.creatId();
+            goods.setId(id);
             goodsMapper.insert(goods);
             responMsg = ResponMsg.newSuccess(null);
         } catch (SqlSessionException e) {

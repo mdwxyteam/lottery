@@ -19,7 +19,7 @@ public interface SponsorTypeMapper {
      * 保存商户类型接口
      * @param sponsorType
      */
-    @Insert("INSERT INTO lottery_sponsor_type (type_name,is_status) VALUES (#{sponsorType.typeName},1)")
+    @Insert("INSERT INTO lottery_sponsor_type (id, type_name,is_status) VALUES (#{sponsorType.id},#{sponsorType.typeName},1)")
     void add(@Param("sponsorType") SponsorType sponsorType);
 
     /**

@@ -53,11 +53,11 @@ public class RedisServiceImpl {
             String nickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getNickName());
             activityAddRecord.setNickName(nickName);
             activityAddRecord.setOpenid(openid);
-            Long rank = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+            Long rank =  redisTemplate.opsForZSet().reverseRank(rKey, openid) + 1;
             activityAddRecord.setRank(rank);
             Integer teamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
             activityAddRecord.setTeamMateCount(teamMateCount);
-            Date addTime = (Date) redisTemplate.opsForHash().get(joinKey, joinAttributes.getAddTime());
+            String addTime = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getAddTime());
             activityAddRecord.setAddTime(addTime);
             activityAddRecords.add(activityAddRecord);
 
@@ -138,6 +138,21 @@ public class RedisServiceImpl {
     public boolean hasData(String key) {
         long size = redisTemplate.opsForHash().size(key);
         if (size == 0) {
+            return false;
+        }
+        return true;
+    }
+    public boolean delAddRecord(Long activId, String openid) {
+        String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
+//        String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(29L);
+//        String openid1 = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+        if (redisTemplate.opsForHash().getOperations().hasKey(joinKey)) {
+            System.out.println(true);
+        }
+        JoinAttributes joinAttributes = JoinAttributes.getInstance(openid);
+        redisTemplate.opsForHash().getOperations().delete(joinKey);
+
+        if (hasData(joinKey)) {
             return false;
         }
         return true;

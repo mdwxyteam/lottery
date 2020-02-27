@@ -31,4 +31,8 @@ public class CastCulp extends BaseEntity {
      * 给好友助力数量
      */
     private Integer castCulp;
+    /**
+     * 被助力用户openid
+     */
+    private String recordOpenid;
 }

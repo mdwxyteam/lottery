@@ -8,10 +8,10 @@ import java.util.List;
 @Mapper
 public interface SponsorMapper {
 
-    @Insert("INSERT INTO lottery_sponsor (sponsor_name, type, detalis," +
+    @Insert("INSERT INTO lottery_sponsor (id, sponsor_name, type, detalis," +
             " location, address, type_id, creat_time, status, mark_down," +
             " principal, contact, cover) VALUES" +
-            " (#{sponsor.sponsorName},#{sponsor.type} ,#{sponsor.detalis} ,#{sponsor.location} ," +
+            " (#{sponsor.id}, #{sponsor.sponsorName},#{sponsor.type} ,#{sponsor.detalis} ,#{sponsor.location} ," +
             " #{sponsor.address} ,#{sponsor.typeId}, now(), #{sponsor.status}, #{sponsor.markDown}," +
             " #{sponsor.principal}, #{sponsor.contact}, #{sponsor.cover})")
     int add(@Param("sponsor") Sponsor sponsor);

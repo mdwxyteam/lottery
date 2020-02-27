@@ -13,6 +13,6 @@ public interface SponsorPrizeMapper {
      * @param sponsorPrize
      * @return int
      */
-    @Insert("INSERT INTO lottery_sponsor_prize (sponid, prizeid, prize_count) VALUES (#{sponsorPrize.sponid}, #{sponsorPrize.prizeid}, #{sponsorPrize.prizeCount})")
+    @Insert("INSERT INTO lottery_sponsor_prize (id, sponid, prizeid, prize_count) VALUES (#{sponsorPrize.id}, #{sponsorPrize.sponid}, #{sponsorPrize.prizeid}, #{sponsorPrize.prizeCount})")
     int add(@Param("sponsorPrize") SponsorPrize sponsorPrize);
 }

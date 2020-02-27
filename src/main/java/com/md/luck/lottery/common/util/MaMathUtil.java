@@ -42,4 +42,8 @@ public class MaMathUtil {
         long id = snowflake.nextId();
         return id;
     }
+
+    public static void main(String[] args) {
+        System.out.println(creatId());
+    }
 }

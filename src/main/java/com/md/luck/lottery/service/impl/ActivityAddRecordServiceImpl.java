@@ -7,8 +7,10 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.JoinAttributes;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
+import com.md.luck.lottery.common.util.MaDateUtil;
 import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
+import com.md.luck.lottery.common.util.NumberUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.ActivityAddRecordService;
 import org.apache.commons.logging.Log;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,9 +151,15 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         // 添加到排行榜
         //修改排名  //修改排行榜
         String rKey = Cont.RANK_PRE + activId;
-        redisTemplate.opsForZSet().incrementScore(rKey, openid, Cont.ZERO);
+        Double dscore = null;
+        try {
+            dscore = NumberUtil.strTime2Double("0", "1");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        redisTemplate.opsForZSet().incrementScore(rKey, openid, dscore);
         //获取排名
-        Long rank = redisTemplate.opsForZSet().rank(rKey, openid);
+        Long rank = redisTemplate.opsForZSet().reverseRank(rKey, openid) + Cont.ONE;
 
         Long recordId = MaMathUtil.creatId();
         ActivityAddRecord activityAddRecord = new ActivityAddRecord();
@@ -169,6 +178,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getOpenid(), customer.getOpenid());
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getRank(), rank);
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getTeamMateCount(), Cont.ZERO);
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getAddTime(), MaDateUtil.getCurrentTime());
 
         // 更新活动参与人员数量和人气
         Activ activ = activMapper.activById(activId);
@@ -241,7 +251,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         try {
             pageInfo = redisService.getActivityAddRecordByRank(teamPlayerOpenid, activId, pageNum, pageSize);
             // 尝试从redis中获取参与记录，没有则从数据库中获取
-            if (MaObjUtil.isEmpty(pageInfo)) {
+            if (!MaObjUtil.isEmpty(pageInfo)) {
                 activityAddRecords = pageInfo.getList();
             } else {
                 PageHelper.startPage(pageNum, pageSize);

@@ -21,7 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/weixin/api")
 public class WeixinController extends BaseController {
-
+    // 平安快乐
+//    private String openid = "oGGQw1Gb1Vm7HBOqwLoV9_yiD4iQ";
+    // 吴欣阳
+//    private String openid = "ot6_XvtvrRVdi1B1M6Rgkr8iSN3Y";
+    // madong
+//    private String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+    // 峰少
+//    private String openid = "ot6_Xvv926IwzniCWEJ8Ka5Q6Y8Y";
+    // 叶明
+    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
+//
     @GetMapping("/code")
     public ResponMsg getCode() {
         return weixinService.getCode();
@@ -74,7 +84,7 @@ public class WeixinController extends BaseController {
     @GetMapping("/activ/id")
     public ResponMsg queryByActivId(HttpServletRequest request, @RequestParam("activType") Integer activType, @RequestParam("state") Integer state, @RequestParam("activId") Long activId, @RequestParam("recordId")Long recordId, @RequestParam("ropenid") String ropenid) {
 //        String openid = (String) request.getAttribute("openid");
-        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+        String openid = this.openid;
         return activService.queryByActivIdToWeixin(openid, activType, state, activId, ropenid, recordId);
     }
 
@@ -105,7 +115,7 @@ public class WeixinController extends BaseController {
     @PostMapping("/commit/grab")
     public ResponMsg commitGrab(HttpServletRequest request, @RequestBody WeixnActiv weixnActiv){
 //        String openid = (String) request.getAttribute("openid");
-        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+        String openid = this.openid;
         return activityAddRecordService.addGrabRecordByRedis(openid, weixnActiv.getId());
     }
 
@@ -133,7 +143,7 @@ public class WeixinController extends BaseController {
     @GetMapping("/query/luckRecord/page")
     public ResponMsg queryAllCommitActiv(HttpServletRequest request, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("activId") Long activId) {
 //        String openid = (String) request.getAttribute("openid");
-        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+        String openid = this.openid;
         return  luckRecordService.queryAllCommitActiv(openid, pageNum, pageSize, activId);
     }
 
@@ -146,7 +156,8 @@ public class WeixinController extends BaseController {
      */
     @GetMapping("/query/commitGrabRecord")
     public ResponMsg queryAllCommitGrab(HttpServletRequest request, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("activId") Long activId) {
-        String teamPlayerOpenid = (String) request.getAttribute("openid");
+//        String teamPlayerOpenid = (String) request.getAttribute("openid");
+        String teamPlayerOpenid = this.openid;
         return activityAddRecordService.queryAllCommitGrab(teamPlayerOpenid, pageNum, pageSize, activId);
     }
 
@@ -160,7 +171,7 @@ public class WeixinController extends BaseController {
     @GetMapping("/culp/page")
     public ResponMsg queryCulpByPage(HttpServletRequest request, @RequestParam("activId") Long activId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("recordId") Long recordId) {
 //        String teamPlayerOpenid = (String) request.getAttribute("openid");
-        String teamPlayerOpenid = "ot6_Xvl8aCuHNf8jQL9ljna6EFdo";
+        String teamPlayerOpenid = this.openid;
         return castCulpService.queryPage(activId, teamPlayerOpenid, pageNum, pageSize, recordId);
     }
 
@@ -171,7 +182,7 @@ public class WeixinController extends BaseController {
     @PostMapping("/culp")
     public ResponMsg help(HttpServletRequest request, @RequestBody HelpGrab helpGrab) {
 //        String teamPlayerOpenid = (String) request.getAttribute("openid");
-        String teamPlayerOpenid = "ot6_Xvl8aCuHNf8jQL9ljna6EFdo";
+        String teamPlayerOpenid = this.openid;
         return castCulpService.culpByRedis(teamPlayerOpenid, helpGrab);
     }
     /**
@@ -221,5 +232,11 @@ public class WeixinController extends BaseController {
         String openid = (String) request.getAttribute("openid");
 //        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
         return activService.queryRecord(openid, pageNum, pageSize, activType);
+    }
+    @GetMapping("/delRecord")
+    public boolean delRecord() {
+        Long activId = 29L;
+        String openid = this.openid;
+        return redisService.delAddRecord(activId, openid);
     }
 }
