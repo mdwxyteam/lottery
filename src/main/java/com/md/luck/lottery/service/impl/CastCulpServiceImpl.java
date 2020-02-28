@@ -252,7 +252,8 @@ public class CastCulpServiceImpl implements CastCulpService {
                 luckPeo.setId(MaMathUtil.creatId());
                 //保存奖品获得者记录
                 String rlKey = Cont.RANL_LUCKY_PRE + helpGrab.getActivId();
-                redisTemplate.opsForHash().put(rlKey, luckPeo.getId(), luckPeo);
+                String fieldLp = luckyOpenid;
+                redisTemplate.opsForHash().put(rlKey, fieldLp, luckPeo);
                 //redis添加活动结束标志
                 String aendKey = Cont.ACTIVITY_END_PRE + helpGrab.getActivId();
                 redisTemplate.opsForHash().put(aendKey, aendKey, Cont.END);

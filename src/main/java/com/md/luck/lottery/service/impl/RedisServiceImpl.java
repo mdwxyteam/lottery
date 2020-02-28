@@ -5,6 +5,7 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.JoinAttributes;
 import com.md.luck.lottery.common.entity.ActivityAddRecord;
 import com.md.luck.lottery.common.entity.CastCulp;
+import com.md.luck.lottery.common.entity.LuckPeo;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,29 @@ public class RedisServiceImpl {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 将用户参与的活动保存
+     * @param teamPlayerOpenid 用户openid
+     * @param valueTag 参与的活动id和参与时间
+     */
+    public void addRecordTag(String teamPlayerOpenid, String valueTag) {
+        String actKey = Cont.ADD_ACTIV_TAG_PRE + teamPlayerOpenid;
+        redisTemplate.opsForList().leftPush(actKey, valueTag);
+    }
+    /**
+     * 将用户参与的活动取出
+     * @param teamPlayerOpenid 用户openid
+     */
+    public List<String> getRecordTag(String teamPlayerOpenid) {
+        String actKey = Cont.ADD_ACTIV_TAG_PRE + teamPlayerOpenid;
+//        redisTemplate.opsForList().leftPush(actKey, activId);
+        boolean hasData = redisTemplate.opsForList().getOperations().hasKey(actKey);
+        if (hasData) {
+            List<String> activIds = redisTemplate.opsForList().range(actKey, 0, -1);
+            return activIds;
+        }
+        return null;
+    }
     /**
      * 從redis中获取助力活动参与者
      * @param teamPlayerOpenid 当前用户openid
@@ -156,5 +180,22 @@ public class RedisServiceImpl {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 活动id获取所有中奖名单
+     * @param activId 活动id
+     * @return List<LuckPeo>
+     */
+    public List<LuckPeo> getLuckPro(Long activId) {
+        String rlKey = Cont.RANL_LUCKY_PRE + activId;
+       boolean has =  hasData(rlKey);
+       if (has) {
+           Map<String, LuckPeo> luckPeoMap = redisTemplate.opsForHash().entries(rlKey);
+           Collection<LuckPeo> valueCollection = luckPeoMap.values();
+           List<LuckPeo> valueList = new ArrayList<LuckPeo>(valueCollection);
+           return valueList;
+       }
+       return null;
     }
 }

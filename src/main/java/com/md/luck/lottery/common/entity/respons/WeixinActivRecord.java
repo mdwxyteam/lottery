@@ -10,5 +10,5 @@ public class WeixinActivRecord  extends WeixnActiv {
     /**
      * 添加时间
      */
-    private Date addTime;
+    private String addTime;
 }

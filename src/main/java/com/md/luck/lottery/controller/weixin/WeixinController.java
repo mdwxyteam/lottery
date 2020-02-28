@@ -26,11 +26,11 @@ public class WeixinController extends BaseController {
     // 吴欣阳
 //    private String openid = "ot6_XvtvrRVdi1B1M6Rgkr8iSN3Y";
     // madong
-//    private String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+    private String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
     // 峰少
 //    private String openid = "ot6_Xvv926IwzniCWEJ8Ka5Q6Y8Y";
     // 叶明
-    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
+//    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
 //
     @GetMapping("/code")
     public ResponMsg getCode() {
@@ -229,8 +229,8 @@ public class WeixinController extends BaseController {
      */
     @GetMapping("/add/record/activ")
     public ResponMsg queryGrabRecord(HttpServletRequest request,@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, @RequestParam("activType") Integer activType) {
-        String openid = (String) request.getAttribute("openid");
-//        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+//        String openid = (String) request.getAttribute("openid");
+        String openid = this.openid;
         return activService.queryRecord(openid, pageNum, pageSize, activType);
     }
     @GetMapping("/delRecord")

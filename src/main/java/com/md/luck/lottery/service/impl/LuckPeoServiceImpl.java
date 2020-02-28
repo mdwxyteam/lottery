@@ -17,6 +17,8 @@ import java.util.List;
 public class LuckPeoServiceImpl implements LuckPeoService {
     private Log log = LogFactory.getLog(this.getClass());
     @Autowired
+    RedisServiceImpl redisService;
+    @Autowired
     LuckProMapper luckProMapper;
 
     @Override
@@ -26,7 +28,10 @@ public class LuckPeoServiceImpl implements LuckPeoService {
         }
         ResponMsg responMsg = null;
         try {
-            List<LuckPeo> luckPeos = luckProMapper.queryByActivId(activId);
+            List<LuckPeo> luckPeos = redisService.getLuckPro(activId);
+            if(MaObjUtil.isEmpty(luckPeos)) {
+                luckPeos = luckProMapper.queryByActivId(activId);
+            }
             responMsg = ResponMsg.newSuccess(luckPeos);
         } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");

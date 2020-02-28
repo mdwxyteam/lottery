@@ -111,6 +111,15 @@ public interface ActivMapper {
     })
     List<WeixinActivRecord> aueryGrabRecordByOpenid(@Param("openid") String openid);
 
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description FROM lottery_activ la " +
+            "WHERE la.id = #{id}")
+    @Results({
+            @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+            @Result(property = "ativPrizes", column = "id",
+                    many = @Many(select = "com.md.luck.lottery.mapper.AtivPrizeMapper.queryByAtivId"))
+    })
+    WeixinActivRecord aueryGrabRecordById(@Param("id") Long id);
+
     @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description, llr.add_time FROM lottery_activ la JOIN lottery_lucky_record llr ON la.id = llr.activ_id " +
             "WHERE llr.openid = #{openid} ORDER BY llr.add_time DESC")
     @Results({

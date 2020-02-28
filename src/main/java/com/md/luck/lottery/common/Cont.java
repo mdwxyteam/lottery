@@ -68,5 +68,9 @@ public final class Cont {
      * REDIS 活动结束标志存储数据
      */
     public static final String ACTIVITY_END_PRE = "A_END_";
+    /**
+     * 用户参与的活动保存记录
+     */
+    public static final String ADD_ACTIV_TAG_PRE = "A_ACTIV_TAG_";
 
 }

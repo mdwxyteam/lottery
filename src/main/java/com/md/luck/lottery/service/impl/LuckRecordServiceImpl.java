@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.*;
+import com.md.luck.lottery.common.util.MaDateUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.LuckRecordService;
@@ -59,6 +60,8 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                 luckyRecord1.setIcon(customer.getIcon());
                 luckyRecord1.setLuck(0);
                 luckyRecord1.setNickName(customer.getNickName());
+                String creatTime = MaDateUtil.getCurrentTime();
+                luckyRecord1.setAddTime(creatTime);
                 luckyRecord1.setOpenid(customer.getOpenid());
                 luckRecordMapper.insert(luckyRecord1);
                 int newPopularity = activ.getPopularity() + 1;

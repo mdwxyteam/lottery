@@ -37,6 +37,8 @@ public class ActivServiceImpl implements ActivService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisServiceImpl redisService;
 
     @Autowired
     private ActivMapper activMapper;
@@ -390,16 +392,35 @@ public class ActivServiceImpl implements ActivService {
         }
         pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
         ResponMsg responMsg = null;
+        Map<String, Object> redata = new HashMap<>();
         try {
+            // 助力活动把redis中的数据参与纪录获取
+            if (Cont.ONE == activType) {
+                List<String> activIdAndTimes = redisService.getRecordTag(openid);
+                List<WeixinActivRecord> weixinActivRecordList = new ArrayList<>();
+                for (String idAndTime: activIdAndTimes) {
+                    String[] idAndTimeStr = idAndTime.split("_");
+                    Long id = Long.parseLong(idAndTimeStr[0]);
+                    String createTime = idAndTimeStr[1];
+                    WeixinActivRecord weixinActivRecord = activMapper.aueryGrabRecordById(id);
+                    weixinActivRecord.setAddTime(createTime);
+                    weixinActivRecordList.add(weixinActivRecord);
+                }
+                redata.put("rData", weixinActivRecordList);
+            }
+
             PageHelper.startPage(pageNum, pageSize);
             if (Cont.ZERO == activType) {
                 List<WeixinActivRecord> activs = activMapper.aueryLuckRecordByOpenid(openid);
                 PageInfo<WeixinActivRecord> pageInfo = new PageInfo<WeixinActivRecord>(activs);
-                responMsg = ResponMsg.newSuccess(pageInfo);
+                redata.put("yData", pageInfo);
+                responMsg = ResponMsg.newSuccess(redata);
             } else if (Cont.ONE == activType) {
                 List<WeixinActivRecord> activs = activMapper.aueryGrabRecordByOpenid(openid);
                 PageInfo<WeixinActivRecord> pageInfo = new PageInfo<WeixinActivRecord>(activs);
-                responMsg = ResponMsg.newSuccess(pageInfo);
+                redata.put("yData", pageInfo);
+                responMsg = ResponMsg.newSuccess(redata);
+
             }
 
         } catch (SqlSessionException e) {

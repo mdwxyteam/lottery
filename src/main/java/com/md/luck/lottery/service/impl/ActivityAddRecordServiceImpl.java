@@ -170,6 +170,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         activityAddRecord.setOpenid(customer.getOpenid());
         activityAddRecord.setRank(rank);
         activityAddRecord.setTeamMateCount(Cont.ZERO);
+        String creatTime = MaDateUtil.getCurrentTime();
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getId(), recordId);
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getActivId(), activId);
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getCulp(), Cont.ZERO);
@@ -178,7 +179,11 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getOpenid(), customer.getOpenid());
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getRank(), rank);
         redisTemplate.opsForHash().put(joinKey, joinAttributes.getTeamMateCount(), Cont.ZERO);
-        redisTemplate.opsForHash().put(joinKey, joinAttributes.getAddTime(), MaDateUtil.getCurrentTime());
+        redisTemplate.opsForHash().put(joinKey, joinAttributes.getAddTime(), creatTime);
+
+        String valueTag = activId + "_" + creatTime;
+        // 用户参与活动标志用于查询参与记录
+        redisService.addRecordTag(customer.getOpenid(), valueTag);
 
         // 更新活动参与人员数量和人气
         Activ activ = activMapper.activById(activId);
@@ -197,7 +202,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             //活动所有奖品
             List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
             //活动前五参与者
-            Set<String> preFiveAdder = redisTemplate.opsForZSet().range(rKey, Cont.ZERO, Cont.FIVE);
+            Set<String> preFiveAdder = redisTemplate.opsForZSet().reverseRange(rKey, Cont.ZERO, Cont.FIVE);
             for (AtivPrize ativPrize: ativPrizes) {
                 int i = 0;
                 String recordOpenid = null;
@@ -211,6 +216,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
                 }
                 JoinAttributes joinAttributesRecord = JoinAttributes.getInstance(recordOpenid);
                 LuckPeo luckPeo = new LuckPeo();
+                Long lpid = MaMathUtil.creatId();
                 String icon = (String) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getIcon());
                 luckPeo.setIcon(icon);
                 String nickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributesRecord.getNickName());
@@ -222,10 +228,11 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
                 luckPeo.setRecordId(luckyRecordId);
                 luckPeo.setPrizeName(ativPrize.getPrizeDescription());
                 luckPeo.setActivId(activId);
-                luckPeo.setId(MaMathUtil.creatId());
+                luckPeo.setId(lpid);
                 //保存奖品获得者记录
                 String rlKey = Cont.RANL_LUCKY_PRE + activId;
-                redisTemplate.opsForHash().put(rlKey, luckPeo.getId(), luckPeo);
+                String fieldLp = luckyOpenid;
+                redisTemplate.opsForHash().put(rlKey, fieldLp, luckPeo);
                 //redis添加活动结束标志
                 String aendKey = Cont.ACTIVITY_END_PRE + activId;
                 redisTemplate.opsForHash().put(aendKey, aendKey, Cont.END);

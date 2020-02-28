@@ -20,5 +20,5 @@ public class LuckyRecord extends BaseEntity{
     /**
      * 参与时间
      */
-    private Date addTime;
+    private String addTime;
 }
