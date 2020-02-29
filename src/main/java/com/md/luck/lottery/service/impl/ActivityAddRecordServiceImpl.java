@@ -137,6 +137,7 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
         if (isJoinActivity) {
             return ResponMsg.newFail(null).setMsg("已经参与过此活动");
         }
+        // 判断是否助力
         String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
         String jFeild = Cont.OPENID + openid;
         boolean isGrab = redisTemplate.opsForHash().hasKey(jKey, jFeild);
