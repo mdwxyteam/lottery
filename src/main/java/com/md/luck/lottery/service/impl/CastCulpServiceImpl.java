@@ -221,10 +221,12 @@ public class CastCulpServiceImpl implements CastCulpService {
             // 结束
             // 修改活动状态为结束
             activMapper.updatePopularityAndState(popularity, Cont.ZERO, helpGrab.getActivId());
+            // 修改所有此活動参与者的排名
+            redisService.rank(helpGrab.getActivId());
             //活动所有奖品
             List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(helpGrab.getActivId());
             //活动前五参与者
-            Set<String> preFiveAdder = redisTemplate.opsForZSet().range(rKey, Cont.ZERO, Cont.FIVE);
+            Set<String> preFiveAdder = redisTemplate.opsForZSet().reverseRange(rKey, Cont.ZERO, Cont.FIVE);
             for (AtivPrize ativPrize: ativPrizes) {
                 int i = 0;
                 String recordOpenid = null;

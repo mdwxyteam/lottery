@@ -22,6 +22,21 @@ public class RedisServiceImpl {
     private RedisTemplate redisTemplate;
 
     /**
+     * 排名跟新
+     * @param activId 活動id
+     */
+    public void rank(Long activId) {
+        String rKey = Cont.RANK_PRE + activId;
+        // 所有排名
+        Set<String> openidSet = redisTemplate.opsForZSet().reverseRange(rKey, 0, - 1);
+        for (String openid: openidSet) {
+            String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
+            JoinAttributes joinAttributes = JoinAttributes.getInstance(openid);
+            Long rank =  redisTemplate.opsForZSet().reverseRank(rKey, openid) + 1;
+            redisTemplate.opsForHash().put(joinKey, joinAttributes.getRank(), rank);
+        }
+    }
+    /**
      * 将用户参与的活动保存
      * @param teamPlayerOpenid 用户openid
      * @param valueTag 参与的活动id和参与时间

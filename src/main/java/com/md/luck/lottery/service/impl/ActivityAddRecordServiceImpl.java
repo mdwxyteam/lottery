@@ -200,6 +200,8 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
             // 结束
             // 修改活动状态为结束
             activMapper.updatePopularityAndState(popularity, Cont.ZERO, activId);
+            // 修改所有此活動参与者的排名
+            redisService.rank(activId);
             //活动所有奖品
             List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
             //活动前五参与者

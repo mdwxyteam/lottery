@@ -211,11 +211,11 @@ public class ActivServiceImpl implements ActivService {
     }
 
     @Override
-    public ResponMsg queryWeixinActiv( Integer pageNum, Integer pageSize, Integer activType, Integer state) {
+    public ResponMsg queryWeixinActiv(Integer pageNum, Integer pageSize, Integer activType, Integer state) {
         if (MaObjUtil.hasEmpty(activType, state)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
-        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
+        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE : pageSize;
         ResponMsg responMsg = null;
         try {
             PageHelper.startPage(pageNum, pageSize);
@@ -240,7 +240,7 @@ public class ActivServiceImpl implements ActivService {
             if (MaObjUtil.isEmpty(weixinActivChildChild)) {
                 return ResponMsg.newFail(null).setMsg("没有数据");
             }
-            ActivityAddRecord activityAddRecord = null;
+             ActivityAddRecord activityAddRecord = null;
             LuckyRecord luckyRecord = null;
             // 否参与过活动
             boolean isJoinActivity = false;
@@ -263,7 +263,7 @@ public class ActivServiceImpl implements ActivService {
                     activityAddRecord.setNickName(rNickName);
                     activityAddRecord.setOpenid(openid);
                     Integer rRankInteger = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
-                    Long rRank =  rRankInteger.longValue();
+                    Long rRank = rRankInteger.longValue();
                     activityAddRecord.setRank(rRank);
                     Integer rTeamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
                     activityAddRecord.setTeamMateCount(rTeamMateCount);
@@ -285,7 +285,7 @@ public class ActivServiceImpl implements ActivService {
                     String jKey = Cont.ACTIV_RESDIS_J_PRE + activId;
 
                     String jFeild = Cont.OPENID + openid;
-                    boolean isJCastCulp = redisTemplate.opsForHash().hasKey(jKey,jFeild);
+                    boolean isJCastCulp = redisTemplate.opsForHash().hasKey(jKey, jFeild);
                     CastCulp castCulp = null;
                     String grabRecordId = null;
                     // 如果redis中有数据则从redis中获取 ，否则从数据库中获取，判断是否给朋友助力过，查询出该朋友数据
@@ -336,7 +336,7 @@ public class ActivServiceImpl implements ActivService {
                     } else {
                         resMap.put("castBool", true);
                         if (isJCastCulp) {
-                            // todo 如何从助力记录中获取参与者openid
+                            //
                             String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
                             JoinAttributes joinAttributes = JoinAttributes.getInstance(castCulp.getRecordOpenid());
                             ActivityAddRecord activityAddRecordJoed = new ActivityAddRecord();
@@ -351,7 +351,7 @@ public class ActivServiceImpl implements ActivService {
                             activityAddRecordJoed.setNickName(rNickName);
                             activityAddRecordJoed.setOpenid(openid);
                             Integer rRankInteger = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
-                            Long rRank =  rRankInteger.longValue();
+                            Long rRank = rRankInteger.longValue();
                             activityAddRecordJoed.setRank(rRank);
                             Integer rTeamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
                             activityAddRecordJoed.setTeamMateCount(rTeamMateCount);
@@ -370,11 +370,11 @@ public class ActivServiceImpl implements ActivService {
                     resMap.put("castBool", false);
                 }
             } else if (activType == Cont.ZERO) {
-               if (MaObjUtil.isEmpty(luckyRecord)) {
-                   resMap.put("recordBool", false);
-               } else {
-                   resMap.put("recordBool", true);
-               }
+                if (MaObjUtil.isEmpty(luckyRecord)) {
+                    resMap.put("recordBool", false);
+                } else {
+                    resMap.put("recordBool", true);
+                }
             }
             resMap.put("weixinActivChildChild", weixinActivChildChild);
             responMsg = ResponMsg.newSuccess(resMap);
@@ -390,7 +390,7 @@ public class ActivServiceImpl implements ActivService {
         if (MaObjUtil.hasEmpty(openid, pageNum, pageSize, activType)) {
             return ResponMsg.newFail(null).setMsg("缺省参数");
         }
-        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE: pageSize;
+        pageSize = pageSize > Cont.MAX_PAGE_SIZE ? Cont.MAX_PAGE_SIZE : pageSize;
         ResponMsg responMsg = null;
         Map<String, Object> redata = new HashMap<>();
         try {
@@ -398,13 +398,16 @@ public class ActivServiceImpl implements ActivService {
             if (Cont.ONE == activType) {
                 List<String> activIdAndTimes = redisService.getRecordTag(openid);
                 List<WeixinActivRecord> weixinActivRecordList = new ArrayList<>();
-                for (String idAndTime: activIdAndTimes) {
-                    String[] idAndTimeStr = idAndTime.split("_");
-                    Long id = Long.parseLong(idAndTimeStr[0]);
-                    String createTime = idAndTimeStr[1];
-                    WeixinActivRecord weixinActivRecord = activMapper.aueryGrabRecordById(id);
-                    weixinActivRecord.setAddTime(createTime);
-                    weixinActivRecordList.add(weixinActivRecord);
+                if (!MaObjUtil.isEmpty(activIdAndTimes)) {
+
+                    for (String idAndTime : activIdAndTimes) {
+                        String[] idAndTimeStr = idAndTime.split("_");
+                        Long id = Long.parseLong(idAndTimeStr[0]);
+                        String createTime = idAndTimeStr[1];
+                        WeixinActivRecord weixinActivRecord = activMapper.aueryGrabRecordById(id);
+                        weixinActivRecord.setAddTime(createTime);
+                        weixinActivRecordList.add(weixinActivRecord);
+                    }
                 }
                 redata.put("rData", weixinActivRecordList);
             }
