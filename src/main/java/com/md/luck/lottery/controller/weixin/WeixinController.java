@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/weixin/api")
 public class WeixinController extends BaseController {
+
+    // 折耳根
+//    private String openid = "oGGQw1HjPbXXbwHhQ-tYQMeNr0tI";
     // 平安快乐
 //    private String openid = "oGGQw1Gb1Vm7HBOqwLoV9_yiD4iQ";
     // 吴欣阳
@@ -31,6 +34,9 @@ public class WeixinController extends BaseController {
     private String openid = "ot6_Xvv926IwzniCWEJ8Ka5Q6Y8Y";
     // 叶明
 //    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
+    // 淡淡女人香
+//    private String openid = "oGGQw1Erk3HoCvP048S6Uc-dH8e4";
+
 //
     @GetMapping("/code")
     public ResponMsg getCode() {

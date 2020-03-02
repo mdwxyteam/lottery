@@ -22,7 +22,7 @@ public interface ActivityAddRecordMapper {
     @Select("SELECT activ_id FROM lottery_activity_add_record WHERE openid = #{openid}")
     ActivityAddRecord queryByOpenid(@Param("openid") String openid);
 
-    @Select("SELECT * FROM lottery_activity_add_record WHERE activ_id = #{activId} ORDER BY rank DESC")
+    @Select("SELECT * FROM lottery_activity_add_record WHERE activ_id = #{activId} ORDER BY rank ASC")
     List<ActivityAddRecord> queryByActivId(@Param("activId") Long activId);
 
     @Select("SELECT * FROM lottery_activity_add_record laar JOIN lottery_activ  la ON la.id = laar.activ_id " +
