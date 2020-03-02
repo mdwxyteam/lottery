@@ -7,10 +7,17 @@ import java.util.List;
 
 @Mapper
 public interface ActivityAddRecordMapper {
-    @Insert("INSERT INTO lottery_activity_add_record (activ_id, openid, nick_name, icon, culp, rank, team_mate_count, add_time) VALUES (#{activityAddRecord.activId}," +
+    @Insert("INSERT INTO lottery_activity_add_record (id, activ_id, openid, nick_name, icon, culp, rank, team_mate_count, add_time) VALUES (#{activityAddRecord.id}, #{activityAddRecord.activId}," +
             "#{activityAddRecord.openid}, #{activityAddRecord.nickName}, #{activityAddRecord.icon}, #{activityAddRecord.culp}, #{activityAddRecord.rank}, #{activityAddRecord.teamMateCount}, #{activityAddRecord.addTime})")
-    @Options(useGeneratedKeys = true, keyProperty = "activityAddRecord.id")
+//    @Options(useGeneratedKeys = true, keyProperty = "activityAddRecord.id")
     void add(@Param("activityAddRecord") ActivityAddRecord activityAddRecord);
+
+    @Insert("<script> INSERT INTO lottery_activity_add_record (id, activ_id, openid, nick_name, icon, culp, rank, team_mate_count, add_time) VALUES " +
+            "<foreach collection='activityAddRecords' item='item' index='index' separator=','>" +
+            "(#{item.id}, #{item.activId}, #{item.openid}, #{item.nickName}, #{item.icon}, #{item.culp}, #{item.rank}, #{item.teamMateCount}, #{item.addTime})" +
+            "</foreach>" +
+            "</script>")
+    void batchInsert(@Param("activityAddRecords") List<ActivityAddRecord> activityAddRecords);
 
     @Select("SELECT activ_id FROM lottery_activity_add_record WHERE openid = #{openid}")
     ActivityAddRecord queryByOpenid(@Param("openid") String openid);

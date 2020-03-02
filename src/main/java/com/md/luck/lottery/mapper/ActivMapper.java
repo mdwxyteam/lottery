@@ -64,6 +64,9 @@ public interface ActivMapper {
     @Select("SELECT * FROM lottery_activ WHERE activ_type = #{activType} AND state =#{state}")
     List<Activ> queryByActivTypeAndState(@Param("activType") Integer activType, @Param("state") Integer state);
 
+    @Select("SELECT * FROM lottery_activ WHERE activ_type = #{activType}")
+    List<Activ> queryByActivType(@Param("activType") Integer activType);
+
     @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state}")
     @Results({
             @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),

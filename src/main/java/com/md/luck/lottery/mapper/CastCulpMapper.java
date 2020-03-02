@@ -11,9 +11,17 @@ import java.util.List;
 @Mapper
 public interface CastCulpMapper {
 
-    @Insert("INSERT INTO lottery_cast_culp_record (activ_id, act_add_record_id, openid, nick_name, icon, cast_culp, record_openid) VALUES ( #{castCulp.activid}," +
+    @Insert("INSERT INTO lottery_cast_culp_record (id, activ_id, act_add_record_id, openid, nick_name, icon, cast_culp, record_openid) VALUES ( #{castCulp.id}, #{castCulp.activid}," +
             "#{castCulp.actAddRecordId}, #{castCulp.openid}, #{castCulp.nickName}, #{castCulp.icon}, #{castCulp.castCulp}, #{castCulp.recordOpenid})")
     void insert(@Param("castCulp")CastCulp castCulp);
+
+    @Insert("<script> INSERT INTO lottery_cast_culp_record (id, activ_id, act_add_record_id, openid, nick_name, icon, cast_culp, record_openid) VALUES " +
+            "<foreach collection='castCulps' item='castCulp' index='index' separator=','>" +
+            "( #{castCulp.id}, #{castCulp.activid}," +
+            "#{castCulp.actAddRecordId}, #{castCulp.openid}, #{castCulp.nickName}, #{castCulp.icon}, #{castCulp.castCulp}, #{castCulp.recordOpenid})" +
+            "</foreach>" +
+            "</script>")
+    void batchInsert(@Param("castCulps")List<CastCulp> castCulps);
 
     @Select("SELECT * FROM lottery_cast_culp_record lccr JOIN lottery_activ  la ON la.id = lccr.activ_id " +
             "WHERE la.activ_type = #{activType} AND la.state =#{state} ")

@@ -60,6 +60,48 @@ public class RedisServiceImpl {
         return null;
     }
     /**
+     * 從redis中获取所有助力活动参与者
+     * @param activId 活动id
+     * @return List<ActivityAddRecord>
+     */
+    public List<ActivityAddRecord> getActivityAddRecord(Long activId) {
+        // 先从排行榜中有序查询出参与者的openid
+        String rKey = Cont.RANK_PRE + activId;
+        Long zlength = redisTemplate.opsForZSet().zCard(rKey);
+        if (0L == zlength) {
+            return null;
+        }
+        Set<String> openidSet = redisTemplate.opsForZSet().reverseRange(rKey, 0, - 1);
+
+        List<ActivityAddRecord> activityAddRecords = new ArrayList<>();
+
+        for (String openid: openidSet) {
+            String joinKey = Cont.ACTIV_RESDIS_KEY_PRE + String.valueOf(activId);
+            JoinAttributes joinAttributes = JoinAttributes.getInstance(openid);
+            ActivityAddRecord activityAddRecord = new ActivityAddRecord();
+            Long id = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributes.getId());
+            activityAddRecord.setId(id);
+            activityAddRecord.setActivId(activId);
+            Integer culp = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getCulp());
+            activityAddRecord.setCulp(culp);
+            String icon = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getIcon());
+            activityAddRecord.setIcon(icon);
+            String nickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getNickName());
+            activityAddRecord.setNickName(nickName);
+            activityAddRecord.setOpenid(openid);
+            Long rank =  redisTemplate.opsForZSet().reverseRank(rKey, openid) + 1;
+            activityAddRecord.setRank(rank);
+            Integer teamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
+            activityAddRecord.setTeamMateCount(teamMateCount);
+            String addTime = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getAddTime());
+            activityAddRecord.setAddTime(addTime);
+            activityAddRecords.add(activityAddRecord);
+
+        }
+
+        return activityAddRecords;
+    }
+    /**
      * 從redis中获取助力活动参与者
      * @param teamPlayerOpenid 当前用户openid
      * @param activId 活动id
@@ -113,6 +155,25 @@ public class RedisServiceImpl {
         return pageInfo;
     }
 
+    /**
+     * 查询所有助力人员
+     * @param activId 活动id
+     * @param recordId 参与者id
+     * @return PageInfo<CastCulp>
+     */
+    public List<CastCulp> getAllCastCulp(Long activId, Long recordId) {
+        //
+        String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + activId + "_" + recordId;
+        if (!hasData(gKey)) {
+            return null;
+        }
+        Map<String, CastCulp> entries = redisTemplate.opsForHash().entries(gKey);
+        List<CastCulp> castCulpList = new ArrayList<>();
+        for (Map.Entry<String, CastCulp> entry : entries.entrySet()) {
+            castCulpList.add(entry.getValue());
+        }
+        return castCulpList;
+    }
     /**
      * 分页查询助力人员
      * @param teamPlayerOpenid 当前用户id
