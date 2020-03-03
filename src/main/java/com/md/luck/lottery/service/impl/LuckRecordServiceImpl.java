@@ -65,9 +65,12 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                 luckyRecord1.setOpenid(customer.getOpenid());
                 luckRecordMapper.insert(luckyRecord1);
                 int newPopularity = activ.getPopularity() + 1;
-                if (newPopularity == Integer.parseInt(activ.getCondition())) {
+                int countNum = activ.getCountNum();
+                countNum++;
+                activMapper.updatePopularityAndCountNum(newPopularity, countNum, activId);
+                if (countNum == Integer.parseInt(activ.getCondition())) {
                     //活动结束，更新state
-                    activMapper.updatePopularityAndState(newPopularity, Cont.ZERO, activId);
+                    activMapper.updateState(Cont.ZERO, activId);
                     // 抽奖   1、查出所有抽奖人员id;2、随机抽取奖品数量人数，即为奖品或得者；3、更新信息
                     List<LuckyRecord> records = luckRecordMapper.queryByActivId(activId);
                     List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
@@ -85,11 +88,12 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                         luckPeo.setPrizeName(ativPrize.getPrizeDescription());
                         luckPeo.setActivId(activId);
                         luckProMapper.insert(luckPeo);
-                        luckRecordMapper.updateLuck(Cont.ZERO, luckyRecordLucky.getId());
+                        luckRecordMapper.updateLuck(Cont.ONE, luckyRecordLucky.getId());
                     }
 
                 } else {
-                    activMapper.updatePopularity(newPopularity, activId);
+
+//                    activMapper.updatePopularity(newPopularity, activId);
                 }
 
                 responMsg = ResponMsg.newSuccess(newPopularity);

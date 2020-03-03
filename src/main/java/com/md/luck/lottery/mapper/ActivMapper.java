@@ -102,6 +102,9 @@ public interface ActivMapper {
     @Update("UPDATE lottery_activ SET popularity = #{popularity}, state = #{state} WHERE id = #{id}")
     int updatePopularityAndState(@Param("popularity") Integer popularity, @Param("state") Integer state, @Param("id") Long id);
 
+    @Update("UPDATE lottery_activ SET state = #{state} WHERE id = #{id}")
+    int updateState(@Param("state") Integer state, @Param("id") Long id);
+
     @Update("UPDATE lottery_activ SET popularity = #{popularity}, state = #{state}, count_num = #{countNum} WHERE id = #{id}")
     int updatePopularityAndCounNumAndState(@Param("popularity") Integer popularity, @Param("state") Integer state, @Param("countNum") Integer countNum,  @Param("id") Long id);
 

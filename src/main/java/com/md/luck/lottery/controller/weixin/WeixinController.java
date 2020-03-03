@@ -134,7 +134,7 @@ public class WeixinController extends BaseController {
     @PostMapping("/commit/luck/activ")
     public ResponMsg commitActiv(HttpServletRequest request, @RequestBody WeixnActiv weixnActiv) {
 //        String openid = (String) request.getAttribute("openid");
-        String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+        String openid = this.openid;
         return luckRecordService.commitActiv(openid, weixnActiv.getId());
     }
 
