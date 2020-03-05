@@ -32,6 +32,7 @@ public class TestController {
 //        String con = ConUtil.getCron("2019-10-21 14:27:30","yyyy-MM-dd HH:mm:ss");
 //        String con = "0 0/30 * * * ?";//每30分钟执行一次
         String con = "0/30  * * * ?";//每30秒钟执行一次
+//        String con = "0 15 2 ? * *";//每天执行一次
 //        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, "0/1 * * * * ?", new JSONObject());
 //        schedulService.addSchedul("jobName2", "jobGroupName2", "triggerName2",  "triggerGroupName2", taskStr, con, new JSONObject());
         schedulService.addSchedul("lotteryCalculation", "lotteryCalculation", "lotteryCalculation",  "lotteryCalculation", taskStr, con, new JSONObject());

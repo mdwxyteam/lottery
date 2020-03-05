@@ -65,17 +65,17 @@ public class UploadController {
                 .append("://")
                 .append(req.getServerName())
                 .append(":")
-                .append("/yyyy")
-//                .append(req.getServerPort()) 80和443端口不需要
+                .append(req.getServerPort()) //80和443端口不需要
                 .append(req.getContextPath())
+                .append("/lottery")
                 .append(filePath);
         refileUrl.append(req.getScheme())
                 .append("://")
                 .append(req.getServerName())
-                .append(":")
-                .append("/yyyy")
+//                .append(":")
 //                .append(req.getServerPort())
-                .append(req.getContextPath())
+//                .append(req.getContextPath())
+                .append("/yyyy")
                 .append(staticPath);
         String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
         try {

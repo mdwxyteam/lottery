@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/lottery/pay/**").permitAll()
+                .antMatchers("/lottery/**").permitAll()
                 .antMatchers("/weixin/api/**").permitAll()
                 .antMatchers("/web/api/**").permitAll()
                 .antMatchers("/weixin/api/code").permitAll()
