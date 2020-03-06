@@ -102,6 +102,16 @@ public class WeixinController extends BaseController {
     }
 
     /**
+     * 查询活动富文本框数据
+     * @param activId 活动id
+     * @return ResponMsg
+     */
+    @GetMapping("/activ/dev")
+    public ResponMsg queryDevByActivId(@RequestParam("activId") Long activId) {
+        return activService.queryDevByActivId(activId);
+    }
+
+    /**
      * 通过id查询
      * @param id 参与记录
      * @return ResponMsg

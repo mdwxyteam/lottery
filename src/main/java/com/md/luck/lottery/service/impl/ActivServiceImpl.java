@@ -236,11 +236,14 @@ public class ActivServiceImpl implements ActivService {
         }
         ResponMsg responMsg = null;
         try {
+//            Long startTime = System.currentTimeMillis();
             WeixinActivChildChild weixinActivChildChild = activMapper.queryWeixinActivByIdAndActivType(activType, activId);
+//            Long endTime = System.currentTimeMillis();
+//            System.out.println(endTime - startTime);
             if (MaObjUtil.isEmpty(weixinActivChildChild)) {
                 return ResponMsg.newFail(null).setMsg("没有数据");
             }
-             ActivityAddRecord activityAddRecord = null;
+            ActivityAddRecord activityAddRecord = null;
             LuckyRecord luckyRecord = null;
             // 否参与过活动
             boolean isJoinActivity = false;
@@ -426,6 +429,22 @@ public class ActivServiceImpl implements ActivService {
 
             }
 
+        } catch (SqlSessionException e) {
+            responMsg = ResponMsg.newFail(null).setMsg("操作失败");
+            log.error(e.getMessage());
+        }
+        return responMsg;
+    }
+
+    @Override
+    public ResponMsg queryDevByActivId(Long id) {
+        if (MaObjUtil.isEmpty(id)) {
+            return ResponMsg.newFail(null).setMsg("缺省参数");
+        }
+        ResponMsg responMsg = null;
+        try {
+            String adv = activMapper.queryAdvById(id);
+            responMsg = ResponMsg.newSuccess(adv);
         } catch (SqlSessionException e) {
             responMsg = ResponMsg.newFail(null).setMsg("操作失败");
             log.error(e.getMessage());

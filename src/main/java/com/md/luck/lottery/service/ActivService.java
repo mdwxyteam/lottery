@@ -88,4 +88,11 @@ public interface ActivService {
      */
     ResponMsg queryRecord(String openid, Integer pageNum, Integer pageSize, Integer activType);
 
+    /**
+     * 通过活动id查询dev（富文本）数据
+     * @param id 活动id
+     * @return ResponMsg
+     */
+    ResponMsg queryDevByActivId(Long id);
+
 }
