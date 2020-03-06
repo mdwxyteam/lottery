@@ -75,7 +75,7 @@ public interface ActivMapper {
     })
     List<WeixnActiv> queryWeixinActiv(@Param("activType") Integer activType, @Param("state") Integer state);
 
-    @Select("SELECT la.id, la.state, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name " +
+    @Select("SELECT la.id, la.state, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name, la.adv " +
             "FROM lottery_activ la WHERE la.activ_type = #{activType}  AND la.id = #{id}")
     @Results({
             @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),

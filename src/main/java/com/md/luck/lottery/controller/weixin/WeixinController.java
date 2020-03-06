@@ -29,7 +29,7 @@ public class WeixinController extends BaseController {
     // 吴欣阳
 //    private String openid = "ot6_XvtvrRVdi1B1M6Rgkr8iSN3Y";
     // madong
-    private String openid = "ot6_Xvt80Txu5TWtgH7dklajeZ0s";
+    private String openid = "oGGQw1EaleMewMz3cz-GvQzBfegc";
     // 峰少
 //    private String openid = "ot6_Xvv926IwzniCWEJ8Ka5Q6Y8Y";
     // 叶明
