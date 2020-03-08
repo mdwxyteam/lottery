@@ -51,22 +51,27 @@ public class TestController {
     @Autowired
     private WechatMpConfig wechatMpConfig;
     @GetMapping("/sendWxMsg")
-    public void sendWxMsg() {
+    public String sendWxMsg() {
         WxMpTemplateMessage templateMessage = WxMpTemplateMessage.builder()
-                .toUser("ot6_Xvt80Txu5TWtgH7dklajeZ0s")
-                .templateId("FRQV3Z8NQorBhGLfP6ezYUi4Er2vQlLrP6dFzm1re6Q")
-                .url("")
+                .toUser("oGGQw1EaleMewMz3cz-GvQzBfegc")
+                .templateId("ERRkN7P_Q_sPHORsD1vzWUW45Jr66FI2jc5SxjTK1vM")
+                .url("https://mp.weixin.qq.com/debug/cgi-bin/readtmpl?t=tmplmsg/faq_tmpl")
                 .build();
 
-        templateMessage.addData(new WxMpTemplateData("name1", "value1", "color2"));
-        templateMessage.addData(new WxMpTemplateData("name2", "value1", "color2"));
+        templateMessage.addData(new WxMpTemplateData("first", "你在Ai捡耙活参与的着力活动出结果了", "#FF00FF"));
+        templateMessage.addData(new WxMpTemplateData("keyword3", "HUAWEI Mate 30 5G 全网通 8GB 256GB 麒麟990", "blue"));
+        templateMessage.addData(new WxMpTemplateData("keyword4", "2020-3-9", "blue"));
+        templateMessage.addData(new WxMpTemplateData("remark", "详细结果请查看详情", "blue"));
         WxMpService wxMpService = wechatMpConfig.wxMpService();
         try {
             String reStr = wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+            System.out.println("------------------");
             System.out.println(reStr);
+            return reStr;
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
+        return "null";
     }
 
 

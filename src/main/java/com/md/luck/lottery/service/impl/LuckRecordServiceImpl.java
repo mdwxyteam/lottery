@@ -10,6 +10,7 @@ import com.md.luck.lottery.common.util.MaDateUtil;
 import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.LuckRecordService;
+import com.md.luck.lottery.service.WexinService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
@@ -17,11 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class LuckRecordServiceImpl implements LuckRecordService {
     private Log log = LogFactory.getLog(this.getClass());
+    @Autowired
+    WexinService weixinService;
     @Autowired
     LuckRecordMapper luckRecordMapper;
     @Autowired
@@ -73,6 +77,9 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                     activMapper.updateState(Cont.ZERO, activId);
                     // 抽奖   1、查出所有抽奖人员id;2、随机抽取奖品数量人数，即为奖品或得者；3、更新信息
                     List<LuckyRecord> records = luckRecordMapper.queryByActivId(activId);
+                    // 中奖人员容器
+                    List<LuckPeo> luckyPeples = new ArrayList<>();
+                    List<LuckyRecord> recordList = new ArrayList<>(records);
                     List<AtivPrize> ativPrizes = ativPrizeMapper.queryByAtivId(activId);
                     // 奖品对应的或得者
                     for (AtivPrize ativPrize: ativPrizes) {
@@ -89,8 +96,10 @@ public class LuckRecordServiceImpl implements LuckRecordService {
                         luckPeo.setActivId(activId);
                         luckProMapper.insert(luckPeo);
                         luckRecordMapper.updateLuck(Cont.ONE, luckyRecordLucky.getId());
+                        luckyPeples.add(luckPeo);
                     }
-
+                    // 发送模板消息通知参与抽奖活动的用户
+                    weixinService.sendLuckyTemplateMsg(activId, recordList, luckyPeples);
                 } else {
 
 //                    activMapper.updatePopularity(newPopularity, activId);

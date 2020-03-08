@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/lottery/**").permitAll()
+                .antMatchers("/quartz/**").permitAll()
                 .antMatchers("/weixin/api/**").permitAll()
                 .antMatchers("/web/api/**").permitAll()
                 .antMatchers("/weixin/api/code").permitAll()

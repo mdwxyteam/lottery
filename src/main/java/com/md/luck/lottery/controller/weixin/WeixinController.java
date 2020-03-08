@@ -36,7 +36,7 @@ public class WeixinController extends BaseController {
 //    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
     // 淡淡女人香
 //    private String openid = "oGGQw1Erk3HoCvP048S6Uc-dH8e4";
-    boolean isOk = false;
+    boolean isOk = true;
 
 //
     @GetMapping("/code")

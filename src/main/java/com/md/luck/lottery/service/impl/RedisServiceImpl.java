@@ -195,6 +195,22 @@ public class RedisServiceImpl {
         return castCulpList;
     }
     /**
+     * 查询所有助力人员
+     * @param activId 活动id
+     * @param recordId 参与者id
+     * @return PageInfo<CastCulp>
+     */
+    public Map<String, CastCulp> getAllCastCulpToMap(Long activId, Long recordId) {
+        //
+        String gKey = Cont.ACTIV_RESDIS_GRAB_PRE + activId + "_" + recordId;
+        if (!hasData(gKey)) {
+            return null;
+        }
+        Map<String, CastCulp> entries = redisTemplate.opsForHash().entries(gKey);
+
+        return entries;
+    }
+    /**
      * 分页查询助力人员
      * @param teamPlayerOpenid 当前用户id
      * @param activId 活动id

@@ -16,6 +16,7 @@ import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.common.util.NumberUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.CastCulpService;
+import com.md.luck.lottery.service.WexinService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
@@ -37,6 +38,8 @@ public class CastCulpServiceImpl implements CastCulpService {
 
     @Autowired
     RedisServiceImpl redisService;
+    @Autowired
+    WexinService weixinService;
 
 
     @Autowired
@@ -260,6 +263,8 @@ public class CastCulpServiceImpl implements CastCulpService {
                 String aendKey = Cont.ACTIVITY_END_PRE + helpGrab.getActivId();
                 redisTemplate.opsForHash().put(aendKey, aendKey, Cont.END);
             }
+            // 发送模板消息通知所有类型参与者
+            weixinService.sendCastTemplateMsg(helpGrab.getActivId());
         }
         CastCulpChild castCulpChild = new CastCulpChild();
         castCulpChild.setActAddRecordId(helpGrab.getGrabRecordId());

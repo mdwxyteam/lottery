@@ -15,6 +15,11 @@ public final class Cont {
     public static final Integer[] RANDOM_LIMIT = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     /**
+     * 微信模板消息id
+     */
+    public static final String TEMPLATE_ID = "E5UxHIU3fAwJVVhgDuHHZuENeFE2llw3QVYYmUGWbNg";
+
+    /**
      * 结束标志
      */
     public static final String END = "END_END";

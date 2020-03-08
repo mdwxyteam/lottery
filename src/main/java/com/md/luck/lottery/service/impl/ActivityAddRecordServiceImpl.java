@@ -13,6 +13,7 @@ import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.common.util.NumberUtil;
 import com.md.luck.lottery.mapper.*;
 import com.md.luck.lottery.service.ActivityAddRecordService;
+import com.md.luck.lottery.service.WexinService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
@@ -32,6 +33,8 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
     private Log log = LogFactory.getLog(this.getClass());
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    WexinService weixinService;
     @Autowired
     private RedisServiceImpl redisService;
     @Autowired
@@ -240,6 +243,8 @@ public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
                 String aendKey = Cont.ACTIVITY_END_PRE + activId;
                 redisTemplate.opsForHash().put(aendKey, aendKey, Cont.END);
             }
+            // 发送模板消息通知所有参与类型的用户
+            weixinService.sendCastTemplateMsg(activId);
         }
         Map<String, Object> map = new HashMap<>();
         map.put("popularity", popularity);
