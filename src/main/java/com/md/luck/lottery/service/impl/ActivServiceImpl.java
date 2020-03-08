@@ -322,8 +322,9 @@ public class ActivServiceImpl implements ActivService {
                                 addRecord.setIcon(rIcon);
                                 String rNickName = (String) redisTemplate.opsForHash().get(joinKey, joinAttributes.getNickName());
                                 addRecord.setNickName(rNickName);
-                                addRecord.setOpenid(openid);
-                                Long rRank = (Long) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+                                addRecord.setOpenid(ropenid);
+                                Integer rankInter = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getRank());
+                                Long rRank = rankInter.longValue();
                                 addRecord.setRank(rRank);
                                 Integer rTeamMateCount = (Integer) redisTemplate.opsForHash().get(joinKey, joinAttributes.getTeamMateCount());
                                 addRecord.setTeamMateCount(rTeamMateCount);
