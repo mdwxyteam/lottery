@@ -17,8 +17,7 @@ import java.util.List;
 
 @Service
 public class ActivPrizeServiceImpl implements ActivPrizeService {
-
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(ActivPrizeServiceImpl.class);
 
     @Autowired
     private AtivPrizeMapper ativPrizeMapper;

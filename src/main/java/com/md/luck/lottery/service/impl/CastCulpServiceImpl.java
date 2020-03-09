@@ -31,7 +31,7 @@ import java.util.Set;
 
 @Service
 public class CastCulpServiceImpl implements CastCulpService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(CastCulpServiceImpl.class);
 
     @Autowired
     private RedisTemplate redisTemplate;

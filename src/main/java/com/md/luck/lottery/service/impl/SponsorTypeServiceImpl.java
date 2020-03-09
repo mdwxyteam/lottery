@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Service
 public class SponsorTypeServiceImpl implements SponsorTypeService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(SponsorTypeServiceImpl.class);
 
     @Autowired
     private SponsorTypeMapper sponsorTypeMapper;

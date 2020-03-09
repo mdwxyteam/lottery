@@ -26,9 +26,10 @@ import java.util.*;
  */
 @Service
 public class RedisServiceImpl {
+    private static final Log log = LogFactory.getLog(RedisServiceImpl.class);
     @Autowired
     private RedisTemplate redisTemplate;
-    private Log log = LogFactory.getLog(this.getClass());
+
     @Autowired
     ActivMapper activMapper;
     @Autowired

@@ -30,7 +30,7 @@ import java.util.Set;
 
 @Service
 public class ActivityAddRecordServiceImpl implements ActivityAddRecordService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(ActivityAddRecordServiceImpl.class);
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired

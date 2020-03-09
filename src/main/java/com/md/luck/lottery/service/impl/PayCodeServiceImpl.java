@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PayCodeServiceImpl implements PayCodeService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(PayCodeServiceImpl.class);
     @Autowired
     private MaSecurity maSecurity;
     @Autowired

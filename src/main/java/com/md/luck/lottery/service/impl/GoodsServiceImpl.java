@@ -11,6 +11,8 @@ import com.md.luck.lottery.common.entity.Goods;
 import com.md.luck.lottery.common.util.MaMathUtil;
 import com.md.luck.lottery.mapper.GoodsMapper;
 import com.md.luck.lottery.service.GoodsService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
+    private static final Log log = LogFactory.getLog(GoodsServiceImpl.class);
     @Autowired
     private GoodsMapper goodsMapper;
 

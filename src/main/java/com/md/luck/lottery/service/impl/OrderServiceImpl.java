@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(OrderServiceImpl.class);
     @Autowired
     private MaSecurity maSecurity;
     @Autowired

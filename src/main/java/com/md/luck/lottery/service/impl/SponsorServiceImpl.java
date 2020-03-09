@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 public class SponsorServiceImpl implements SponsorService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(SponsorServiceImpl.class);
     @Autowired
     private SponsorMapper sponsorMapper;
 

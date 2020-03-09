@@ -32,8 +32,7 @@ import java.util.Map;
 
 @Service
 public class ActivServiceImpl implements ActivService {
-
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(ActivServiceImpl.class);
 
     @Autowired
     private RedisTemplate redisTemplate;

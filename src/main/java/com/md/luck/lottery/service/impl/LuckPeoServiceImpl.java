@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class LuckPeoServiceImpl implements LuckPeoService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(LuckPeoServiceImpl.class);
     @Autowired
     RedisServiceImpl redisService;
     @Autowired

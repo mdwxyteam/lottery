@@ -42,7 +42,7 @@ import java.util.*;
 
 @Service
 public class WeixinServiceImpl implements WexinService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(WeixinServiceImpl.class);
 
     @Value("${weixin.redirecturi}")
     private String redirectUri;

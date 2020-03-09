@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(CustomerServiceImpl.class);
     @Autowired
     private CustomerMapper customerMapper;
     @Override

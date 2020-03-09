@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SponsorPrizeServiceImpl implements SponsorPrizeService {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(SponsorPrizeServiceImpl.class);
 
     @Autowired
     private SponsorPrizeMapper sponsorPrizeMapper;
