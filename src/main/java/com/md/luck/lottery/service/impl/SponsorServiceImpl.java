@@ -8,6 +8,7 @@ import com.md.luck.lottery.common.Cont;
 import com.md.luck.lottery.common.ResponMsg;
 import com.md.luck.lottery.common.entity.Sponsor;
 import com.md.luck.lottery.common.util.MaMathUtil;
+import com.md.luck.lottery.common.util.MaObjUtil;
 import com.md.luck.lottery.mapper.SponsorMapper;
 import com.md.luck.lottery.service.SponsorService;
 import org.apache.commons.logging.Log;
@@ -27,6 +28,15 @@ public class SponsorServiceImpl implements SponsorService {
     @Override
     public ResponMsg<Sponsor> detailById(Long id) {
         return ResponMsg.newSuccess(sponsorMapper.bySponsorId(id));
+    }
+
+    @Override
+    public ResponMsg<Sponsor> makdawnById(Long id) {
+        if (MaObjUtil.isEmpty(id)) {
+            return ResponMsg.newFail(null).setMsg("缺省必要参数");
+        }
+        String html = sponsorMapper.queryDetailbySponsorId(id);
+        return ResponMsg.newSuccess(html);
     }
 
     @Override

@@ -69,7 +69,7 @@ public interface ActivMapper {
     @Select("SELECT * FROM lottery_activ WHERE activ_type = #{activType}")
     List<Activ> queryByActivType(@Param("activType") Integer activType);
 
-    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state}")
+    @Select("SELECT la.id, la.`condition`, la.add_condition, la.conditional_description FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.state =#{state} ORDER BY popularity DESC")
     @Results({
             @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
             @Result(property = "ativPrizes", column = "id",
@@ -77,7 +77,7 @@ public interface ActivMapper {
     })
     List<WeixnActiv> queryWeixinActiv(@Param("activType") Integer activType, @Param("state") Integer state);
 
-    @Select("SELECT la.id, la.state, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name " +
+    @Select("SELECT la.id, la.state, la.`condition`, la.add_condition, la.popularity, la.count_num, la.conditional_description, la.sponsor_claim, la.sponsor_name, la.sponsorid " +
             "FROM lottery_activ la WHERE la.activ_type = #{activType} AND la.id = #{id}")
     @Results({
             @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),

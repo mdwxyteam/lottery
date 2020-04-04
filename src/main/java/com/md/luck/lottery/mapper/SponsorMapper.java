@@ -22,6 +22,9 @@ public interface SponsorMapper {
     @Select("SELECT * FROM lottery_sponsor WHERE id = #{sponsorId}")
     Sponsor bySponsorId(@Param("sponsorId") Long sponsorId);
 
+    @Select("SELECT mark_down FROM lottery_sponsor WHERE id = #{sponsorId}")
+    String queryDetailbySponsorId(@Param("sponsorId") Long sponsorId);
+
     @Select("<script>SELECT * FROM lottery_sponsor WHERE status = #{status}" +
             "<if test= 'typeId !=null'>  AND type_id = #{typeId}</if>" +
             "<if test='sponsorName !=null'> AND LOCATE(#{sponsorName}, `sponsor_name`)>0 </if>" +

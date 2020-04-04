@@ -36,7 +36,7 @@ public class WeixinController extends BaseController {
 //    private String openid = "ot6_Xvmfi2RKcVPdvgr00iQhBb1o";
     // 淡淡女人香
 //    private String openid = "oGGQw1Erk3HoCvP048S6Uc-dH8e4";
-    boolean isOk = true;
+    boolean isOk = false;
 
 //
     @GetMapping("/code")
@@ -99,6 +99,16 @@ public class WeixinController extends BaseController {
         }
 //        String openid = this.openid;
         return activService.queryByActivIdToWeixin(openidStr, activType, state, activId, ropenid, recordId);
+    }
+
+    /**
+     * 查询赞助商详情
+     * @param sponsorid
+     * @return ResponMsg
+     */
+    @GetMapping("/sponsor/detail")
+    public ResponMsg querySponsorDetail(@RequestParam("sponsorid") Long sponsorid) {
+        return sponsorService.makdawnById(sponsorid);
     }
 
     /**

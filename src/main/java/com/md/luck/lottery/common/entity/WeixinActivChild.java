@@ -21,6 +21,10 @@ public class WeixinActivChild extends WeixnActiv {
      */
     private String sponsorName;
     /**
+     * 赞助商id
+     */
+    private Long sponsorid;
+    /**
      * 广告
      */
     private String adv;

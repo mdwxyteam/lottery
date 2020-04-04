@@ -12,6 +12,13 @@ public interface SponsorService {
      * @return ResponMsg<Sponsor>
      */
     ResponMsg<Sponsor> detailById(Long id);
+
+    /**
+     * 通过id获取赞助商makdown详情
+     * @param id id
+     * @return ResponMsg<Sponsor>
+     */
+    ResponMsg<Sponsor> makdawnById(Long id);
     /**
      * 通过类型查询赞助商
      *
